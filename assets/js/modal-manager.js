@@ -1,8 +1,21 @@
 // Modal Manager with Error Handling
 class ModalManager {
     constructor() {
+        this.debugInfo();
         this.initializeModals();
         this.setupEventListeners();
+    }
+
+    debugInfo() {
+        if (typeof armAjax !== 'undefined' && armAjax.debug) {
+            console.log('ARM Debug Info:', {
+                pluginUrl: armAjax.debug.pluginUrl,
+                adminUrl: armAjax.debug.adminUrl,
+                ajaxUrl: armAjax.debug.ajaxUrl,
+                userAgent: navigator.userAgent,
+                timestamp: new Date().toISOString()
+            });
+        }
     }
 
     initializeModals() {
@@ -68,6 +81,7 @@ class ModalManager {
 
     openModal(modalId) {
         try {
+            console.log('ARM: Intentando abrir modal:', modalId);
             const modal = document.getElementById(modalId);
             if (!modal) {
                 throw new Error(`Modal no encontrado: ${modalId}`);
@@ -122,5 +136,6 @@ window.armShowError = function(message) {
 
 // Initialize Modal Manager
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('ARM: Inicializando Modal Manager...');
     window.armModalManager = new ModalManager();
 });

@@ -20,6 +20,11 @@ define('ARM_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('ARM_PLUGIN_FILE', __FILE__);
 define('ARM_PLUGIN_BASENAME', plugin_basename(__FILE__));
 
+// Debug mode
+if (!defined('WP_DEBUG')) {
+    define('WP_DEBUG', true);
+}
+
 // Load helper functions
 require_once ARM_PLUGIN_DIR . 'includes/Core/functions.php';
 

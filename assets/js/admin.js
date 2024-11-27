@@ -10,29 +10,44 @@ jQuery(document).ready(function($) {
     // Cliente seleccionado -> Cargar aparatos
     $('#client_select').on('change', function() {
         var clientId = $(this).val();
+        var applianceSelect = $('#appliance_id');
+        
+        // Reset y deshabilitar el select de aparatos
+        applianceSelect.empty().prop('disabled', true);
+        applianceSelect.append($('<option></option>').val('').text(armL10n.selectAppliance));
+        
         if (!clientId) {
-            $('#appliance_id').html('<option value="">' + armL10n.selectAppliance + '</option>').trigger('change');
+            applianceSelect.trigger('change').prop('disabled', false);
             return;
         }
 
+        // Realizar petición AJAX
         $.ajax({
             url: ajaxurl,
             type: 'POST',
+            dataType: 'json',
             data: {
                 action: 'arm_get_client_appliances',
                 client_id: clientId,
                 nonce: $('#arm_ajax_nonce').val()
             },
             success: function(response) {
-                if (response.success) {
-                    var options = '<option value="">' + armL10n.selectAppliance + '</option>';
+                if (response.success && response.data) {
+                    // Agregar las opciones al select
                     response.data.forEach(function(appliance) {
-                        options += '<option value="' + appliance.id + '">' + 
-                                  appliance.brand + ' ' + appliance.type + ' - ' + appliance.model + 
-                                  '</option>';
+                        var text = appliance.brand + ' ' + appliance.type + ' - ' + appliance.model;
+                        applianceSelect.append($('<option></option>')
+                            .val(appliance.id)
+                            .text(text));
                     });
-                    $('#appliance_id').html(options).trigger('change');
                 }
+            },
+            error: function() {
+                console.error('Error loading appliances');
+            },
+            complete: function() {
+                // Habilitar el select y actualizar Select2
+                applianceSelect.prop('disabled', false).trigger('change');
             }
         });
     });

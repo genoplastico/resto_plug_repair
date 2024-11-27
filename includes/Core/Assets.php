@@ -35,52 +35,27 @@ class Assets {
             true
         );
 
-        // Modal Manager CSS
-        $modal_css_url = $this->debug->getAssetUrl('assets/css/modal-manager.css');
+        // Admin CSS
         wp_enqueue_style(
-            'arm-modal-styles',
-            $modal_css_url,
+            'arm-admin-styles',
+            ARM_PLUGIN_URL . 'assets/css/admin.css',
             [],
             ARM_VERSION
         );
 
-        // Admin CSS
-        $admin_css_url = $this->debug->getAssetUrl('assets/css/admin.css');
-        wp_enqueue_style(
-            'arm-admin-styles',
-            $admin_css_url,
-            ['arm-modal-styles'],
-            ARM_VERSION
-        );
-
-        // Modal Manager JS
-        $modal_js_url = $this->debug->getAssetUrl('assets/js/modal-manager.js');
-        wp_enqueue_script(
-            'arm-modal-manager',
-            $modal_js_url,
-            ['jquery'],
-            ARM_VERSION,
-            true
-        );
-
         // Admin JS
-        $admin_js_url = $this->debug->getAssetUrl('assets/js/admin.js');
         wp_enqueue_script(
             'arm-admin-scripts',
-            $admin_js_url,
-            ['jquery', 'select2', 'arm-modal-manager'],
+            ARM_PLUGIN_URL . 'assets/js/admin.js',
+            ['jquery', 'select2'],
             ARM_VERSION,
             true
         );
 
         // Localize scripts
-        wp_localize_script('arm-modal-manager', 'armAjax', [
+        wp_localize_script('arm-admin-scripts', 'armL10n', [
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('arm_ajax_nonce'),
-            'debug' => $this->debug->getDebugInfo()
-        ]);
-
-        wp_localize_script('arm-admin-scripts', 'armL10n', [
             'confirmStatusChange' => __('Are you sure you want to change the status?', 'appliance-repair-manager'),
             'fillRequiredFields' => __('Please fill in all required fields.', 'appliance-repair-manager'),
             'errorAddingNote' => __('Error adding note.', 'appliance-repair-manager'),
@@ -107,44 +82,26 @@ class Assets {
 
         wp_enqueue_script('jquery');
 
-        // Modal Manager CSS
-        wp_enqueue_style(
-            'arm-modal-styles',
-            $this->debug->getAssetUrl('assets/css/modal-manager.css'),
-            [],
-            ARM_VERSION
-        );
-
         // Public styles
         wp_enqueue_style(
             'arm-public-styles',
-            $this->debug->getAssetUrl('assets/css/admin.css'),
-            ['arm-modal-styles'],
+            ARM_PLUGIN_URL . 'assets/css/admin.css',
+            [],
             ARM_VERSION
-        );
-
-        // Modal Manager JS
-        wp_enqueue_script(
-            'arm-modal-manager',
-            $this->debug->getAssetUrl('assets/js/modal-manager.js'),
-            ['jquery'],
-            ARM_VERSION,
-            true
         );
 
         // Public scripts
         wp_enqueue_script(
             'arm-public-scripts',
-            $this->debug->getAssetUrl('assets/js/admin.js'),
-            ['jquery', 'arm-modal-manager'],
+            ARM_PLUGIN_URL . 'assets/js/admin.js',
+            ['jquery'],
             ARM_VERSION,
             true
         );
 
-        wp_localize_script('arm-modal-manager', 'armAjax', [
+        wp_localize_script('arm-public-scripts', 'armL10n', [
             'ajaxurl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('arm_ajax_nonce'),
-            'debug' => $this->debug->getDebugInfo()
+            'nonce' => wp_create_nonce('arm_ajax_nonce')
         ]);
     }
 

@@ -34,7 +34,8 @@ jQuery(document).ready(function($) {
                         });
                         $('#appliance_id').html(options).trigger('change');
                     } else {
-                        throw new Error(response.data.message || armL10n.errorLoadingAppliances);
+                        console.error('ARM Error:', response);
+                        alert(response.data.message || armL10n.errorLoadingAppliances);
                     }
                 },
                 error: function(xhr, status, error) {
@@ -58,6 +59,8 @@ jQuery(document).ready(function($) {
         var repairId = $(this).data('repair-id');
         var modal = $('#repair-details-modal');
         
+        console.log('Opening repair details modal for ID:', repairId);
+        
         $.ajax({
             url: armL10n.ajaxurl,
             type: 'POST',
@@ -69,12 +72,19 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     $('#repair-details-content').html(response.data.html);
-                    modal.fadeIn(300);
+                    modal.show();
+                    console.log('Modal content updated and shown');
                 } else {
+                    console.error('ARM Error:', response);
                     alert(response.data.message || armL10n.errorLoadingRepairDetails);
                 }
             },
-            error: function() {
+            error: function(xhr, status, error) {
+                console.error('ARM Error:', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
+                });
                 alert(armL10n.errorLoadingRepairDetails);
             }
         });
@@ -85,6 +95,8 @@ jQuery(document).ready(function($) {
         e.preventDefault();
         var applianceId = $(this).data('appliance-id');
         var modal = $('#appliance-history-modal');
+        
+        console.log('Opening appliance history modal for ID:', applianceId);
         
         $.ajax({
             url: armL10n.ajaxurl,
@@ -97,12 +109,19 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     $('#appliance-history-content').html(response.data.html);
-                    modal.fadeIn(300);
+                    modal.show();
+                    console.log('Modal content updated and shown');
                 } else {
+                    console.error('ARM Error:', response);
                     alert(response.data.message || armL10n.errorLoadingHistory);
                 }
             },
-            error: function() {
+            error: function(xhr, status, error) {
+                console.error('ARM Error:', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
+                });
                 alert(armL10n.errorLoadingHistory);
             }
         });
@@ -110,12 +129,14 @@ jQuery(document).ready(function($) {
 
     // Cerrar modales
     $(document).on('click', '.arm-modal-close', function() {
-        $(this).closest('.arm-modal').fadeOut(300);
+        $(this).closest('.arm-modal').hide();
+        console.log('Modal closed');
     });
 
     $(window).on('click', function(e) {
         if ($(e.target).hasClass('arm-modal')) {
-            $('.arm-modal').fadeOut(300);
+            $('.arm-modal').hide();
+            console.log('Modal closed by outside click');
         }
     });
 
@@ -148,10 +169,16 @@ jQuery(document).ready(function($) {
                         mainNotesList.append(noteHtml);
                     }
                 } else {
+                    console.error('ARM Error:', response);
                     alert(response.data.message || armL10n.errorAddingNote);
                 }
             },
-            error: function() {
+            error: function(xhr, status, error) {
+                console.error('ARM Error:', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
+                });
                 alert(armL10n.errorAddingNote);
             }
         });

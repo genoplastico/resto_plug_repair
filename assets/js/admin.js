@@ -17,7 +17,7 @@ jQuery(document).ready(function($) {
             }
 
             $.ajax({
-                url: ajaxurl,
+                url: armL10n.ajaxurl,
                 type: 'POST',
                 data: {
                     action: 'arm_get_client_appliances',
@@ -33,163 +33,143 @@ jQuery(document).ready(function($) {
                                       '</option>';
                         });
                         $('#appliance_id').html(options).trigger('change');
+                    } else {
+                        throw new Error(response.data.message || armL10n.errorLoadingAppliances);
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('ARM Error: Error loading appliances', {
+                    console.error('ARM Error:', {
                         status: status,
                         error: error,
                         response: xhr.responseText
                     });
-                    window.armShowError(armL10n.errorLoadingAppliances);
+                    alert(armL10n.errorLoadingAppliances);
                 }
             });
         } catch (error) {
-            console.error('ARM Error: Client selection error', error);
-            window.armShowError(armL10n.generalError);
+            console.error('ARM Error:', error);
+            alert(armL10n.generalError);
         }
     });
 
     // Ver detalles de reparación
     $(document).on('click', '.view-repair-details', function(e) {
         e.preventDefault();
-        try {
-            var repairId = $(this).data('repair-id');
-            
-            $.ajax({
-                url: ajaxurl,
-                type: 'POST',
-                data: {
-                    action: 'arm_get_repair_details',
-                    repair_id: repairId,
-                    nonce: $('#arm_ajax_nonce').val()
-                },
-                success: function(response) {
-                    if (response.success) {
-                        $('#repair-details-content').html(response.data.html);
-                        window.armModalManager.openModal('repair-details-modal');
-                    } else {
-                        throw new Error(response.data.message || 'Error desconocido');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('ARM Error: Error loading repair details', {
-                        status: status,
-                        error: error,
-                        response: xhr.responseText
-                    });
-                    window.armShowError(armL10n.errorLoadingRepairDetails);
+        var repairId = $(this).data('repair-id');
+        var modal = $('#repair-details-modal');
+        
+        $.ajax({
+            url: armL10n.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'arm_get_repair_details',
+                repair_id: repairId,
+                nonce: $('#arm_ajax_nonce').val()
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('#repair-details-content').html(response.data.html);
+                    modal.fadeIn(300);
+                } else {
+                    alert(response.data.message || armL10n.errorLoadingRepairDetails);
                 }
-            });
-        } catch (error) {
-            console.error('ARM Error: View repair details error', error);
-            window.armShowError(armL10n.generalError);
-        }
+            },
+            error: function() {
+                alert(armL10n.errorLoadingRepairDetails);
+            }
+        });
     });
 
     // Ver historial de aparato
     $(document).on('click', '.view-appliance-history', function(e) {
         e.preventDefault();
-        try {
-            var applianceId = $(this).data('appliance-id');
-            
-            $.ajax({
-                url: ajaxurl,
-                type: 'POST',
-                data: {
-                    action: 'arm_get_appliance_history',
-                    appliance_id: applianceId,
-                    nonce: $('#arm_ajax_nonce').val()
-                },
-                success: function(response) {
-                    if (response.success) {
-                        $('#appliance-history-content').html(response.data.html);
-                        window.armModalManager.openModal('appliance-history-modal');
-                    } else {
-                        throw new Error(response.data.message || 'Error desconocido');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('ARM Error: Error loading appliance history', {
-                        status: status,
-                        error: error,
-                        response: xhr.responseText
-                    });
-                    window.armShowError(armL10n.errorLoadingHistory);
+        var applianceId = $(this).data('appliance-id');
+        var modal = $('#appliance-history-modal');
+        
+        $.ajax({
+            url: armL10n.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'arm_get_appliance_history',
+                appliance_id: applianceId,
+                nonce: $('#arm_ajax_nonce').val()
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('#appliance-history-content').html(response.data.html);
+                    modal.fadeIn(300);
+                } else {
+                    alert(response.data.message || armL10n.errorLoadingHistory);
                 }
-            });
-        } catch (error) {
-            console.error('ARM Error: View appliance history error', error);
-            window.armShowError(armL10n.generalError);
+            },
+            error: function() {
+                alert(armL10n.errorLoadingHistory);
+            }
+        });
+    });
+
+    // Cerrar modales
+    $(document).on('click', '.arm-modal-close', function() {
+        $(this).closest('.arm-modal').fadeOut(300);
+    });
+
+    $(window).on('click', function(e) {
+        if ($(e.target).hasClass('arm-modal')) {
+            $('.arm-modal').fadeOut(300);
         }
     });
 
     // Agregar nota vía AJAX
     $(document).on('submit', '.arm-note-form', function(e) {
         e.preventDefault();
-        try {
-            var form = $(this);
-            var noteInput = form.find('textarea[name="note"]');
-            var notesList = form.closest('.arm-detail-section').find('.arm-notes-list');
+        var form = $(this);
+        var noteInput = form.find('textarea[name="note"]');
+        var notesList = form.closest('.arm-detail-section').find('.arm-notes-list');
 
-            $.ajax({
-                url: ajaxurl,
-                type: 'POST',
-                data: {
-                    action: 'arm_add_note_ajax',
-                    repair_id: form.find('input[name="repair_id"]').val(),
-                    note: noteInput.val(),
-                    nonce: $('#arm_ajax_nonce').val()
-                },
-                success: function(response) {
-                    if (response.success) {
-                        var noteHtml = '<div class="arm-note">' + response.data.note + '</div>';
-                        notesList.append(noteHtml);
-                        noteInput.val('');
-                        notesList.scrollTop(notesList[0].scrollHeight);
-                        
-                        var repairId = form.find('input[name="repair_id"]').val();
-                        var mainNotesList = $('.repair-row-' + repairId + ' .arm-notes-list');
-                        if (mainNotesList.length) {
-                            mainNotesList.append(noteHtml);
-                        }
-                    } else {
-                        throw new Error(response.data.message || armL10n.errorAddingNote);
+        $.ajax({
+            url: armL10n.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'arm_add_note_ajax',
+                repair_id: form.find('input[name="repair_id"]').val(),
+                note: noteInput.val(),
+                nonce: $('#arm_ajax_nonce').val()
+            },
+            success: function(response) {
+                if (response.success) {
+                    var noteHtml = '<div class="arm-note">' + response.data.note + '</div>';
+                    notesList.append(noteHtml);
+                    noteInput.val('');
+                    notesList.scrollTop(notesList[0].scrollHeight);
+                    
+                    var repairId = form.find('input[name="repair_id"]').val();
+                    var mainNotesList = $('.repair-row-' + repairId + ' .arm-notes-list');
+                    if (mainNotesList.length) {
+                        mainNotesList.append(noteHtml);
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error('ARM Error: Error adding note', {
-                        status: status,
-                        error: error,
-                        response: xhr.responseText
-                    });
-                    window.armShowError(armL10n.errorAddingNote);
+                } else {
+                    alert(response.data.message || armL10n.errorAddingNote);
                 }
-            });
-        } catch (error) {
-            console.error('ARM Error: Add note error', error);
-            window.armShowError(armL10n.generalError);
-        }
+            },
+            error: function() {
+                alert(armL10n.errorAddingNote);
+            }
+        });
     });
 
     // Copiar URL pública
     $('.copy-public-url').click(function() {
-        try {
-            var url = $(this).data('url');
-            navigator.clipboard.writeText(url).then(function() {
-                window.armShowError(armL10n.publicUrlCopied);
-            }).catch(function(err) {
-                // Fallback para navegadores que no soportan clipboard API
-                var temp = $("<input>");
-                $("body").append(temp);
-                temp.val(url).select();
-                document.execCommand("copy");
-                temp.remove();
-                window.armShowError(armL10n.publicUrlCopied);
-            });
-        } catch (error) {
-            console.error('ARM Error: Copy URL error', error);
-            window.armShowError(armL10n.generalError);
-        }
+        var url = $(this).data('url');
+        navigator.clipboard.writeText(url).then(function() {
+            alert(armL10n.publicUrlCopied);
+        }).catch(function() {
+            // Fallback para navegadores que no soportan clipboard API
+            var temp = $("<input>");
+            $("body").append(temp);
+            temp.val(url).select();
+            document.execCommand("copy");
+            temp.remove();
+            alert(armL10n.publicUrlCopied);
+        });
     });
 });

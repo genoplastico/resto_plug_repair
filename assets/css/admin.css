@@ -254,7 +254,7 @@
     content: '';
     position: absolute;
     left: -26px;
-    top: -8px; /* Ajustado de 0px a -4px para mover el punto hacia arriba */
+    top: -8px;
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -264,6 +264,56 @@
 /* Error state for form fields */
 .arm-error {
     border-color: #dc3232 !important;
+}
+
+/* Error Notification Styles */
+.arm-error-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100001;
+    max-width: 400px;
+    background-color: #fff;
+    border-left: 4px solid #dc3232;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    animation: slideIn 0.3s ease-out;
+}
+
+.arm-error-content {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+}
+
+.arm-error-message {
+    flex: 1;
+    margin-right: 10px;
+    color: #23282d;
+    font-size: 13px;
+}
+
+.arm-error-notification button {
+    background: none;
+    border: none;
+    color: #72777c;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0 5px;
+}
+
+.arm-error-notification button:hover {
+    color: #23282d;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 /* Responsive Tables */
@@ -309,10 +359,4 @@
 
 .arm-public-view .wrap {
     margin: 0;
-}
-
-.arm-public-view h1 {
-    margin-bottom: 30px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
 }

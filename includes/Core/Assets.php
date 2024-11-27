@@ -2,24 +2,25 @@
 namespace ApplianceRepairManager\Core;
 
 class Assets {
+    private $debug;
+
     public function __construct() {
+        $this->debug = Debug::getInstance();
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_public_assets']);
+        add_action('admin_footer', [$this, 'print_debug_info']);
     }
 
     public function enqueue_admin_assets($hook) {
-        // Only load on plugin pages
         if (strpos($hook, 'arm-') === false && strpos($hook, 'appliance-repair-manager') === false) {
             return;
         }
 
-        // Get plugin base URL correctly
-        $plugin_url = plugins_url('', dirname(dirname(__FILE__)));
+        $this->debug->log('Enqueuing admin assets', ['hook' => $hook]);
 
-        // Enqueue jQuery first
         wp_enqueue_script('jquery');
 
-        // Enqueue Select2
+        // Select2
         wp_enqueue_style(
             'select2',
             'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
@@ -34,35 +35,39 @@ class Assets {
             true
         );
 
-        // Enqueue Modal Manager CSS
+        // Modal Manager CSS
+        $modal_css_url = $this->debug->getAssetUrl('assets/css/modal-manager.css');
         wp_enqueue_style(
             'arm-modal-styles',
-            $plugin_url . '/assets/css/modal-manager.css',
+            $modal_css_url,
             [],
             ARM_VERSION
         );
 
-        // Enqueue Admin CSS
+        // Admin CSS
+        $admin_css_url = $this->debug->getAssetUrl('assets/css/admin.css');
         wp_enqueue_style(
             'arm-admin-styles',
-            $plugin_url . '/assets/css/admin.css',
+            $admin_css_url,
             ['arm-modal-styles'],
             ARM_VERSION
         );
 
-        // Enqueue Modal Manager JS
+        // Modal Manager JS
+        $modal_js_url = $this->debug->getAssetUrl('assets/js/modal-manager.js');
         wp_enqueue_script(
             'arm-modal-manager',
-            $plugin_url . '/assets/js/modal-manager.js',
+            $modal_js_url,
             ['jquery'],
             ARM_VERSION,
             true
         );
 
-        // Enqueue Admin JS
+        // Admin JS
+        $admin_js_url = $this->debug->getAssetUrl('assets/js/admin.js');
         wp_enqueue_script(
             'arm-admin-scripts',
-            $plugin_url . '/assets/js/admin.js',
+            $admin_js_url,
             ['jquery', 'select2', 'arm-modal-manager'],
             ARM_VERSION,
             true
@@ -72,11 +77,7 @@ class Assets {
         wp_localize_script('arm-modal-manager', 'armAjax', [
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('arm_ajax_nonce'),
-            'debug' => [
-                'pluginUrl' => $plugin_url,
-                'adminUrl' => admin_url(),
-                'ajaxUrl' => admin_url('admin-ajax.php')
-            ]
+            'debug' => $this->debug->getDebugInfo()
         ]);
 
         wp_localize_script('arm-admin-scripts', 'armL10n', [
@@ -90,8 +91,11 @@ class Assets {
             'modalError' => __('Error processing modal.', 'appliance-repair-manager'),
             'generalError' => __('An error has occurred.', 'appliance-repair-manager'),
             'errorLoadingAppliances' => __('Error loading appliances.', 'appliance-repair-manager'),
-            'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager')
+            'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager'),
+            'assetLoadError' => __('Error loading required assets.', 'appliance-repair-manager')
         ]);
+
+        $this->debug->checkModalStructure();
     }
 
     public function enqueue_public_assets() {
@@ -99,50 +103,54 @@ class Assets {
             return;
         }
 
-        $plugin_url = plugins_url('', dirname(dirname(__FILE__)));
+        $this->debug->log('Enqueuing public assets');
 
-        // Enqueue jQuery first
         wp_enqueue_script('jquery');
 
-        // Enqueue Modal Manager CSS
+        // Modal Manager CSS
         wp_enqueue_style(
             'arm-modal-styles',
-            $plugin_url . '/assets/css/modal-manager.css',
+            $this->debug->getAssetUrl('assets/css/modal-manager.css'),
             [],
             ARM_VERSION
         );
 
-        // Enqueue public styles (reusing admin styles for now)
+        // Public styles
         wp_enqueue_style(
             'arm-public-styles',
-            $plugin_url . '/assets/css/admin.css',
+            $this->debug->getAssetUrl('assets/css/admin.css'),
             ['arm-modal-styles'],
             ARM_VERSION
         );
 
-        // Enqueue Modal Manager JS
+        // Modal Manager JS
         wp_enqueue_script(
             'arm-modal-manager',
-            $plugin_url . '/assets/js/modal-manager.js',
+            $this->debug->getAssetUrl('assets/js/modal-manager.js'),
             ['jquery'],
             ARM_VERSION,
             true
         );
 
-        // Enqueue public scripts (reusing admin scripts for now)
+        // Public scripts
         wp_enqueue_script(
             'arm-public-scripts',
-            $plugin_url . '/assets/js/admin.js',
+            $this->debug->getAssetUrl('assets/js/admin.js'),
             ['jquery', 'arm-modal-manager'],
             ARM_VERSION,
             true
         );
 
-        // Localize scripts for public pages
         wp_localize_script('arm-modal-manager', 'armAjax', [
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('arm_ajax_nonce'),
-            'pluginUrl' => $plugin_url
+            'debug' => $this->debug->getDebugInfo()
         ]);
+    }
+
+    public function print_debug_info() {
+        if (WP_DEBUG && current_user_can('manage_options')) {
+            echo '<script>console.log("ARM Debug Info:", ' . json_encode($this->debug->getDebugInfo()) . ');</script>';
+        }
     }
 }

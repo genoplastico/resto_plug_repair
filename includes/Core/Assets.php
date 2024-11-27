@@ -10,12 +10,11 @@ class Assets {
 
     public function debug_asset_urls() {
         if (defined('WP_DEBUG') && WP_DEBUG) {
+            $plugin_url = plugins_url('', ARM_PLUGIN_FILE);
             echo "<!-- ARM Asset URLs Debug:\n";
-            echo "Plugin File: " . ARM_PLUGIN_FILE . "\n";
-            echo "Plugin Dir: " . ARM_PLUGIN_DIR . "\n";
-            echo "Plugin URL: " . ARM_PLUGIN_URL . "\n";
-            echo "Admin CSS: " . ARM_PLUGIN_URL . "assets/css/admin.css\n";
-            echo "Admin JS: " . ARM_PLUGIN_URL . "assets/js/admin.js\n";
+            echo "Plugin URL Base: " . $plugin_url . "\n";
+            echo "Admin CSS: " . $plugin_url . "/assets/css/admin.css\n";
+            echo "Admin JS: " . $plugin_url . "/assets/js/admin.js\n";
             echo "-->\n";
         }
     }
@@ -26,6 +25,9 @@ class Assets {
             return;
         }
 
+        // Get plugin base URL
+        $plugin_url = plugins_url('', ARM_PLUGIN_FILE);
+
         // Enqueue Select2
         wp_enqueue_style(
             'select2',
@@ -33,6 +35,11 @@ class Assets {
             [],
             '4.1.0-rc.0'
         );
+
+        // Enqueue jQuery first
+        wp_enqueue_script('jquery');
+
+        // Enqueue Select2
         wp_enqueue_script(
             'select2',
             'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -41,13 +48,10 @@ class Assets {
             true
         );
 
-        // Enqueue jQuery primero
-        wp_enqueue_script('jquery');
-
         // Enqueue plugin styles
         wp_enqueue_style(
             'arm-admin-styles',
-            ARM_PLUGIN_URL . 'assets/css/admin.css',
+            $plugin_url . '/assets/css/admin.css',
             [],
             ARM_VERSION
         );
@@ -55,7 +59,7 @@ class Assets {
         // Enqueue admin scripts
         wp_enqueue_script(
             'arm-admin-scripts',
-            ARM_PLUGIN_URL . 'assets/js/admin.js',
+            $plugin_url . '/assets/js/admin.js',
             ['jquery', 'select2'],
             ARM_VERSION,
             true
@@ -63,19 +67,27 @@ class Assets {
 
         // Localize script
         wp_localize_script('arm-admin-scripts', 'armL10n', [
-            'confirmStatusChange' => __('Are you sure you want to change the status?', 'appliance-repair-manager'),
-            'fillRequiredFields' => __('Please fill in all required fields.', 'appliance-repair-manager'),
-            'errorAddingNote' => __('Error adding note.', 'appliance-repair-manager'),
-            'publicUrlCopied' => __('Public URL has been copied to clipboard.', 'appliance-repair-manager'),
-            'selectClient' => __('Select Client', 'appliance-repair-manager'),
-            'selectAppliance' => __('Select Appliance', 'appliance-repair-manager'),
-            'errorLoadingHistory' => __('Error loading appliance history.', 'appliance-repair-manager'),
-            'modalError' => __('Error al procesar el modal.', 'appliance-repair-manager'),
-            'generalError' => __('Ha ocurrido un error.', 'appliance-repair-manager'),
-            'errorLoadingAppliances' => __('Error al cargar los electrodomésticos.', 'appliance-repair-manager'),
-            'errorLoadingRepairDetails' => __('Error al cargar los detalles de la reparación.', 'appliance-repair-manager'),
             'ajaxurl' => admin_url('admin-ajax.php'),
-            'pluginUrl' => ARM_PLUGIN_URL
+            'nonce' => wp_create_nonce('arm_ajax_nonce'),
+            'pluginUrl' => $plugin_url,
+            'debug' => [
+                'pluginUrl' => $plugin_url,
+                'adminUrl' => admin_url(),
+                'ajaxUrl' => admin_url('admin-ajax.php')
+            ],
+            'i18n' => [
+                'confirmStatusChange' => __('Are you sure you want to change the status?', 'appliance-repair-manager'),
+                'fillRequiredFields' => __('Please fill in all required fields.', 'appliance-repair-manager'),
+                'errorAddingNote' => __('Error adding note.', 'appliance-repair-manager'),
+                'publicUrlCopied' => __('Public URL has been copied to clipboard.', 'appliance-repair-manager'),
+                'selectClient' => __('Select Client', 'appliance-repair-manager'),
+                'selectAppliance' => __('Select Appliance', 'appliance-repair-manager'),
+                'errorLoadingHistory' => __('Error loading appliance history.', 'appliance-repair-manager'),
+                'modalError' => __('Error processing modal.', 'appliance-repair-manager'),
+                'generalError' => __('An error has occurred.', 'appliance-repair-manager'),
+                'errorLoadingAppliances' => __('Error loading appliances.', 'appliance-repair-manager'),
+                'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager')
+            ]
         ]);
     }
 
@@ -85,13 +97,15 @@ class Assets {
             return;
         }
 
-        // Enqueue jQuery primero
+        $plugin_url = plugins_url('', ARM_PLUGIN_FILE);
+
+        // Enqueue jQuery first
         wp_enqueue_script('jquery');
 
         // Enqueue plugin styles
         wp_enqueue_style(
             'arm-public-styles',
-            ARM_PLUGIN_URL . 'assets/css/admin.css',
+            $plugin_url . '/assets/css/admin.css',
             [],
             ARM_VERSION
         );
@@ -99,7 +113,7 @@ class Assets {
         // Enqueue admin scripts
         wp_enqueue_script(
             'arm-admin-scripts',
-            ARM_PLUGIN_URL . 'assets/js/admin.js',
+            $plugin_url . '/assets/js/admin.js',
             ['jquery'],
             ARM_VERSION,
             true
@@ -109,7 +123,7 @@ class Assets {
         wp_localize_script('arm-admin-scripts', 'armL10n', [
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('arm_ajax_nonce'),
-            'pluginUrl' => ARM_PLUGIN_URL
+            'pluginUrl' => $plugin_url
         ]);
     }
 }

@@ -65,7 +65,7 @@
     color: #2271b1;
 }
 
-.arm-status-in-progress {
+.arm-status-in_progress {
     background: #fcf9e8;
     color: #996800;
 }
@@ -254,16 +254,28 @@
     content: '';
     position: absolute;
     left: -26px;
-    top: -8px; /* Ajustado de 0px a -4px para mover el punto hacia arriba */
+    top: -8px;
     width: 10px;
     height: 10px;
     border-radius: 50%;
     background: #2271b1;
 }
 
-/* Error state for form fields */
-.arm-error {
-    border-color: #dc3232 !important;
+/* Dashboard specific styles */
+.arm-dashboard-wrapper {
+    margin: 20px 0;
+}
+
+.arm-dashboard-header {
+    margin-bottom: 30px;
+}
+
+.arm-dashboard-content {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
 /* Responsive Tables */
@@ -298,21 +310,4 @@
     .arm-repair-timeline {
         padding-left: 0;
     }
-}
-
-/* Public View Styles */
-.arm-public-view {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.arm-public-view .wrap {
-    margin: 0;
-}
-
-.arm-public-view h1 {
-    margin-bottom: 30px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
 }

@@ -52,51 +52,7 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Agregar nota vía AJAX
-    $(document).on('submit', '.arm-note-form', function(e) {
-        e.preventDefault();
-        var form = $(this);
-        var noteInput = form.find('textarea[name="note"]');
-        var notesList = form.closest('.arm-detail-section').find('.arm-notes-list');
-
-        $.ajax({
-            url: ajaxurl,
-            type: 'POST',
-            data: {
-                action: 'arm_add_note_ajax',
-                repair_id: form.find('input[name="repair_id"]').val(),
-                note: noteInput.val(),
-                nonce: $('#arm_ajax_nonce').val()
-            },
-            success: function(response) {
-                if (response.success) {
-                    // Crear el HTML para la nueva nota
-                    var noteHtml = '<div class="arm-note">' + response.data.note + '</div>';
-                    
-                    // Agregar la nota al listado
-                    notesList.append(noteHtml);
-                    noteInput.val('');
-                    
-                    // Scroll al final de la lista de notas
-                    notesList.scrollTop(notesList[0].scrollHeight);
-                    
-                    // Actualizar también la lista de notas en la tabla principal si existe
-                    var repairId = form.find('input[name="repair_id"]').val();
-                    var mainNotesList = $('.repair-row-' + repairId + ' .arm-notes-list');
-                    if (mainNotesList.length) {
-                        mainNotesList.append(noteHtml);
-                    }
-                } else {
-                    alert(response.data.message || armL10n.errorAddingNote);
-                }
-            },
-            error: function() {
-                alert(armL10n.errorAddingNote);
-            }
-        });
-    });
-
-    // Mostrar detalles de reparación
+    // Ver detalles de reparación
     $(document).on('click', '.view-repair-details', function(e) {
         e.preventDefault();
         var repairId = $(this).data('repair-id');
@@ -118,7 +74,7 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Mostrar historial de aparato
+    // Ver historial de aparato
     $(document).on('click', '.view-appliance-history', function(e) {
         e.preventDefault();
         var applianceId = $(this).data('appliance-id');
@@ -208,5 +164,21 @@ jQuery(document).ready(function($) {
             e.preventDefault();
             alert(armL10n.fillRequiredFields);
         }
+    });
+
+    // Copiar URL pública al portapapeles
+    $('.copy-public-url').click(function() {
+        var url = $(this).data('url');
+        navigator.clipboard.writeText(url).then(function() {
+            alert(armL10n.publicUrlCopied);
+        }).catch(function() {
+            // Fallback para navegadores que no soportan clipboard API
+            var temp = $("<input>");
+            $("body").append(temp);
+            temp.val(url).select();
+            document.execCommand("copy");
+            temp.remove();
+            alert(armL10n.publicUrlCopied);
+        });
     });
 });

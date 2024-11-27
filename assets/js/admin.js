@@ -73,7 +73,7 @@ jQuery(document).ready(function($) {
                     // Crear el HTML para la nueva nota
                     var noteHtml = '<div class="arm-note">' + response.data.note + '</div>';
                     
-                    // Agregar la nota al listado
+                    // Agregar la nota al inicio del listado
                     notesList.prepend(noteHtml);
                     noteInput.val('');
                     
@@ -111,7 +111,7 @@ jQuery(document).ready(function($) {
             },
             success: function(response) {
                 if (response.success) {
-                    $('#repair-details-content').html(response.data.html);
+                    $('#repair-details-modal .arm-modal-content').html(response.data.html);
                     $('#repair-details-modal').fadeIn(300);
                 }
             }
@@ -133,7 +133,7 @@ jQuery(document).ready(function($) {
             },
             success: function(response) {
                 if (response.success) {
-                    $('#appliance-history-content').html(response.data.html);
+                    $('#appliance-history-modal .arm-modal-content').html(response.data.html);
                     $('#appliance-history-modal').fadeIn(300);
                 }
             }

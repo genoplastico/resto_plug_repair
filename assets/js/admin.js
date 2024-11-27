@@ -91,8 +91,7 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 armDebug('Repair details response', { response: response });
                 if (response.success) {
-                    $('#repair-details-modal .arm-modal-content').html(response.data.html);
-                    $('#repair-details-modal').fadeIn(300);
+                    $('#repair-details-modal').html(response.data.html).fadeIn(300);
                 }
             },
             error: function(xhr, status, error) {
@@ -119,8 +118,7 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 armDebug('Appliance history response', { response: response });
                 if (response.success) {
-                    $('#appliance-history-modal .arm-modal-content').html(response.data.html);
-                    $('#appliance-history-modal').fadeIn(300);
+                    $('#appliance-history-modal').html(response.data.html).fadeIn(300);
                 }
             },
             error: function(xhr, status, error) {

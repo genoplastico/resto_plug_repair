@@ -9,6 +9,17 @@ class Assets {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_public_assets']);
         add_action('admin_footer', [$this, 'print_debug_info']);
+        
+        // Remove version query string from assets
+        add_filter('style_loader_src', [$this, 'remove_version_query'], 999);
+        add_filter('script_loader_src', [$this, 'remove_version_query'], 999);
+    }
+
+    public function remove_version_query($src) {
+        if (strpos($src, 'ver=')) {
+            $src = remove_query_arg('ver', $src);
+        }
+        return $src;
     }
 
     public function enqueue_admin_assets($hook) {
@@ -23,24 +34,20 @@ class Assets {
         // Select2
         wp_enqueue_style(
             'select2',
-            'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
-            [],
-            '4.1.0-rc.0'
+            'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css'
         );
         wp_enqueue_script(
             'select2',
             'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
             ['jquery'],
-            '4.1.0-rc.0',
+            null,
             true
         );
 
         // Admin CSS
         wp_enqueue_style(
             'arm-admin-styles',
-            ARM_PLUGIN_URL . 'assets/css/admin.css',
-            [],
-            ARM_VERSION
+            ARM_PLUGIN_URL . 'assets/css/admin.css'
         );
 
         // Admin JS
@@ -48,7 +55,7 @@ class Assets {
             'arm-admin-scripts',
             ARM_PLUGIN_URL . 'assets/js/admin.js',
             ['jquery', 'select2'],
-            ARM_VERSION,
+            null,
             true
         );
 
@@ -85,9 +92,7 @@ class Assets {
         // Public styles
         wp_enqueue_style(
             'arm-public-styles',
-            ARM_PLUGIN_URL . 'assets/css/admin.css',
-            [],
-            ARM_VERSION
+            ARM_PLUGIN_URL . 'assets/css/admin.css'
         );
 
         // Public scripts
@@ -95,7 +100,7 @@ class Assets {
             'arm-public-scripts',
             ARM_PLUGIN_URL . 'assets/js/admin.js',
             ['jquery'],
-            ARM_VERSION,
+            null,
             true
         );
 

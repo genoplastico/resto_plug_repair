@@ -10,8 +10,10 @@ class Plugin {
     private $settings_manager;
     private $email_manager;
     private $assets;
+    private $debug;
 
     private function __construct() {
+        $this->debug = Debug::get_instance();
         $this->init_managers();
         $this->init_hooks();
     }
@@ -41,10 +43,26 @@ class Plugin {
         add_action('admin_menu', [$this, 'add_admin_menu']);
         add_filter('map_meta_cap', [$this, 'map_arm_capabilities'], 10, 4);
         add_action('template_redirect', [$this, 'handle_public_views']);
+        add_action('wp_ajax_arm_debug_log', [$this, 'handle_debug_log']);
     }
 
     public function init() {
         load_plugin_textdomain('appliance-repair-manager', false, dirname(plugin_basename(ARM_PLUGIN_FILE)) . '/languages');
+    }
+
+    public function handle_debug_log() {
+        check_ajax_referer('arm_ajax_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => 'Unauthorized']);
+            return;
+        }
+
+        $message = sanitize_text_field($_POST['message']);
+        $context = isset($_POST['context']) ? $_POST['context'] : [];
+
+        $this->debug->log($message, $context);
+        wp_send_json_success();
     }
 
     public function add_admin_menu() {

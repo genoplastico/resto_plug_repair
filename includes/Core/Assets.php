@@ -52,11 +52,8 @@ class Assets {
             'publicUrlCopied' => __('Public URL has been copied to clipboard.', 'appliance-repair-manager'),
             'selectClient' => __('Select Client', 'appliance-repair-manager'),
             'selectAppliance' => __('Select Appliance', 'appliance-repair-manager'),
-            'errorLoadingHistory' => __('Error loading appliance history.', 'appliance-repair-manager')
+            'errorLoadingHistory' => __('Error loading appliance history.', 'appliance-repair-manager'),
+            'debug' => defined('WP_DEBUG') && WP_DEBUG
         ]);
-
-        // Enqueue WordPress date picker
-        wp_enqueue_script('jquery-ui-datepicker');
-        wp_enqueue_style('jquery-ui-datepicker');
     }
 }

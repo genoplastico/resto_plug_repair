@@ -1,1 +1,0 @@
-https://cdn.jsdelivr.net/gh/genoplastico/resto_plug_repair@4f195845e46923f62ae2c5f81123952edd282cb4/languages/appliance-repair-manager-es_ES.mo

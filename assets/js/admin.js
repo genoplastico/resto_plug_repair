@@ -52,6 +52,50 @@ jQuery(document).ready(function($) {
         });
     });
 
+    // Agregar nota vía AJAX
+    $(document).on('submit', '.arm-note-form', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var noteInput = form.find('textarea[name="note"]');
+        var notesList = form.closest('.arm-detail-section').find('.arm-notes-list');
+
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'arm_add_note_ajax',
+                repair_id: form.find('input[name="repair_id"]').val(),
+                note: noteInput.val(),
+                nonce: $('#arm_ajax_nonce').val()
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Crear el HTML para la nueva nota
+                    var noteHtml = '<div class="arm-note">' + response.data.note + '</div>';
+                    
+                    // Agregar la nota al listado
+                    notesList.prepend(noteHtml);
+                    noteInput.val('');
+                    
+                    // Scroll al inicio de la lista de notas
+                    notesList.scrollTop(0);
+                    
+                    // Actualizar también la lista de notas en la tabla principal si existe
+                    var repairId = form.find('input[name="repair_id"]').val();
+                    var mainNotesList = $('.repair-row-' + repairId + ' .arm-notes-list');
+                    if (mainNotesList.length) {
+                        mainNotesList.prepend(noteHtml);
+                    }
+                } else {
+                    alert(response.data.message || armL10n.errorAddingNote);
+                }
+            },
+            error: function() {
+                alert(armL10n.errorAddingNote);
+            }
+        });
+    });
+
     // Ver detalles de reparación
     $(document).on('click', '.view-repair-details', function(e) {
         e.preventDefault();

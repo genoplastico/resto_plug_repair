@@ -278,6 +278,28 @@
     box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
+/* Error state for form fields */
+.arm-error {
+    border-color: #dc3232 !important;
+}
+
+/* Public View Styles */
+.arm-public-view {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.arm-public-view .wrap {
+    margin: 0;
+}
+
+.arm-public-view h1 {
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
 /* Responsive Tables */
 @media screen and (max-width: 782px) {
     .wp-list-table {

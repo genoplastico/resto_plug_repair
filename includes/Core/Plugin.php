@@ -9,6 +9,7 @@ class Plugin {
     private $user_manager;
     private $settings_manager;
     private $email_manager;
+    private $debug_manager;
     private $assets;
     private $debug;
 
@@ -33,6 +34,7 @@ class Plugin {
             $this->repair_manager = new \ApplianceRepairManager\Admin\RepairManager();
             $this->user_manager = new \ApplianceRepairManager\Admin\UserManager();
             $this->settings_manager = new \ApplianceRepairManager\Admin\SettingsManager();
+            $this->debug_manager = new \ApplianceRepairManager\Admin\DebugManager();
             $this->email_manager = new EmailManager();
             $this->assets = new Assets();
         }
@@ -44,6 +46,7 @@ class Plugin {
         add_filter('map_meta_cap', [$this, 'map_arm_capabilities'], 10, 4);
         add_action('template_redirect', [$this, 'handle_public_views']);
         add_action('wp_ajax_arm_debug_log', [$this, 'handle_debug_log']);
+        add_action('admin_post_arm_clear_debug_log', [$this, 'handle_clear_debug_log']);
     }
 
     public function init() {
@@ -63,6 +66,22 @@ class Plugin {
 
         $this->debug->log($message, $context);
         wp_send_json_success();
+    }
+
+    public function handle_clear_debug_log() {
+        check_admin_referer('arm_clear_debug_log');
+        
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to perform this action.'));
+        }
+
+        $this->debug->clear_logs();
+
+        wp_redirect(add_query_arg([
+            'page' => 'arm-debug',
+            'message' => 'log_cleared'
+        ], admin_url('admin.php')));
+        exit;
     }
 
     public function add_admin_menu() {

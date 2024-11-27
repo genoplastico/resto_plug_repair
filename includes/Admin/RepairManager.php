@@ -76,7 +76,7 @@ class RepairManager {
 
         global $wpdb;
         
-        // Actualizar estado de la reparación
+        // Actualizar estado de la reparaciï¿½n
         $wpdb->update(
             $wpdb->prefix . 'arm_repairs',
             ['status' => $status],
@@ -85,7 +85,7 @@ class RepairManager {
             ['%d']
         );
 
-        // Si la reparación está completada o entregada, actualizar el estado del aparato
+        // Si la reparaciï¿½n estï¿½ completada o entregada, actualizar el estado del aparato
         if (in_array($status, ['completed', 'delivered'])) {
             $wpdb->update(
                 $wpdb->prefix . 'arm_appliances',

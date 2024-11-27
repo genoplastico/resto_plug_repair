@@ -1,0 +1,55 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Appliance Repair Manager 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/appliance-repair-manager\n"
+"POT-Creation-Date: 2024-01-19 12:00:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: includes/Core/Plugin.php:31
+msgid "Appliances"
+msgstr ""
+
+#: includes/Core/Plugin.php:32
+msgid "Appliance"
+msgstr ""
+
+#: includes/Core/Plugin.php:43
+msgid "Repairs"
+msgstr ""
+
+#: includes/Core/Plugin.php:44
+msgid "Repair"
+msgstr ""
+
+#: includes/Core/Plugin.php:56
+msgid "Appliance Repair Manager"
+msgstr ""
+
+#: includes/Core/Plugin.php:57
+msgid "Repair Manager"
+msgstr ""
+
+#: includes/Core/Plugin.php:89
+msgid "Technician"
+msgstr ""
+
+#: includes/Core/Plugin.php:147
+msgid "Pending Review"
+msgstr ""
+
+#: includes/Core/Plugin.php:148
+msgid "In Repair"
+msgstr ""
+
+#: includes/Core/Plugin.php:149
+msgid "Repaired"
+msgstr ""
+
+#: includes/Core/Plugin.php:150
+msgid "Delivered"
+msgstr ""

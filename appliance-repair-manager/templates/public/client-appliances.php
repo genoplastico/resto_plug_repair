@@ -85,7 +85,7 @@ wp_enqueue_style('arm-admin-styles', ARM_PLUGIN_URL . 'assets/css/admin.css', []
 
 <script>
 jQuery(document).ready(function($) {
-    // Manejar clic en el bot¨®n de ver historial
+    // Manejar clic en el botï¿½ï¿½n de ver historial
     $('.view-appliance-history').click(function(e) {
         e.preventDefault();
         var applianceId = $(this).data('appliance-id');
@@ -112,7 +112,7 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Cerrar modal al hacer clic en el bot¨®n de cerrar
+    // Cerrar modal al hacer clic en el botï¿½ï¿½n de cerrar
     $(document).on('click', '.arm-modal-close', function() {
         $(this).closest('.arm-modal').fadeOut(300);
     });

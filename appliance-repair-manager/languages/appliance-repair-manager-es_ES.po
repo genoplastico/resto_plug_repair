@@ -1,8 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Appliance Repair Manager 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/appliance-repair-"
-"manager\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/appliance-repair-manager\n"
 "POT-Creation-Date: 2024-01-19 12:00:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,105 +13,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: includes/Admin/ClientManager.php:123
-msgid "Clients Management"
-msgstr "Gestión de Clientes"
-
-#: includes/Admin/ClientManager.php:145
-msgid "Add New Client"
-msgstr "Agregar Nuevo Cliente"
-
-#: includes/Admin/ClientManager.php:167
-msgid "Name"
-msgstr "Nombre"
-
-#: includes/Admin/ClientManager.php:189
-msgid "Email"
-msgstr "Correo Electrónico"
-
-#: includes/Admin/ClientManager.php:211
-msgid "Phone"
-msgstr "Teléfono"
-
-#: includes/Admin/ClientManager.php:233
-msgid "Address"
-msgstr "Dirección"
-
-#: includes/Admin/ClientManager.php:255
-msgid "Add Client"
-msgstr "Agregar Cliente"
-
-#: includes/Admin/ClientManager.php:277
-msgid "Existing Clients"
-msgstr "Clientes Existentes"
-
-#: includes/Admin/ClientManager.php:299
-msgid "No clients found."
-msgstr "No se encontraron clientes."
-
-#: includes/Admin/ApplianceManager.php:123
-msgid "Appliances Management"
-msgstr "Gestión de Electrodomésticos"
-
-#: includes/Admin/ApplianceManager.php:145
-msgid "Add New Appliance"
-msgstr "Agregar Nuevo Electrodoméstico"
-
-#: includes/Admin/ApplianceManager.php:167
-msgid "Type"
-msgstr "Tipo"
-
-#: includes/Admin/ApplianceManager.php:189
-msgid "Brand"
-msgstr "Marca"
-
-#: includes/Admin/ApplianceManager.php:211
-msgid "Model"
-msgstr "Modelo"
-
-#: includes/Admin/ApplianceManager.php:233
-msgid "Serial Number"
-msgstr "Número de Serie"
-
-#: includes/Admin/ApplianceManager.php:255
-msgid "All Clients"
-msgstr "Todos los Clientes"
-
-#: includes/Admin/SettingsManager.php:123
-msgid "Appliance Repair Manager Settings"
-msgstr "Configuración del Gestor de Reparaciones"
-
-#: includes/Admin/SettingsManager.php:145
-msgid "Email Configuration"
-msgstr "Configuración de Correo"
-
-#: includes/Admin/SettingsManager.php:167
-msgid "Please install and configure the %sWP Mail SMTP%s plugin to ensure reliable email delivery."
-msgstr "Por favor instale y configure el plugin %sWP Mail SMTP%s para asegurar la entrega confiable de correos."
-
-#: includes/Admin/SettingsManager.php:189
-msgid "After installation:"
-msgstr "Después de la instalación:"
-
-#: includes/Admin/SettingsManager.php:211
-msgid "Go to WP Mail SMTP settings"
-msgstr "Ir a la configuración de WP Mail SMTP"
-
-#: includes/Admin/SettingsManager.php:233
-msgid "Choose Gmail mailer"
-msgstr "Elegir Gmail como servicio de correo"
-
-#: includes/Admin/SettingsManager.php:255
-msgid "Follow the setup wizard to configure Gmail authentication"
-msgstr "Siga el asistente de configuración para autenticar Gmail"
-
-#: includes/Admin/SettingsManager.php:277
-msgid "Email settings are managed through the %sWP Mail SMTP Settings page%s."
-msgstr "La configuración de correo se gestiona a través de la %spágina de configuración de WP Mail SMTP%s."
-
 #: includes/Core/Plugin.php:32
 msgid "Appliance"
-msgstr "Electrodoméstico"
+msgstr "Aparato"
 
 #: includes/Core/Plugin.php:56
 msgid "Appliance Repair Manager"
@@ -120,7 +23,7 @@ msgstr "Gestor de Reparaciones"
 
 #: includes/Core/Plugin.php:31
 msgid "Appliances"
-msgstr "Electrodomésticos"
+msgstr "Aparatos"
 
 #: includes/Core/Plugin.php:150
 msgid "Delivered"
@@ -164,7 +67,7 @@ msgstr "Seleccionar Cliente"
 
 #: includes/Admin/RepairManager.php:167
 msgid "Select Appliance"
-msgstr "Seleccionar Electrodoméstico"
+msgstr "Seleccionar Aparato"
 
 #: includes/Admin/RepairManager.php:189
 msgid "Assign Technician"
@@ -232,7 +135,7 @@ msgstr "Cliente agregado exitosamente."
 
 #: includes/Admin/RepairManager.php:541
 msgid "Appliance added successfully."
-msgstr "Electrodoméstico agregado exitosamente."
+msgstr "Aparato agregado exitosamente."
 
 #: includes/Admin/RepairManager.php:563
 msgid "Repair record added successfully."
@@ -264,11 +167,11 @@ msgstr "La URL pública ha sido copiada al portapapeles."
 
 #: includes/Admin/RepairManager.php:717
 msgid "Error loading appliance history."
-msgstr "Error al cargar el historial del electrodoméstico."
+msgstr "Error al cargar el historial del aparato."
 
 #: includes/Admin/RepairManager.php:739
 msgid "Appliance Information"
-msgstr "Información del Electrodoméstico"
+msgstr "Información del Aparato"
 
 #: includes/Admin/RepairManager.php:761
 msgid "Repair Information"
@@ -385,3 +288,31 @@ msgstr "Token de acceso inválido o expirado."
 #: includes/Admin/RepairManager.php:1377
 msgid "You do not have sufficient permissions to access this page."
 msgstr "No tiene permisos suficientes para acceder a esta página."
+
+#: includes/Admin/ApplianceManager.php:123
+msgid "Appliances Management"
+msgstr "Gestión de Aparatos"
+
+#: includes/Admin/ApplianceManager.php:145
+msgid "Add New Appliance"
+msgstr "Agregar Nuevo Aparato"
+
+#: includes/Admin/ApplianceManager.php:167
+msgid "Type"
+msgstr "Tipo"
+
+#: includes/Admin/ApplianceManager.php:189
+msgid "Brand"
+msgstr "Marca"
+
+#: includes/Admin/ApplianceManager.php:211
+msgid "Model"
+msgstr "Modelo"
+
+#: includes/Admin/ApplianceManager.php:233
+msgid "Serial Number"
+msgstr "Número de Serie"
+
+#: includes/Admin/ApplianceManager.php:255
+msgid "All Appliances"
+msgstr "Todos los Aparatos"

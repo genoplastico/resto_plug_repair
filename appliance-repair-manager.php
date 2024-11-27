@@ -55,3 +55,8 @@ function arm_init() {
     \ApplianceRepairManager\Core\Plugin::get_instance();
 }
 add_action('plugins_loaded', 'arm_init');
+
+// Add debug mode constant if not defined
+if (!defined('WP_DEBUG')) {
+    define('WP_DEBUG', true);
+}

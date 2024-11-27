@@ -53,7 +53,8 @@ class Assets {
             'selectClient' => __('Select Client', 'appliance-repair-manager'),
             'selectAppliance' => __('Select Appliance', 'appliance-repair-manager'),
             'errorLoadingHistory' => __('Error loading appliance history.', 'appliance-repair-manager'),
-            'debug' => defined('WP_DEBUG') && WP_DEBUG
+            'debug' => defined('WP_DEBUG') && WP_DEBUG,
+            'ajaxurl' => admin_url('admin-ajax.php')
         ]);
     }
 }

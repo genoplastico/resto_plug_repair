@@ -83,10 +83,6 @@ class Plugin {
             [$this, 'render_dashboard']
         );
 
-        // Remover el menú duplicado de reparaciones
-        remove_menu_page('arm-repairs');
-
-        // Agregar los submenús correctamente
         if ($this->client_manager) {
             add_submenu_page(
                 'appliance-repair-manager',
@@ -143,5 +139,118 @@ class Plugin {
         }
     }
 
-    // ... resto del código permanece igual ...
+    public function render_dashboard() {
+        if (!current_user_can('manage_options') && !current_user_can('edit_arm_repairs')) {
+            wp_die(__('You do not have sufficient permissions to access this page.', 'appliance-repair-manager'));
+        }
+        include ARM_PLUGIN_DIR . 'templates/admin/dashboard.php';
+    }
+
+    public function map_meta_cap($caps, $cap, $user_id, $args) {
+        switch ($cap) {
+            case 'edit_arm_repairs':
+                if (user_can($user_id, 'manage_options')) {
+                    return ['manage_options'];
+                }
+                return ['edit_arm_repairs'];
+            
+            case 'view_arm_repairs':
+                if (user_can($user_id, 'manage_options')) {
+                    return ['manage_options'];
+                }
+                return ['view_arm_repairs'];
+            
+            case 'manage_arm_settings':
+                return ['manage_options'];
+        }
+        return $caps;
+    }
+
+    public function handle_public_views() {
+        global $wp_query;
+        
+        if (!isset($_GET['arm_action'])) {
+            return;
+        }
+
+        $action = sanitize_text_field($_GET['arm_action']);
+        
+        $this->debug->log('Public view requested', [
+            'action' => $action,
+            'request_uri' => $_SERVER['REQUEST_URI'],
+            'query_string' => isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '',
+            'wp_query' => $wp_query->query_vars
+        ]);
+
+        if (in_array($action, ['view_client_appliances', 'view_appliance'])) {
+            $wp_query->is_404 = false;
+            $wp_query->is_page = true;
+            $wp_query->is_singular = true;
+            status_header(200);
+        }
+    }
+
+    public function load_plugin_template($template) {
+        global $wp_query;
+        
+        if (!isset($_GET['arm_action'])) {
+            return $template;
+        }
+
+        $action = sanitize_text_field($_GET['arm_action']);
+        
+        $this->debug->log('Template loading attempt', [
+            'action' => $action,
+            'current_template' => $template,
+            'wp_query' => $wp_query->query_vars
+        ]);
+        
+        switch ($action) {
+            case 'view_client_appliances':
+                $new_template = ARM_PLUGIN_DIR . 'templates/public/client-appliances.php';
+                break;
+            case 'view_appliance':
+                $new_template = ARM_PLUGIN_DIR . 'templates/public/appliance-view.php';
+                break;
+            default:
+                $this->debug->log('No matching template for action', ['action' => $action], 'warning');
+                return $template;
+        }
+
+        if (file_exists($new_template)) {
+            $this->debug->log('Loading plugin template', [
+                'template' => $new_template,
+                'exists' => true
+            ]);
+            return $new_template;
+        }
+
+        $this->debug->log('Template file not found', [
+            'template' => $new_template
+        ], 'error');
+
+        return $template;
+    }
+
+    public function add_rewrite_rules() {
+        add_rewrite_rule(
+            'repair/client/([^/]+)/?$',
+            'index.php?arm_action=view_client_appliances&client_id=$matches[1]',
+            'top'
+        );
+        add_rewrite_rule(
+            'repair/appliance/([^/]+)/?$',
+            'index.php?arm_action=view_appliance&appliance_id=$matches[1]',
+            'top'
+        );
+        flush_rewrite_rules();
+    }
+
+    public function add_query_vars($vars) {
+        $vars[] = 'arm_action';
+        $vars[] = 'client_id';
+        $vars[] = 'appliance_id';
+        $vars[] = 'token';
+        return $vars;
+    }
 }

@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 
 global $wpdb;
 
-// Verificar token de acceso
+// Verify access token
 $client_id = isset($_GET['client_id']) ? intval($_GET['client_id']) : 0;
 $token = isset($_GET['token']) ? sanitize_text_field($_GET['token']) : '';
 
@@ -17,11 +17,7 @@ if (!$client || wp_hash($client->id . $client->email . wp_salt()) !== $token) {
     wp_die(__('Invalid or expired access token.', 'appliance-repair-manager'));
 }
 
-// Remove theme styles that might conflict
-wp_dequeue_style('hello-elementor');
-wp_dequeue_style('hello-elementor-theme-style');
-
-get_header('blank'); // Use a blank header if available, or create one
+get_header();
 ?>
 
 <div class="arm-public-view">
@@ -81,7 +77,8 @@ get_header('blank'); // Use a blank header if available, or create one
                             )); ?></td>
                             <td>
                                 <button type="button" class="button button-small view-repair-details" 
-                                        data-repair-id="<?php echo esc_attr($repair->id); ?>">
+                                        data-repair-id="<?php echo esc_attr($repair->id); ?>"
+                                        data-token="<?php echo esc_attr($token); ?>">
                                     <?php _e('View Details', 'appliance-repair-manager'); ?>
                                 </button>
                             </td>
@@ -95,39 +92,11 @@ get_header('blank'); // Use a blank header if available, or create one
     </div>
 </div>
 
-<!-- Modal para detalles de reparación -->
+<!-- Modal for repair details -->
 <div id="repair-details-modal" class="arm-modal">
     <div id="repair-details-content" class="arm-modal-content"></div>
 </div>
 
 <?php wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce'); ?>
 
-<style>
-/* Override any theme styles that might interfere */
-.arm-public-view {
-    background: #fff;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 1200px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.arm-public-view .wrap {
-    margin: 0;
-    padding: 0;
-}
-
-.arm-public-view h1 {
-    margin: 0 0 20px;
-    padding: 0;
-    font-size: 24px;
-    line-height: 1.4;
-}
-
-/* Ensure modal appears above everything */
-.arm-modal {
-    z-index: 999999;
-}
-</style>
-
-<?php get_footer('blank'); // Use a blank footer if available, or create one ?>
+<?php get_footer(); ?>

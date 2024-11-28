@@ -9,11 +9,16 @@ jQuery(document).ready(function($) {
     // View repair details handler for public view
     $(document).on('click', '.view-repair-details', function(e) {
         e.preventDefault();
-        var repairId = $(this).data('repair-id');
+        var $button = $(this);
+        var repairId = $button.data('repair-id');
+        var token = $button.data('token');
         var $modal = $('#repair-details-modal');
         var $content = $('#repair-details-content');
         
-        logDebug('Opening public repair details', { repairId: repairId });
+        logDebug('Opening public repair details', { 
+            repairId: repairId,
+            hasToken: !!token
+        });
         
         $content.html('<div class="arm-loading">' + armPublicL10n.loading + '</div>');
         $modal.show();
@@ -24,16 +29,21 @@ jQuery(document).ready(function($) {
             data: {
                 action: 'arm_get_repair_details',
                 repair_id: repairId,
-                nonce: $('#arm_ajax_nonce').val(),
-                is_public: true
+                token: token,
+                is_public: true,
+                nonce: $('#arm_ajax_nonce').val()
             },
             success: function(response) {
-                logDebug('Public repair details loaded', { response: response });
+                logDebug('Public repair details response', { response: response });
                 
                 if (response.success && response.data.html) {
                     $content.html(response.data.html);
                 } else {
-                    $content.html('<div class="arm-error">' + armPublicL10n.errorLoadingRepairDetails + '</div>');
+                    var errorMessage = response.data && response.data.message 
+                        ? response.data.message 
+                        : armPublicL10n.errorLoadingRepairDetails;
+                    
+                    $content.html('<div class="arm-error">' + errorMessage + '</div>');
                     console.error('ARM Error:', response);
                 }
             },
@@ -47,5 +57,24 @@ jQuery(document).ready(function($) {
                 $content.html('<div class="arm-error">' + armPublicL10n.errorLoadingRepairDetails + '</div>');
             }
         });
+    });
+
+    // Close modal handler
+    $(document).on('click', '.arm-modal-close', function() {
+        $(this).closest('.arm-modal').hide();
+    });
+
+    // Close modal when clicking outside
+    $(document).on('click', '.arm-modal', function(e) {
+        if ($(e.target).hasClass('arm-modal')) {
+            $(this).hide();
+        }
+    });
+
+    // Close modal with ESC key
+    $(document).keyup(function(e) {
+        if (e.key === 'Escape') {
+            $('.arm-modal').hide();
+        }
     });
 });

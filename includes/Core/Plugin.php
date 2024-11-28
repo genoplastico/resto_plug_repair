@@ -25,14 +25,15 @@ class Plugin {
     }
 
     private function init_managers() {
+        $this->repair_manager = new \ApplianceRepairManager\Admin\RepairManager();
+        $this->assets = new Assets();
+        
         if (is_admin()) {
             $this->client_manager = new \ApplianceRepairManager\Admin\ClientManager();
             $this->appliance_manager = new \ApplianceRepairManager\Admin\ApplianceManager();
-            $this->repair_manager = new \ApplianceRepairManager\Admin\RepairManager();
             $this->user_manager = new \ApplianceRepairManager\Admin\UserManager();
             $this->settings_manager = new \ApplianceRepairManager\Admin\SettingsManager();
             $this->email_manager = new EmailManager();
-            $this->assets = new Assets();
             $this->system_check = new \ApplianceRepairManager\Admin\SystemCheck();
         }
     }
@@ -178,6 +179,8 @@ class Plugin {
             }
 
             if (file_exists($new_template)) {
+                // Force the template to be loaded
+                status_header(200);
                 return $new_template;
             }
         }

@@ -49,9 +49,8 @@ class Assets {
             return;
         }
 
+        $this->debug->log('Enqueuing public assets');
         $this->enqueue_common_assets();
-
-        wp_localize_script('arm-admin-scripts', 'armL10n', $this->get_common_translations());
     }
 
     private function enqueue_common_assets() {
@@ -96,6 +95,8 @@ class Assets {
             'nonce' => wp_create_nonce('arm_ajax_nonce'),
             'debug' => $this->debug->getDebugInfo()
         ]);
+
+        wp_localize_script('arm-admin-scripts', 'armL10n', $this->get_common_translations());
     }
 
     private function get_common_translations() {

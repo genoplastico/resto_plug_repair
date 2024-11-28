@@ -61,6 +61,6 @@ add_action('plugins_loaded', 'arm_load_textdomain');
 // Initialize plugin
 function arm_init() {
     // Initialize main plugin class
-    \ApplianceRepairManager\Core\Plugin::get_instance();
+    \ApplianceRepairManager\Core\Plugin::getInstance();
 }
 add_action('init', 'arm_init');

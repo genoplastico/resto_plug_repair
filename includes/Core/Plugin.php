@@ -21,6 +21,25 @@ class Plugin {
         $this->register_hooks();
     }
 
+    public static function getInstance() {
+        if (null === self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    private function init_managers() {
+        // Initialize all managers
+        $this->client_manager = new \ApplianceRepairManager\Admin\ClientManager();
+        $this->appliance_manager = new \ApplianceRepairManager\Admin\ApplianceManager();
+        $this->repair_manager = new \ApplianceRepairManager\Admin\RepairManager();
+        $this->user_manager = new \ApplianceRepairManager\Admin\UserManager();
+        $this->settings_manager = new \ApplianceRepairManager\Admin\SettingsManager();
+        $this->email_manager = new EmailManager();
+        $this->assets = new Assets();
+        $this->system_check = new \ApplianceRepairManager\Admin\SystemCheck();
+    }
+
     private function register_hooks() {
         $hooks = [
             ['init', 'init'],
@@ -39,5 +58,76 @@ class Plugin {
         }
     }
 
-    // ... resto de los métodos permanecen igual ...
+    public function init() {
+        // Initialize plugin functionality
+        do_action('arm_init');
+    }
+
+    public function add_admin_menu() {
+        add_menu_page(
+            __('Repair Manager', 'appliance-repair-manager'),
+            __('Repair Manager', 'appliance-repair-manager'),
+            'manage_options',
+            'appliance-repair-manager',
+            [$this, 'render_dashboard'],
+            'dashicons-admin-tools',
+            30
+        );
+
+        do_action('arm_admin_menu');
+    }
+
+    public function render_dashboard() {
+        include ARM_PLUGIN_DIR . 'templates/admin/dashboard.php';
+    }
+
+    public function map_meta_cap($caps, $cap, $user_id, $args) {
+        if ('edit_arm_repairs' === $cap) {
+            $caps = ['edit_arm_repairs'];
+        }
+        return $caps;
+    }
+
+    public function handle_public_views() {
+        if (!isset($_GET['arm_action'])) {
+            return;
+        }
+
+        $action = sanitize_text_field($_GET['arm_action']);
+        switch ($action) {
+            case 'view_appliance':
+                include ARM_PLUGIN_DIR . 'templates/public/appliance-view.php';
+                exit;
+            case 'view_client_appliances':
+                include ARM_PLUGIN_DIR . 'templates/public/client-appliances.php';
+                exit;
+        }
+    }
+
+    public function load_plugin_template($template) {
+        if (isset($_GET['arm_action'])) {
+            return ARM_PLUGIN_DIR . 'templates/public/blank.php';
+        }
+        return $template;
+    }
+
+    public function add_rewrite_rules() {
+        add_rewrite_rule(
+            'repair/([^/]+)/?$',
+            'index.php?arm_action=view_repair&repair_id=$matches[1]',
+            'top'
+        );
+    }
+
+    public function add_query_vars($vars) {
+        $vars[] = 'arm_action';
+        $vars[] = 'repair_id';
+        return $vars;
+    }
+
+    // Prevent cloning of the instance
+    private function __clone() {}
+
+    // Prevent unserializing of the instance
+    private function __wakeup() {}
 }

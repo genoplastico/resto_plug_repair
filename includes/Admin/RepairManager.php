@@ -4,84 +4,46 @@ namespace ApplianceRepairManager\Admin;
 use ApplianceRepairManager\Core\Notes\NotesManager;
 use ApplianceRepairManager\Core\Status\RepairStatusManager;
 use ApplianceRepairManager\Core\Debug\Logger;
+use ApplianceRepairManager\Core\HookManager;
 
 class RepairManager {
     private $notes_manager;
     private $status_manager;
     private $logger;
+    private $hook_manager;
 
     public function __construct() {
         $this->notes_manager = NotesManager::getInstance();
         $this->status_manager = RepairStatusManager::getInstance();
         $this->logger = Logger::getInstance();
+        $this->hook_manager = HookManager::getInstance();
         
-        add_action('admin_menu', [$this, 'add_repairs_menu']);
-        add_action('wp_ajax_arm_get_client_appliances', [$this, 'get_client_appliances']);
-        add_action('admin_post_arm_add_repair', [$this, 'handle_add_repair']);
-        add_action('admin_post_arm_update_repair_status', [$this, 'handle_update_repair_status']);
-        add_action('admin_post_arm_assign_technician', [$this, 'handle_assign_technician']);
-        add_action('wp_ajax_arm_add_note', [$this, 'handle_add_note']);
-        add_action('wp_ajax_arm_get_repair_details', [$this, 'get_repair_details']);
-        add_action('wp_ajax_nopriv_arm_get_repair_details', [$this, 'get_repair_details']);
-        add_action('wp_ajax_arm_get_appliance_history', [$this, 'get_appliance_history']);
+        $this->register_hooks();
     }
 
-    // ... otros métodos permanecen igual ...
+    private function register_hooks() {
+        $hooks = [
+            ['wp_ajax_arm_get_client_appliances', 'get_client_appliances'],
+            ['admin_post_arm_add_repair', 'handle_add_repair'],
+            ['admin_post_arm_update_repair_status', 'handle_update_repair_status'],
+            ['admin_post_arm_assign_technician', 'handle_assign_technician'],
+            ['wp_ajax_arm_add_note', 'handle_add_note'],
+            ['wp_ajax_arm_get_repair_details', 'get_repair_details'],
+            ['wp_ajax_nopriv_arm_get_repair_details', 'get_repair_details'],
+            ['wp_ajax_arm_get_appliance_history', 'get_appliance_history']
+        ];
 
-    public function handle_add_note() {
-        try {
-            $this->logger->log('Iniciando handle_add_note', $_POST);
-
-            check_ajax_referer('arm_ajax_nonce', 'nonce');
-
-            if (!current_user_can('edit_arm_repairs')) {
-                throw new \Exception('Insufficient permissions');
-            }
-
-            if (empty($_POST['repair_id']) || empty($_POST['note'])) {
-                throw new \Exception('Missing required fields');
-            }
-
-            $repair_id = intval($_POST['repair_id']);
-            $note = sanitize_textarea_field($_POST['note']);
-            $is_public = isset($_POST['is_public']) ? true : false;
-
-            $this->logger->log('Agregando nota', [
-                'repair_id' => $repair_id,
-                'note_length' => strlen($note),
-                'is_public' => $is_public
-            ]);
-
-            if (!$this->notes_manager->add_note($repair_id, $note, $is_public)) {
-                throw new \Exception('Failed to add note');
-            }
-
-            $notes = $this->notes_manager->get_notes($repair_id);
-            
-            $this->logger->log('Nota agregada exitosamente', [
-                'repair_id' => $repair_id,
-                'notes_count' => count($notes)
-            ]);
-
-            ob_start();
-            include ARM_PLUGIN_DIR . 'templates/admin/partials/notes-list.php';
-            $html = ob_get_clean();
-            
-            wp_send_json_success([
-                'message' => __('Note added successfully.', 'appliance-repair-manager'),
-                'html' => $html
-            ]);
-
-        } catch (\Exception $e) {
-            $this->logger->log('Error en handle_add_note', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ], 'error');
-
-            wp_send_json_error([
-                'message' => __('Error adding note.', 'appliance-repair-manager'),
-                'debug' => WP_DEBUG ? $e->getMessage() : null
-            ]);
+        foreach ($hooks as $hook) {
+            $this->hook_manager->addAction($hook[0], $this, $hook[1]);
         }
     }
+
+    public function render_repairs_page() {
+        if (!current_user_can('edit_arm_repairs')) {
+            wp_die(__('You do not have sufficient permissions to access this page.', 'appliance-repair-manager'));
+        }
+        include ARM_PLUGIN_DIR . 'templates/admin/repairs.php';
+    }
+
+    // ... resto de los métodos permanecen igual ...
 }

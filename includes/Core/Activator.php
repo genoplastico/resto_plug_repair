@@ -51,7 +51,6 @@ class Activator {
             technician_id bigint(20) NOT NULL,
             diagnosis text NOT NULL,
             parts_used text,
-            notes longtext,
             cost decimal(10,2) NOT NULL DEFAULT 0.00,
             status varchar(20) NOT NULL DEFAULT 'pending',
             started_at datetime,
@@ -64,19 +63,25 @@ class Activator {
             KEY status (status)
         ) $charset_collate;";
 
+        // Repair Notes table
+        $sql_repair_notes = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_repair_notes (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            repair_id bigint(20) NOT NULL,
+            user_id bigint(20) NOT NULL,
+            note text NOT NULL,
+            is_public tinyint(1) NOT NULL DEFAULT 0,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY  (id),
+            KEY repair_id (repair_id),
+            KEY user_id (user_id),
+            KEY is_public (is_public)
+        ) $charset_collate;";
+
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_clients);
         dbDelta($sql_appliances);
         dbDelta($sql_repairs);
-
-        // Check if notes column exists and add it if it doesn't
-        $repair_table = $wpdb->prefix . 'arm_repairs';
-        $row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
-            WHERE table_name = '$repair_table' AND column_name = 'notes'");
-        
-        if(empty($row)) {
-            $wpdb->query("ALTER TABLE $repair_table ADD COLUMN notes longtext AFTER parts_used");
-        }
+        dbDelta($sql_repair_notes);
     }
 
     private static function setup_roles() {
@@ -97,10 +102,10 @@ class Activator {
     private static function setup_repair_statuses() {
         if (!get_option('arm_repair_statuses')) {
             $statuses = [
-                'pending' => __('Pending Review', 'appliance-repair-manager'),
-                'in_progress' => __('In Repair', 'appliance-repair-manager'),
-                'completed' => __('Repaired', 'appliance-repair-manager'),
-                'delivered' => __('Delivered', 'appliance-repair-manager'),
+                'pending' => __('Pendiente de Revisión', 'appliance-repair-manager'),
+                'in_progress' => __('En Reparación', 'appliance-repair-manager'),
+                'completed' => __('Reparado', 'appliance-repair-manager'),
+                'delivered' => __('Entregado', 'appliance-repair-manager'),
             ];
             update_option('arm_repair_statuses', $statuses);
         }

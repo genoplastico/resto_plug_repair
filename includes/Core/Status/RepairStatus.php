@@ -6,7 +6,7 @@ class RepairStatus {
     private $statuses = [];
 
     private function __construct() {
-        $this->initializeStatuses();
+        add_action('init', [$this, 'initializeStatuses']);
     }
 
     public static function getInstance() {
@@ -16,7 +16,7 @@ class RepairStatus {
         return self::$instance;
     }
 
-    private function initializeStatuses() {
+    public function initializeStatuses() {
         $this->statuses = [
             'pending' => __('Pending Review', 'appliance-repair-manager'),
             'in_progress' => __('In Repair', 'appliance-repair-manager'),
@@ -26,11 +26,15 @@ class RepairStatus {
     }
 
     public function getStatuses() {
+        if (empty($this->statuses)) {
+            $this->initializeStatuses();
+        }
         return $this->statuses;
     }
 
     public function getLabel($status) {
-        return isset($this->statuses[$status]) ? $this->statuses[$status] : ucfirst($status);
+        $statuses = $this->getStatuses();
+        return isset($statuses[$status]) ? $statuses[$status] : ucfirst($status);
     }
 
     public function getClass($status) {
@@ -38,6 +42,6 @@ class RepairStatus {
     }
 
     public function isValidStatus($status) {
-        return array_key_exists($status, $this->statuses);
+        return array_key_exists($status, $this->getStatuses());
     }
 }

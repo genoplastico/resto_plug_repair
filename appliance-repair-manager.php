@@ -54,10 +54,10 @@ register_activation_hook(__FILE__, function() {
 
 // Initialize plugin
 function arm_init() {
-    // Cargar traducciones
+    // Cargar traducciones antes de inicializar el plugin
     load_plugin_textdomain('appliance-repair-manager', false, dirname(plugin_basename(__FILE__)) . '/languages');
     
     // Initialize main plugin class
     \ApplianceRepairManager\Core\Plugin::get_instance();
 }
-add_action('plugins_loaded', 'arm_init');
+add_action('init', 'arm_init', 0);

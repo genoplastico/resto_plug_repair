@@ -1,0 +1,137 @@
+/* Public View Styles */
+.arm-public-view {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 4px;
+}
+
+.arm-public-view h1 {
+    margin: 0 0 20px;
+    padding: 0;
+    font-size: 24px;
+    line-height: 1.4;
+    color: #23282d;
+}
+
+/* Status Badges */
+.arm-status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.arm-status-pending {
+    background: #f0f6fc;
+    color: #2271b1;
+}
+
+.arm-status-in_progress {
+    background: #fcf9e8;
+    color: #996800;
+}
+
+.arm-status-completed {
+    background: #edfaef;
+    color: #008a20;
+}
+
+.arm-status-delivered {
+    background: #efefef;
+    color: #666;
+}
+
+/* Detail Sections */
+.arm-detail-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.arm-detail-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.arm-detail-section h3 {
+    margin: 0 0 15px;
+    padding: 0;
+    font-size: 18px;
+    color: #23282d;
+}
+
+/* Notes Section */
+.arm-notes-list {
+    margin-top: 20px;
+}
+
+.arm-note {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-left: 3px solid #ddd;
+    border-radius: 0 4px 4px 0;
+}
+
+.arm-note-public {
+    border-left-color: #2271b1;
+}
+
+.arm-note-header {
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #666;
+}
+
+.arm-note-author {
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.arm-note-date {
+    color: #888;
+}
+
+.arm-note-content {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+}
+
+/* Loading and Error States */
+.arm-loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.arm-error {
+    text-align: center;
+    padding: 20px;
+    color: #dc3232;
+    background: #fbeaea;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 782px) {
+    .arm-public-view {
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .arm-public-view h1 {
+        font-size: 20px;
+    }
+
+    .arm-detail-section h3 {
+        font-size: 16px;
+    }
+}

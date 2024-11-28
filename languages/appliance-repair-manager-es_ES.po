@@ -26,7 +26,10 @@ msgid "Clients"
 msgstr "Clientes"
 
 msgid "Repairs"
-msgstr "Reparaciones"
+msgstr "Órdenes de Trabajo"
+
+msgid "Repairs Management"
+msgstr "Gestión de Reparaciones"
 
 msgid "Settings"
 msgstr "Configuración"
@@ -50,7 +53,7 @@ msgid "Recent Repairs"
 msgstr "Reparaciones Recientes"
 
 msgid "Add New Repair Record"
-msgstr "Agregar Nueva Reparación"
+msgstr "Nueva Orden de Trabajo"
 
 msgid "Client"
 msgstr "Cliente"
@@ -93,54 +96,3 @@ msgstr "Notas"
 
 msgid "Created"
 msgstr "Creado"
-
-msgid "Client added successfully."
-msgstr "Cliente agregado exitosamente."
-
-msgid "Appliance added successfully."
-msgstr "Electrodoméstico agregado exitosamente."
-
-msgid "Repair record added successfully."
-msgstr "Registro de reparación agregado exitosamente."
-
-msgid "Status updated successfully."
-msgstr "Estado actualizado exitosamente."
-
-msgid "Note added successfully."
-msgstr "Nota agregada exitosamente."
-
-msgid "Are you sure you want to change the status?"
-msgstr "¿Está seguro de que desea cambiar el estado?"
-
-msgid "Please fill in all required fields."
-msgstr "Por favor complete todos los campos requeridos."
-
-msgid "Error adding note."
-msgstr "Error al agregar la nota."
-
-msgid "Public URL has been copied to clipboard."
-msgstr "La URL pública ha sido copiada al portapapeles."
-
-msgid "Select Client"
-msgstr "Seleccionar Cliente"
-
-msgid "Select Appliance"
-msgstr "Seleccionar Electrodoméstico"
-
-msgid "Error loading appliance history."
-msgstr "Error al cargar el historial del electrodoméstico."
-
-msgid "Error processing modal."
-msgstr "Error al procesar la ventana modal."
-
-msgid "An error has occurred."
-msgstr "Ha ocurrido un error."
-
-msgid "Error loading appliances."
-msgstr "Error al cargar los electrodomésticos."
-
-msgid "Error loading repair details."
-msgstr "Error al cargar los detalles de la reparación."
-
-msgid "Error loading required assets."
-msgstr "Error al cargar los recursos requeridos."

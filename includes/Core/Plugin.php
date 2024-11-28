@@ -61,29 +61,8 @@ class Plugin {
         load_plugin_textdomain('appliance-repair-manager', false, dirname(plugin_basename(ARM_PLUGIN_FILE)) . '/languages');
     }
 
-    public function add_rewrite_rules() {
-        add_rewrite_rule(
-            'repair/client/([^/]+)/?$',
-            'index.php?arm_action=view_client_appliances&client_id=$matches[1]',
-            'top'
-        );
-        add_rewrite_rule(
-            'repair/appliance/([^/]+)/?$',
-            'index.php?arm_action=view_appliance&appliance_id=$matches[1]',
-            'top'
-        );
-        flush_rewrite_rules();
-    }
-
-    public function add_query_vars($vars) {
-        $vars[] = 'arm_action';
-        $vars[] = 'client_id';
-        $vars[] = 'appliance_id';
-        $vars[] = 'token';
-        return $vars;
-    }
-
     public function add_admin_menu() {
+        // Menú principal
         add_menu_page(
             __('Repair Manager', 'appliance-repair-manager'),
             __('Repair Manager', 'appliance-repair-manager'),
@@ -94,6 +73,7 @@ class Plugin {
             30
         );
 
+        // Submenús
         add_submenu_page(
             'appliance-repair-manager',
             __('Dashboard', 'appliance-repair-manager'),
@@ -103,119 +83,65 @@ class Plugin {
             [$this, 'render_dashboard']
         );
 
-        // Let each manager add its own submenu items
+        // Remover el menú duplicado de reparaciones
+        remove_menu_page('arm-repairs');
+
+        // Agregar los submenús correctamente
         if ($this->client_manager) {
-            $this->client_manager->add_clients_menu();
+            add_submenu_page(
+                'appliance-repair-manager',
+                __('Clients', 'appliance-repair-manager'),
+                __('Clients', 'appliance-repair-manager'),
+                'manage_options',
+                'arm-clients',
+                [$this->client_manager, 'render_clients_page']
+            );
         }
+
         if ($this->appliance_manager) {
-            $this->appliance_manager->add_appliances_menu();
+            add_submenu_page(
+                'appliance-repair-manager',
+                __('Appliances', 'appliance-repair-manager'),
+                __('Appliances', 'appliance-repair-manager'),
+                'manage_options',
+                'arm-appliances',
+                [$this->appliance_manager, 'render_appliances_page']
+            );
         }
+
         if ($this->repair_manager) {
-            $this->repair_manager->add_repairs_menu();
+            add_submenu_page(
+                'appliance-repair-manager',
+                __('Repairs', 'appliance-repair-manager'),
+                __('Repairs', 'appliance-repair-manager'),
+                'manage_options',
+                'arm-repairs',
+                [$this->repair_manager, 'render_repairs_page']
+            );
         }
+
         if ($this->user_manager) {
-            $this->user_manager->add_users_menu();
+            add_submenu_page(
+                'appliance-repair-manager',
+                __('Technicians', 'appliance-repair-manager'),
+                __('Technicians', 'appliance-repair-manager'),
+                'manage_options',
+                'arm-technicians',
+                [$this->user_manager, 'render_technicians_page']
+            );
         }
+
         if ($this->settings_manager) {
-            $this->settings_manager->add_settings_menu();
+            add_submenu_page(
+                'appliance-repair-manager',
+                __('Settings', 'appliance-repair-manager'),
+                __('Settings', 'appliance-repair-manager'),
+                'manage_options',
+                'arm-settings',
+                [$this->settings_manager, 'render_settings_page']
+            );
         }
     }
 
-    public function render_dashboard() {
-        if (!current_user_can('manage_options') && !current_user_can('edit_arm_repairs')) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'appliance-repair-manager'));
-        }
-        include ARM_PLUGIN_DIR . 'templates/admin/dashboard.php';
-    }
-
-    public function map_meta_cap($caps, $cap, $user_id, $args) {
-        switch ($cap) {
-            case 'edit_arm_repairs':
-                $caps = ['edit_arm_repairs'];
-                break;
-            case 'view_arm_repairs':
-                $caps = ['view_arm_repairs'];
-                break;
-            case 'manage_arm_settings':
-                $caps = ['manage_options'];
-                break;
-        }
-        return $caps;
-    }
-
-    public function handle_public_views() {
-        global $wp_query;
-        
-        if (!isset($_GET['arm_action'])) {
-            return;
-        }
-
-        $action = sanitize_text_field($_GET['arm_action']);
-        
-        $this->debug->log('Public view requested', [
-            'action' => $action,
-            'request_uri' => $_SERVER['REQUEST_URI'],
-            'query_string' => isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '',
-            'wp_query' => $wp_query->query_vars
-        ]);
-
-        // Prevent 404 for our custom endpoints
-        if (in_array($action, ['view_client_appliances', 'view_appliance'])) {
-            $wp_query->is_404 = false;
-            $wp_query->is_page = true;
-            $wp_query->is_singular = true;
-            status_header(200);
-        }
-    }
-
-    public function load_plugin_template($template) {
-        global $wp_query;
-        
-        if (!isset($_GET['arm_action'])) {
-            return $template;
-        }
-
-        $action = sanitize_text_field($_GET['arm_action']);
-        
-        $this->debug->log('Template loading attempt', [
-            'action' => $action,
-            'current_template' => $template,
-            'wp_query' => $wp_query->query_vars
-        ]);
-        
-        switch ($action) {
-            case 'view_client_appliances':
-                $new_template = ARM_PLUGIN_DIR . 'templates/public/client-appliances.php';
-                break;
-            case 'view_appliance':
-                $new_template = ARM_PLUGIN_DIR . 'templates/public/appliance-view.php';
-                break;
-            default:
-                $this->debug->log('No matching template for action', ['action' => $action], 'warning');
-                return $template;
-        }
-
-        if (file_exists($new_template)) {
-            $this->debug->log('Loading plugin template', [
-                'template' => $new_template,
-                'exists' => true
-            ]);
-            return $new_template;
-        }
-
-        $this->debug->log('Template file not found', [
-            'template' => $new_template
-        ], 'error');
-
-        return $template;
-    }
-
-    public static function get_repair_statuses() {
-        return [
-            'pending' => __('Pending Review', 'appliance-repair-manager'),
-            'in_progress' => __('In Repair', 'appliance-repair-manager'),
-            'completed' => __('Repaired', 'appliance-repair-manager'),
-            'delivered' => __('Delivered', 'appliance-repair-manager'),
-        ];
-    }
+    // ... resto del código permanece igual ...
 }

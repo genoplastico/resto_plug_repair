@@ -269,3 +269,246 @@ msgstr "No tiene permisos para realizar esta acción"
 
 msgid "Access denied"
 msgstr "Acceso denegado"
+
+msgid "Active"
+msgstr "Activo"
+
+msgid "Inactive"
+msgstr "Inactivo"
+
+msgid "Created At"
+msgstr "Creado el"
+
+msgid "Updated At"
+msgstr "Actualizado el"
+
+msgid "Last Update"
+msgstr "Última actualización"
+
+msgid "View Details"
+msgstr "Ver detalles"
+
+msgid "Edit Details"
+msgstr "Editar detalles"
+
+msgid "Save Changes"
+msgstr "Guardar cambios"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Delete"
+msgstr "Eliminar"
+
+msgid "Search"
+msgstr "Buscar"
+
+msgid "Filter"
+msgstr "Filtrar"
+
+msgid "Reset Filters"
+msgstr "Restablecer filtros"
+
+msgid "No results found"
+msgstr "No se encontraron resultados"
+
+msgid "Loading..."
+msgstr "Cargando..."
+
+msgid "Please wait..."
+msgstr "Por favor espere..."
+
+msgid "Success!"
+msgstr "¡Éxito!"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Warning"
+msgstr "Advertencia"
+
+msgid "Information"
+msgstr "Información"
+
+msgid "Confirm"
+msgstr "Confirmar"
+
+msgid "Are you sure?"
+msgstr "¿Está seguro?"
+
+msgid "This action cannot be undone."
+msgstr "Esta acción no se puede deshacer."
+
+msgid "Yes, proceed"
+msgstr "Sí, continuar"
+
+msgid "No, cancel"
+msgstr "No, cancelar"
+
+msgid "Required field"
+msgstr "Campo requerido"
+
+msgid "Invalid format"
+msgstr "Formato inválido"
+
+msgid "Must be a valid email"
+msgstr "Debe ser un correo electrónico válido"
+
+msgid "Must be a valid phone number"
+msgstr "Debe ser un número de teléfono válido"
+
+msgid "Must be a number"
+msgstr "Debe ser un número"
+
+msgid "Print"
+msgstr "Imprimir"
+
+msgid "Export"
+msgstr "Exportar"
+
+msgid "Import"
+msgstr "Importar"
+
+msgid "Download"
+msgstr "Descargar"
+
+msgid "Upload"
+msgstr "Subir"
+
+msgid "Previous"
+msgstr "Anterior"
+
+msgid "Next"
+msgstr "Siguiente"
+
+msgid "First"
+msgstr "Primero"
+
+msgid "Last"
+msgstr "Último"
+
+msgid "Items per page"
+msgstr "Elementos por página"
+
+msgid "All"
+msgstr "Todos"
+
+msgid "None"
+msgstr "Ninguno"
+
+msgid "Select..."
+msgstr "Seleccionar..."
+
+msgid "Other"
+msgstr "Otro"
+
+msgid "Custom"
+msgstr "Personalizado"
+
+msgid "Default"
+msgstr "Predeterminado"
+
+msgid "Enabled"
+msgstr "Habilitado"
+
+msgid "Disabled"
+msgstr "Deshabilitado"
+
+msgid "Not available"
+msgstr "No disponible"
+
+msgid "More information"
+msgstr "Más información"
+
+msgid "Less information"
+msgstr "Menos información"
+
+msgid "Show more"
+msgstr "Mostrar más"
+
+msgid "Show less"
+msgstr "Mostrar menos"
+
+msgid "Expand"
+msgstr "Expandir"
+
+msgid "Collapse"
+msgstr "Colapsar"
+
+msgid "Open"
+msgstr "Abrir"
+
+msgid "Close"
+msgstr "Cerrar"
+
+msgid "Start"
+msgstr "Iniciar"
+
+msgid "End"
+msgstr "Finalizar"
+
+msgid "Duration"
+msgstr "Duración"
+
+msgid "Time"
+msgstr "Tiempo"
+
+msgid "Date"
+msgstr "Fecha"
+
+msgid "From"
+msgstr "Desde"
+
+msgid "To"
+msgstr "Hasta"
+
+msgid "Range"
+msgstr "Rango"
+
+msgid "Status changed successfully"
+msgstr "Estado cambiado exitosamente"
+
+msgid "Changes saved successfully"
+msgstr "Cambios guardados exitosamente"
+
+msgid "Operation completed successfully"
+msgstr "Operación completada exitosamente"
+
+msgid "An error occurred while processing your request"
+msgstr "Ocurrió un error al procesar su solicitud"
+
+msgid "Please try again later"
+msgstr "Por favor intente nuevamente más tarde"
+
+msgid "Session expired"
+msgstr "Sesión expirada"
+
+msgid "Please log in again"
+msgstr "Por favor inicie sesión nuevamente"
+
+msgid "Unauthorized access"
+msgstr "Acceso no autorizado"
+
+msgid "Permission denied"
+msgstr "Permiso denegado"
+
+msgid "Access restricted"
+msgstr "Acceso restringido"
+
+msgid "File not found"
+msgstr "Archivo no encontrado"
+
+msgid "Page not found"
+msgstr "Página no encontrada"
+
+msgid "Resource not available"
+msgstr "Recurso no disponible"
+
+msgid "Connection error"
+msgstr "Error de conexión"
+
+msgid "Network error"
+msgstr "Error de red"
+
+msgid "Server error"
+msgstr "Error del servidor"

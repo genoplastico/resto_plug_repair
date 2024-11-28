@@ -1,8 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Appliance Repair Manager 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/appliance-repair-"
-"manager\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/appliance-repair-manager\n"
 "POT-Creation-Date: 2024-01-19 12:00:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,46 +13,86 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: includes/Core/Plugin.php:32
-msgid "Appliance"
-msgstr "Electrodoméstico"
+msgid "Error loading required assets."
+msgstr "Error al cargar los recursos requeridos."
 
-#: includes/Core/Plugin.php:56
-msgid "Appliance Repair Manager"
-msgstr "Gestor de Reparaciones"
+msgid "Error processing modal."
+msgstr "Error al procesar la ventana modal."
 
-#: includes/Core/Plugin.php:31
-msgid "Appliances"
-msgstr "Electrodomésticos"
+msgid "An error has occurred."
+msgstr "Ha ocurrido un error."
 
-#: includes/Core/Plugin.php:150
-msgid "Delivered"
-msgstr "Entregado"
+msgid "Error loading appliances."
+msgstr "Error al cargar los electrodomésticos."
 
-#: includes/Core/Plugin.php:148
-msgid "In Repair"
-msgstr "En Reparación"
+msgid "Error loading repair details."
+msgstr "Error al cargar los detalles de la reparación."
 
-#: includes/Core/Plugin.php:147
-msgid "Pending Review"
-msgstr "Pendiente de Revisión"
+msgid "System Check Warning"
+msgstr "Advertencia de Verificación del Sistema"
 
-#: includes/Core/Plugin.php:44
-msgid "Repair"
-msgstr "Reparación"
+msgid "There are permission issues that may affect the plugin functionality."
+msgstr "Hay problemas de permisos que pueden afectar la funcionalidad del plugin."
 
-#: includes/Core/Plugin.php:57
-msgid "Repair Manager"
-msgstr "Gestor de Reparaciones"
+msgid "Click here to run a system check"
+msgstr "Haga clic aquí para ejecutar una verificación del sistema"
 
-#: includes/Core/Plugin.php:149
-msgid "Repaired"
-msgstr "Reparado"
+msgid "Insufficient permissions."
+msgstr "Permisos insuficientes."
 
-#: includes/Core/Plugin.php:43
-msgid "Repairs"
-msgstr "Reparaciones"
+msgid "Error checking system permissions."
+msgstr "Error al verificar los permisos del sistema."
 
-#: includes/Core/Plugin.php:89
-msgid "Technician"
-msgstr "Técnico"
+msgid "Permissions have been automatically fixed."
+msgstr "Los permisos se han corregido automáticamente."
+
+msgid "Permission issues found and could not be automatically fixed. Please check the console for details."
+msgstr "Se encontraron problemas de permisos y no se pudieron corregir automáticamente. Por favor revise la consola para más detalles."
+
+msgid "All system checks passed successfully."
+msgstr "Todas las verificaciones del sistema pasaron exitosamente."
+
+msgid "Add New Repair Record"
+msgstr "Agregar Nueva Reparación"
+
+msgid "Select Client First"
+msgstr "Seleccione Primero un Cliente"
+
+msgid "View Details"
+msgstr "Ver Detalles"
+
+msgid "Copy Public URL"
+msgstr "Copiar URL Pública"
+
+msgid "Add Note"
+msgstr "Agregar Nota"
+
+msgid "Add a note..."
+msgstr "Agregar una nota..."
+
+msgid "Close"
+msgstr "Cerrar"
+
+msgid "Recent Repairs"
+msgstr "Reparaciones Recientes"
+
+msgid "No recent repairs found."
+msgstr "No se encontraron reparaciones recientes."
+
+msgid "Repair Details"
+msgstr "Detalles de la Reparación"
+
+msgid "Client Information"
+msgstr "Información del Cliente"
+
+msgid "Appliance Information"
+msgstr "Información del Electrodoméstico"
+
+msgid "Repair Information"
+msgstr "Información de la Reparación"
+
+msgid "Repair Notes"
+msgstr "Notas de la Reparación"
+
+msgid "No notes available."
+msgstr "No hay notas disponibles."

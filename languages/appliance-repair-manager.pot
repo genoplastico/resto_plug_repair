@@ -10,6 +10,14 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
+#: includes/Core/Plugin.php:56
+msgid "Repair Manager"
+msgstr ""
+
+#: includes/Core/Plugin.php:65
+msgid "Dashboard"
+msgstr ""
+
 #: includes/Admin/ApplianceManager.php:31
 msgid "Appliances Management"
 msgstr ""
@@ -28,6 +36,142 @@ msgstr ""
 
 #: includes/Admin/UserManager.php:31
 msgid "Technicians Management"
+msgstr ""
+
+#: templates/admin/dashboard.php:15
+msgid "Pending Repairs"
+msgstr ""
+
+#: templates/admin/dashboard.php:21
+msgid "In Progress"
+msgstr ""
+
+#: templates/admin/dashboard.php:27
+msgid "Completed"
+msgstr ""
+
+#: templates/admin/dashboard.php:33
+msgid "Delivered"
+msgstr ""
+
+#: templates/admin/dashboard.php:41
+msgid "Recent Repairs"
+msgstr ""
+
+#: templates/admin/repairs.php:15
+msgid "Add New Repair Record"
+msgstr ""
+
+#: templates/admin/repairs.php:45
+msgid "Client"
+msgstr ""
+
+#: templates/admin/repairs.php:60
+msgid "Appliance"
+msgstr ""
+
+#: templates/admin/repairs.php:75
+msgid "Assign Technician"
+msgstr ""
+
+#: templates/admin/repairs.php:90
+msgid "Diagnosis"
+msgstr ""
+
+#: templates/admin/repairs.php:98
+msgid "Parts Used"
+msgstr ""
+
+#: templates/admin/repairs.php:106
+msgid "Cost"
+msgstr ""
+
+#: templates/admin/repairs.php:116
+msgid "Add Repair"
+msgstr ""
+
+#: templates/admin/repairs.php:124
+msgid "Repair History"
+msgstr ""
+
+#: templates/admin/clients.php:15
+msgid "Add New Client"
+msgstr ""
+
+#: templates/admin/clients.php:30
+msgid "Name"
+msgstr ""
+
+#: templates/admin/clients.php:38
+msgid "Email"
+msgstr ""
+
+#: templates/admin/clients.php:46
+msgid "Phone"
+msgstr ""
+
+#: templates/admin/clients.php:54
+msgid "Address"
+msgstr ""
+
+#: templates/admin/clients.php:64
+msgid "Add Client"
+msgstr ""
+
+#: templates/admin/clients.php:69
+msgid "Existing Clients"
+msgstr ""
+
+#: templates/admin/appliances.php:15
+msgid "Add New Appliance"
+msgstr ""
+
+#: templates/admin/appliances.php:30
+msgid "Type"
+msgstr ""
+
+#: templates/admin/appliances.php:38
+msgid "Brand"
+msgstr ""
+
+#: templates/admin/appliances.php:46
+msgid "Model"
+msgstr ""
+
+#: templates/admin/appliances.php:54
+msgid "Serial Number"
+msgstr ""
+
+#: templates/admin/appliances.php:64
+msgid "Add Appliance"
+msgstr ""
+
+#: templates/admin/appliances.php:69
+msgid "Existing Appliances"
+msgstr ""
+
+#: templates/admin/technicians.php:15
+msgid "Add New Technician"
+msgstr ""
+
+#: templates/admin/technicians.php:30
+msgid "Username"
+msgstr ""
+
+#: templates/admin/technicians.php:38
+msgid "First Name"
+msgstr ""
+
+#: templates/admin/technicians.php:46
+msgid "Last Name"
+msgstr ""
+
+#: templates/admin/technicians.php:56
+msgid "Add Technician"
+msgstr ""
+
+#: templates/admin/technicians.php:61
+msgid "Existing Technicians"
 msgstr ""
 
 #: includes/Core/Assets.php:89

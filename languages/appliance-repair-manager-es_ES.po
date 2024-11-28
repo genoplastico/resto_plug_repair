@@ -13,6 +13,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Loco https://localise.biz/"
 
+msgid "Repair Manager"
+msgstr "Gestor de Reparaciones"
+
+msgid "Dashboard"
+msgstr "Panel de Control"
+
 msgid "Appliances Management"
 msgstr "Gestión de Electrodomésticos"
 
@@ -27,6 +33,108 @@ msgstr "Configuración"
 
 msgid "Technicians Management"
 msgstr "Gestión de Técnicos"
+
+msgid "Pending Repairs"
+msgstr "Reparaciones Pendientes"
+
+msgid "In Progress"
+msgstr "En Progreso"
+
+msgid "Completed"
+msgstr "Completadas"
+
+msgid "Delivered"
+msgstr "Entregadas"
+
+msgid "Recent Repairs"
+msgstr "Reparaciones Recientes"
+
+msgid "Add New Repair Record"
+msgstr "Agregar Nueva Reparación"
+
+msgid "Client"
+msgstr "Cliente"
+
+msgid "Appliance"
+msgstr "Electrodoméstico"
+
+msgid "Assign Technician"
+msgstr "Asignar Técnico"
+
+msgid "Diagnosis"
+msgstr "Diagnóstico"
+
+msgid "Parts Used"
+msgstr "Repuestos Utilizados"
+
+msgid "Cost"
+msgstr "Costo"
+
+msgid "Add Repair"
+msgstr "Agregar Reparación"
+
+msgid "Repair History"
+msgstr "Historial de Reparaciones"
+
+msgid "Add New Client"
+msgstr "Agregar Nuevo Cliente"
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "Email"
+msgstr "Correo Electrónico"
+
+msgid "Phone"
+msgstr "Teléfono"
+
+msgid "Address"
+msgstr "Dirección"
+
+msgid "Add Client"
+msgstr "Agregar Cliente"
+
+msgid "Existing Clients"
+msgstr "Clientes Existentes"
+
+msgid "Add New Appliance"
+msgstr "Agregar Nuevo Electrodoméstico"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Brand"
+msgstr "Marca"
+
+msgid "Model"
+msgstr "Modelo"
+
+msgid "Serial Number"
+msgstr "Número de Serie"
+
+msgid "Add Appliance"
+msgstr "Agregar Electrodoméstico"
+
+msgid "Existing Appliances"
+msgstr "Electrodomésticos Existentes"
+
+msgid "Add New Technician"
+msgstr "Agregar Nuevo Técnico"
+
+msgid "Username"
+msgstr "Usuario"
+
+msgid "First Name"
+msgstr "Nombre"
+
+msgid "Last Name"
+msgstr "Apellido"
+
+msgid "Add Technician"
+msgstr "Agregar Técnico"
+
+msgid "Existing Technicians"
+msgstr "Técnicos Existentes"
 
 msgid "Are you sure you want to change the status?"
 msgstr "¿Está seguro de que desea cambiar el estado?"

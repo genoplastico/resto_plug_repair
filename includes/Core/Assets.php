@@ -9,17 +9,6 @@ class Assets {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_public_assets']);
         add_action('admin_footer', [$this, 'print_debug_info']);
-        
-        // Remove version query string from assets
-        add_filter('style_loader_src', [$this, 'remove_version_query'], 999);
-        add_filter('script_loader_src', [$this, 'remove_version_query'], 999);
-    }
-
-    public function remove_version_query($src) {
-        if (strpos($src, 'ver=')) {
-            $src = remove_query_arg('ver', $src);
-        }
-        return $src;
     }
 
     public function enqueue_admin_assets($hook) {
@@ -44,22 +33,43 @@ class Assets {
             true
         );
 
+        // Modal Manager CSS
+        wp_enqueue_style(
+            'arm-modal-styles',
+            ARM_PLUGIN_URL . 'assets/css/modal-manager.css'
+        );
+
         // Admin CSS
         wp_enqueue_style(
             'arm-admin-styles',
             ARM_PLUGIN_URL . 'assets/css/admin.css'
         );
 
+        // Modal Manager JS
+        wp_enqueue_script(
+            'arm-modal-manager',
+            ARM_PLUGIN_URL . 'assets/js/modal-manager.js',
+            ['jquery'],
+            null,
+            true
+        );
+
         // Admin JS
         wp_enqueue_script(
             'arm-admin-scripts',
             ARM_PLUGIN_URL . 'assets/js/admin.js',
-            ['jquery', 'select2'],
+            ['jquery', 'select2', 'arm-modal-manager'],
             null,
             true
         );
 
         // Localize scripts
+        wp_localize_script('arm-modal-manager', 'armAjax', [
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('arm_ajax_nonce'),
+            'debug' => $this->debug->getDebugInfo()
+        ]);
+
         wp_localize_script('arm-admin-scripts', 'armL10n', [
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('arm_ajax_nonce'),
@@ -89,20 +99,41 @@ class Assets {
 
         wp_enqueue_script('jquery');
 
+        // Modal Manager CSS
+        wp_enqueue_style(
+            'arm-modal-styles',
+            ARM_PLUGIN_URL . 'assets/css/modal-manager.css'
+        );
+
         // Public styles
         wp_enqueue_style(
             'arm-public-styles',
             ARM_PLUGIN_URL . 'assets/css/admin.css'
         );
 
-        // Public scripts
+        // Modal Manager JS
         wp_enqueue_script(
-            'arm-public-scripts',
-            ARM_PLUGIN_URL . 'assets/js/admin.js',
+            'arm-modal-manager',
+            ARM_PLUGIN_URL . 'assets/js/modal-manager.js',
             ['jquery'],
             null,
             true
         );
+
+        // Public scripts
+        wp_enqueue_script(
+            'arm-public-scripts',
+            ARM_PLUGIN_URL . 'assets/js/admin.js',
+            ['jquery', 'arm-modal-manager'],
+            null,
+            true
+        );
+
+        wp_localize_script('arm-modal-manager', 'armAjax', [
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('arm_ajax_nonce'),
+            'debug' => $this->debug->getDebugInfo()
+        ]);
 
         wp_localize_script('arm-public-scripts', 'armL10n', [
             'ajaxurl' => admin_url('admin-ajax.php'),

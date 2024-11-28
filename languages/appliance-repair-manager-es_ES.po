@@ -28,65 +28,62 @@ msgstr "Configuración"
 msgid "Technicians Management"
 msgstr "Gestión de Técnicos"
 
-msgid "Dashboard"
-msgstr "Panel de Control"
+msgid "Are you sure you want to change the status?"
+msgstr "¿Está seguro de que desea cambiar el estado?"
 
-msgid "Recent Activity"
-msgstr "Actividad Reciente"
+msgid "Please fill in all required fields."
+msgstr "Por favor complete todos los campos requeridos."
 
-msgid "Statistics"
-msgstr "Estadísticas"
+msgid "Error adding note."
+msgstr "Error al agregar la nota."
 
-msgid "System Status"
-msgstr "Estado del Sistema"
-
-msgid "Pending Repairs"
-msgstr "Reparaciones Pendientes"
-
-msgid "In Progress"
-msgstr "En Progreso"
-
-msgid "Completed"
-msgstr "Completadas"
-
-msgid "Delivered"
-msgstr "Entregadas"
-
-msgid "Add New Repair"
-msgstr "Agregar Nueva Reparación"
-
-msgid "Client"
-msgstr "Cliente"
+msgid "Public URL has been copied to clipboard."
+msgstr "La URL pública ha sido copiada al portapapeles."
 
 msgid "Select Client"
 msgstr "Seleccionar Cliente"
 
-msgid "Appliance"
-msgstr "Electrodoméstico"
-
 msgid "Select Appliance"
 msgstr "Seleccionar Electrodoméstico"
 
-msgid "Technician"
-msgstr "Técnico"
+msgid "Error loading appliance history."
+msgstr "Error al cargar el historial del electrodoméstico."
 
-msgid "Select Technician"
-msgstr "Seleccionar Técnico"
+msgid "Error processing modal."
+msgstr "Error al procesar la ventana modal."
 
-msgid "Diagnosis"
-msgstr "Diagnóstico"
+msgid "An error has occurred."
+msgstr "Ha ocurrido un error."
 
-msgid "Parts Used"
-msgstr "Repuestos Utilizados"
+msgid "Error loading appliances."
+msgstr "Error al cargar los electrodomésticos."
 
-msgid "Cost"
-msgstr "Costo"
+msgid "Error loading repair details."
+msgstr "Error al cargar los detalles de la reparación."
 
-msgid "Status"
-msgstr "Estado"
+msgid "Error loading required assets."
+msgstr "Error al cargar los recursos requeridos."
 
-msgid "Notes"
-msgstr "Notas"
+msgid "Appliance Repair Manager - System Check Warning"
+msgstr "Gestor de Reparaciones - Advertencia de Verificación del Sistema"
 
-msgid "Actions"
-msgstr "Acciones"
+msgid "There are permission issues that may affect the plugin functionality."
+msgstr "Hay problemas de permisos que pueden afectar la funcionalidad del plugin."
+
+msgid "Click here to run a system check"
+msgstr "Haga clic aquí para ejecutar una verificación del sistema"
+
+msgid "Insufficient permissions."
+msgstr "Permisos insuficientes."
+
+msgid "Error checking system permissions."
+msgstr "Error al verificar los permisos del sistema."
+
+msgid "Permissions have been automatically fixed."
+msgstr "Los permisos han sido corregidos automáticamente."
+
+msgid "Permission issues found and could not be automatically fixed. Please check the console for details."
+msgstr "Se encontraron problemas de permisos y no se pudieron corregir automáticamente. Por favor revise la consola para más detalles."
+
+msgid "All system checks passed successfully."
+msgstr "Todas las verificaciones del sistema pasaron exitosamente."

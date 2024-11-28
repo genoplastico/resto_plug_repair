@@ -30,86 +30,82 @@ msgstr ""
 msgid "Technicians Management"
 msgstr ""
 
-#: includes/Core/Plugin.php:147
-msgid "Dashboard"
+#: includes/Core/Assets.php:89
+msgid "Are you sure you want to change the status?"
 msgstr ""
 
-#: includes/Core/Plugin.php:148
-msgid "Recent Activity"
+#: includes/Core/Assets.php:90
+msgid "Please fill in all required fields."
 msgstr ""
 
-#: includes/Core/Plugin.php:149
-msgid "Statistics"
+#: includes/Core/Assets.php:91
+msgid "Error adding note."
 msgstr ""
 
-#: includes/Core/Plugin.php:150
-msgid "System Status"
+#: includes/Core/Assets.php:92
+msgid "Public URL has been copied to clipboard."
 msgstr ""
 
-#: templates/admin/dashboard.php:5
-msgid "Pending Repairs"
-msgstr ""
-
-#: templates/admin/dashboard.php:10
-msgid "In Progress"
-msgstr ""
-
-#: templates/admin/dashboard.php:15
-msgid "Completed"
-msgstr ""
-
-#: templates/admin/dashboard.php:20
-msgid "Delivered"
-msgstr ""
-
-#: templates/admin/repairs.php:31
-msgid "Add New Repair"
-msgstr ""
-
-#: templates/admin/repairs.php:36
-msgid "Client"
-msgstr ""
-
-#: templates/admin/repairs.php:41
+#: includes/Core/Assets.php:93
 msgid "Select Client"
 msgstr ""
 
-#: templates/admin/repairs.php:46
-msgid "Appliance"
-msgstr ""
-
-#: templates/admin/repairs.php:51
+#: includes/Core/Assets.php:94
 msgid "Select Appliance"
 msgstr ""
 
-#: templates/admin/repairs.php:56
-msgid "Technician"
+#: includes/Core/Assets.php:95
+msgid "Error loading appliance history."
 msgstr ""
 
-#: templates/admin/repairs.php:61
-msgid "Select Technician"
+#: includes/Core/Assets.php:96
+msgid "Error processing modal."
 msgstr ""
 
-#: templates/admin/repairs.php:66
-msgid "Diagnosis"
+#: includes/Core/Assets.php:97
+msgid "An error has occurred."
 msgstr ""
 
-#: templates/admin/repairs.php:71
-msgid "Parts Used"
+#: includes/Core/Assets.php:98
+msgid "Error loading appliances."
 msgstr ""
 
-#: templates/admin/repairs.php:76
-msgid "Cost"
+#: includes/Core/Assets.php:99
+msgid "Error loading repair details."
 msgstr ""
 
-#: templates/admin/repairs.php:81
-msgid "Status"
+#: includes/Core/Assets.php:100
+msgid "Error loading required assets."
 msgstr ""
 
-#: templates/admin/repairs.php:86
-msgid "Notes"
+#: includes/Admin/SystemCheck.php:63
+msgid "Appliance Repair Manager - System Check Warning"
 msgstr ""
 
-#: templates/admin/repairs.php:91
-msgid "Actions"
+#: includes/Admin/SystemCheck.php:66
+msgid "There are permission issues that may affect the plugin functionality."
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:68
+msgid "Click here to run a system check"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:98
+msgid "Insufficient permissions."
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:105
+msgid "Error checking system permissions."
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:114
+msgid "Permissions have been automatically fixed."
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:119
+msgid "Permission issues found and could not be automatically fixed. Please check the console for details."
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:125
+msgid "All system checks passed successfully."
 msgstr ""

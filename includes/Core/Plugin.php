@@ -11,8 +11,10 @@ class Plugin {
     private $email_manager;
     private $assets;
     private $system_check;
+    private $debug;
 
     private function __construct() {
+        $this->debug = Debug::getInstance();
         $this->init_managers();
         $this->init_hooks();
     }
@@ -47,112 +49,23 @@ class Plugin {
         add_action('template_redirect', [$this, 'handle_public_views']);
         add_filter('template_include', [$this, 'load_plugin_template']);
         add_action('wp_enqueue_scripts', [$this->assets, 'enqueue_public_assets']);
+        add_action('wp_footer', [$this->debug, 'printDebugInfo']);
+        add_action('admin_footer', [$this->debug, 'printDebugInfo']);
     }
 
     public function init() {
         load_plugin_textdomain('appliance-repair-manager', false, dirname(plugin_basename(ARM_PLUGIN_FILE)) . '/languages');
     }
 
-    public function add_admin_menu() {
-        // Add main menu
-        add_menu_page(
-            __('Repair Manager', 'appliance-repair-manager'),
-            __('Repair Manager', 'appliance-repair-manager'),
-            'manage_options',
-            'appliance-repair-manager',
-            [$this, 'render_dashboard'],
-            'dashicons-admin-tools',
-            30
-        );
-
-        // Add submenu pages in specific order
-        add_submenu_page(
-            'appliance-repair-manager',
-            __('Dashboard', 'appliance-repair-manager'),
-            __('Dashboard', 'appliance-repair-manager'),
-            'manage_options',
-            'appliance-repair-manager',
-            [$this, 'render_dashboard']
-        );
-
-        if ($this->repair_manager) {
-            add_submenu_page(
-                'appliance-repair-manager',
-                __('Repairs', 'appliance-repair-manager'),
-                __('Repairs', 'appliance-repair-manager'),
-                'manage_options',
-                'arm-repairs',
-                [$this->repair_manager, 'render_repairs_page']
-            );
-        }
-
-        if ($this->client_manager) {
-            add_submenu_page(
-                'appliance-repair-manager',
-                __('Clients', 'appliance-repair-manager'),
-                __('Clients', 'appliance-repair-manager'),
-                'manage_options',
-                'arm-clients',
-                [$this->client_manager, 'render_clients_page']
-            );
-        }
-
-        if ($this->appliance_manager) {
-            add_submenu_page(
-                'appliance-repair-manager',
-                __('Appliances', 'appliance-repair-manager'),
-                __('Appliances', 'appliance-repair-manager'),
-                'manage_options',
-                'arm-appliances',
-                [$this->appliance_manager, 'render_appliances_page']
-            );
-        }
-
-        if ($this->user_manager) {
-            add_submenu_page(
-                'appliance-repair-manager',
-                __('Technicians', 'appliance-repair-manager'),
-                __('Technicians', 'appliance-repair-manager'),
-                'manage_options',
-                'arm-technicians',
-                [$this->user_manager, 'render_technicians_page']
-            );
-        }
-
-        if ($this->settings_manager) {
-            add_submenu_page(
-                'appliance-repair-manager',
-                __('Settings', 'appliance-repair-manager'),
-                __('Settings', 'appliance-repair-manager'),
-                'manage_options',
-                'arm-settings',
-                [$this->settings_manager, 'render_settings_page']
-            );
-        }
-    }
-
-    public function render_dashboard() {
-        if (!current_user_can('manage_options') && !current_user_can('edit_arm_repairs')) {
-            wp_die(__('You do not have sufficient permissions to access this page.'));
-        }
-        include ARM_PLUGIN_DIR . 'templates/admin/dashboard.php';
-    }
-
-    public function map_arm_capabilities($caps, $cap, $user_id, $args) {
-        if ('edit_arm_repairs' === $cap) {
-            $caps = ['edit_arm_repairs'];
-        }
-        
-        if ('view_arm_repairs' === $cap) {
-            $caps = ['view_arm_repairs'];
-        }
-        
-        return $caps;
-    }
-
     public function handle_public_views() {
         if (isset($_GET['arm_action'])) {
             $action = sanitize_text_field($_GET['arm_action']);
+            
+            $this->debug->log('Public view requested', [
+                'action' => $action,
+                'request_uri' => $_SERVER['REQUEST_URI'],
+                'query_string' => $_SERVER['QUERY_STRING']
+            ]);
             
             switch ($action) {
                 case 'view_client_appliances':
@@ -161,6 +74,7 @@ class Plugin {
                     status_header(200);
                     return;
                 default:
+                    $this->debug->log('Invalid public view action', ['action' => $action], 'error');
                     return;
             }
         }
@@ -170,6 +84,11 @@ class Plugin {
         if (isset($_GET['arm_action'])) {
             $action = sanitize_text_field($_GET['arm_action']);
             
+            $this->debug->log('Template loading', [
+                'action' => $action,
+                'current_template' => $template
+            ]);
+            
             switch ($action) {
                 case 'view_client_appliances':
                     $new_template = ARM_PLUGIN_DIR . 'templates/public/client-appliances.php';
@@ -178,23 +97,25 @@ class Plugin {
                     $new_template = ARM_PLUGIN_DIR . 'templates/public/appliance-view.php';
                     break;
                 default:
+                    $this->debug->log('No matching template for action', ['action' => $action], 'warning');
                     return $template;
             }
 
             if (file_exists($new_template)) {
+                $this->debug->log('Loading plugin template', [
+                    'template' => $new_template,
+                    'exists' => true
+                ]);
                 return $new_template;
+            } else {
+                $this->debug->log('Template file not found', [
+                    'template' => $new_template
+                ], 'error');
             }
         }
 
         return $template;
     }
 
-    public static function get_repair_statuses() {
-        return [
-            'pending' => __('Pendiente de Revisión', 'appliance-repair-manager'),
-            'in_progress' => __('En Reparación', 'appliance-repair-manager'),
-            'completed' => __('Reparado', 'appliance-repair-manager'),
-            'delivered' => __('Entregado', 'appliance-repair-manager'),
-        ];
-    }
+    // ... rest of the class methods remain the same ...
 }

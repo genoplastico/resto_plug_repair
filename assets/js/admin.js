@@ -64,6 +64,10 @@ jQuery(document).ready(function($) {
         var $modal = $('#repair-details-modal');
         var $content = $('#repair-details-content');
         
+        // Show modal first
+        $modal.show();
+        $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
+        
         $.ajax({
             url: armL10n.ajaxurl,
             type: 'POST',
@@ -72,12 +76,8 @@ jQuery(document).ready(function($) {
                 repair_id: repairId,
                 nonce: $('#arm_ajax_nonce').val()
             },
-            beforeSend: function() {
-                $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
-                $modal.show();
-            },
             success: function(response) {
-                if (response.success) {
+                if (response.success && response.data.html) {
                     $content.html(response.data.html);
                 } else {
                     console.error('ARM Error:', response);
@@ -93,6 +93,20 @@ jQuery(document).ready(function($) {
                 $content.html('<div class="arm-error">' + armL10n.errorLoadingRepairDetails + '</div>');
             }
         });
+    });
+
+    // Close modal handler
+    $(document).on('click', '.arm-modal-close, .arm-modal', function(e) {
+        if (e.target === this) {
+            $(this).closest('.arm-modal').hide();
+        }
+    });
+
+    // ESC key handler for modals
+    $(document).keyup(function(e) {
+        if (e.key === 'Escape') {
+            $('.arm-modal').hide();
+        }
     });
 
     // Handle notes form submission

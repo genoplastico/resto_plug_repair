@@ -85,15 +85,20 @@ class ApplianceHandler {
             }
 
             ob_start();
-            include ARM_PLUGIN_DIR . 'templates/admin/modals/repair-details.php';
+            require ARM_PLUGIN_DIR . 'templates/admin/modals/repair-details.php';
             $html = ob_get_clean();
+
+            if (empty($html)) {
+                throw new \Exception('Failed to generate repair details HTML');
+            }
 
             wp_send_json_success(['html' => $html]);
 
         } catch (\Exception $e) {
             $this->logger->logAjaxError('arm_get_repair_details', $e->getMessage(), [
                 'repair_id' => $repair_id ?? null,
-                'wpdb_error' => $this->wpdb->last_error
+                'wpdb_error' => $this->wpdb->last_error,
+                'template_path' => ARM_PLUGIN_DIR . 'templates/admin/modals/repair-details.php'
             ]);
             
             wp_send_json_error([

@@ -10,46 +10,106 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: includes/Core/Plugin.php:31
-msgid "Appliances"
+#: includes/Admin/ApplianceManager.php:31
+msgid "Appliances Management"
 msgstr ""
 
-#: includes/Core/Plugin.php:32
-msgid "Appliance"
+#: includes/Admin/ClientManager.php:31
+msgid "Clients Management"
 msgstr ""
 
-#: includes/Core/Plugin.php:43
-msgid "Repairs"
+#: includes/Admin/RepairManager.php:31
+msgid "Repairs Management"
 msgstr ""
 
-#: includes/Core/Plugin.php:44
-msgid "Repair"
+#: includes/Admin/SettingsManager.php:31
+msgid "Settings"
 msgstr ""
 
-#: includes/Core/Plugin.php:56
-msgid "Appliance Repair Manager"
-msgstr ""
-
-#: includes/Core/Plugin.php:57
-msgid "Repair Manager"
-msgstr ""
-
-#: includes/Core/Plugin.php:89
-msgid "Technician"
+#: includes/Admin/UserManager.php:31
+msgid "Technicians Management"
 msgstr ""
 
 #: includes/Core/Plugin.php:147
-msgid "Pending Review"
+msgid "Dashboard"
 msgstr ""
 
 #: includes/Core/Plugin.php:148
-msgid "In Repair"
+msgid "Recent Activity"
 msgstr ""
 
 #: includes/Core/Plugin.php:149
-msgid "Repaired"
+msgid "Statistics"
 msgstr ""
 
 #: includes/Core/Plugin.php:150
+msgid "System Status"
+msgstr ""
+
+#: templates/admin/dashboard.php:5
+msgid "Pending Repairs"
+msgstr ""
+
+#: templates/admin/dashboard.php:10
+msgid "In Progress"
+msgstr ""
+
+#: templates/admin/dashboard.php:15
+msgid "Completed"
+msgstr ""
+
+#: templates/admin/dashboard.php:20
 msgid "Delivered"
+msgstr ""
+
+#: templates/admin/repairs.php:31
+msgid "Add New Repair"
+msgstr ""
+
+#: templates/admin/repairs.php:36
+msgid "Client"
+msgstr ""
+
+#: templates/admin/repairs.php:41
+msgid "Select Client"
+msgstr ""
+
+#: templates/admin/repairs.php:46
+msgid "Appliance"
+msgstr ""
+
+#: templates/admin/repairs.php:51
+msgid "Select Appliance"
+msgstr ""
+
+#: templates/admin/repairs.php:56
+msgid "Technician"
+msgstr ""
+
+#: templates/admin/repairs.php:61
+msgid "Select Technician"
+msgstr ""
+
+#: templates/admin/repairs.php:66
+msgid "Diagnosis"
+msgstr ""
+
+#: templates/admin/repairs.php:71
+msgid "Parts Used"
+msgstr ""
+
+#: templates/admin/repairs.php:76
+msgid "Cost"
+msgstr ""
+
+#: templates/admin/repairs.php:81
+msgid "Status"
+msgstr ""
+
+#: templates/admin/repairs.php:86
+msgid "Notes"
+msgstr ""
+
+#: templates/admin/repairs.php:91
+msgid "Actions"
 msgstr ""

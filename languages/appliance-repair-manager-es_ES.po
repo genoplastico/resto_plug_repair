@@ -13,86 +13,80 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Loco https://localise.biz/"
 
-msgid "Error loading required assets."
-msgstr "Error al cargar los recursos requeridos."
+msgid "Appliances Management"
+msgstr "Gestión de Electrodomésticos"
 
-msgid "Error processing modal."
-msgstr "Error al procesar la ventana modal."
+msgid "Clients Management"
+msgstr "Gestión de Clientes"
 
-msgid "An error has occurred."
-msgstr "Ha ocurrido un error."
+msgid "Repairs Management"
+msgstr "Gestión de Reparaciones"
 
-msgid "Error loading appliances."
-msgstr "Error al cargar los electrodomésticos."
+msgid "Settings"
+msgstr "Configuración"
 
-msgid "Error loading repair details."
-msgstr "Error al cargar los detalles de la reparación."
+msgid "Technicians Management"
+msgstr "Gestión de Técnicos"
 
-msgid "System Check Warning"
-msgstr "Advertencia de Verificación del Sistema"
+msgid "Dashboard"
+msgstr "Panel de Control"
 
-msgid "There are permission issues that may affect the plugin functionality."
-msgstr "Hay problemas de permisos que pueden afectar la funcionalidad del plugin."
+msgid "Recent Activity"
+msgstr "Actividad Reciente"
 
-msgid "Click here to run a system check"
-msgstr "Haga clic aquí para ejecutar una verificación del sistema"
+msgid "Statistics"
+msgstr "Estadísticas"
 
-msgid "Insufficient permissions."
-msgstr "Permisos insuficientes."
+msgid "System Status"
+msgstr "Estado del Sistema"
 
-msgid "Error checking system permissions."
-msgstr "Error al verificar los permisos del sistema."
+msgid "Pending Repairs"
+msgstr "Reparaciones Pendientes"
 
-msgid "Permissions have been automatically fixed."
-msgstr "Los permisos se han corregido automáticamente."
+msgid "In Progress"
+msgstr "En Progreso"
 
-msgid "Permission issues found and could not be automatically fixed. Please check the console for details."
-msgstr "Se encontraron problemas de permisos y no se pudieron corregir automáticamente. Por favor revise la consola para más detalles."
+msgid "Completed"
+msgstr "Completadas"
 
-msgid "All system checks passed successfully."
-msgstr "Todas las verificaciones del sistema pasaron exitosamente."
+msgid "Delivered"
+msgstr "Entregadas"
 
-msgid "Add New Repair Record"
+msgid "Add New Repair"
 msgstr "Agregar Nueva Reparación"
 
-msgid "Select Client First"
-msgstr "Seleccione Primero un Cliente"
+msgid "Client"
+msgstr "Cliente"
 
-msgid "View Details"
-msgstr "Ver Detalles"
+msgid "Select Client"
+msgstr "Seleccionar Cliente"
 
-msgid "Copy Public URL"
-msgstr "Copiar URL Pública"
+msgid "Appliance"
+msgstr "Electrodoméstico"
 
-msgid "Add Note"
-msgstr "Agregar Nota"
+msgid "Select Appliance"
+msgstr "Seleccionar Electrodoméstico"
 
-msgid "Add a note..."
-msgstr "Agregar una nota..."
+msgid "Technician"
+msgstr "Técnico"
 
-msgid "Close"
-msgstr "Cerrar"
+msgid "Select Technician"
+msgstr "Seleccionar Técnico"
 
-msgid "Recent Repairs"
-msgstr "Reparaciones Recientes"
+msgid "Diagnosis"
+msgstr "Diagnóstico"
 
-msgid "No recent repairs found."
-msgstr "No se encontraron reparaciones recientes."
+msgid "Parts Used"
+msgstr "Repuestos Utilizados"
 
-msgid "Repair Details"
-msgstr "Detalles de la Reparación"
+msgid "Cost"
+msgstr "Costo"
 
-msgid "Client Information"
-msgstr "Información del Cliente"
+msgid "Status"
+msgstr "Estado"
 
-msgid "Appliance Information"
-msgstr "Información del Electrodoméstico"
+msgid "Notes"
+msgstr "Notas"
 
-msgid "Repair Information"
-msgstr "Información de la Reparación"
-
-msgid "Repair Notes"
-msgstr "Notas de la Reparación"
-
-msgid "No notes available."
-msgstr "No hay notas disponibles."
+msgid "Actions"
+msgstr "Acciones"

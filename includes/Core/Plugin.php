@@ -13,9 +13,10 @@ class Plugin {
     private $system_check;
     private $debug;
     private $hook_manager;
+    private $ajax_handler;
 
     private function __construct() {
-        $this->debug = Debug\Logger::getInstance();
+        $this->debug = Debug\ErrorLogger::getInstance();
         $this->hook_manager = HookManager::getInstance();
         $this->init_managers();
         $this->register_hooks();
@@ -38,6 +39,7 @@ class Plugin {
         $this->email_manager = new EmailManager();
         $this->assets = new Assets();
         $this->system_check = new \ApplianceRepairManager\Admin\SystemCheck();
+        $this->ajax_handler = new Ajax\ApplianceHandler();
     }
 
     private function register_hooks() {
@@ -143,9 +145,7 @@ class Plugin {
         return $vars;
     }
 
-    // Prevent cloning of the instance
     private function __clone() {}
 
-    // Prevent unserializing of the instance
     public function __wakeup() {}
 }

@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-    // Inicializar select2
+    // Initialize select2
     if ($.fn.select2) {
         $('.arm-select2').select2({
             width: '100%',
@@ -7,11 +7,14 @@ jQuery(document).ready(function($) {
         });
     }
 
-    // Cliente seleccionado -> Cargar aparatos
+    // Client selection -> Load appliances
     $('#client_select').on('change', function() {
         var clientId = $(this).val();
+        var $applianceSelect = $('#appliance_id');
+        
+        $applianceSelect.html('<option value="">' + armL10n.selectAppliance + '</option>').trigger('change');
+        
         if (!clientId) {
-            $('#appliance_id').html('<option value="">' + armL10n.selectAppliance + '</option>').trigger('change');
             return;
         }
 
@@ -23,39 +26,82 @@ jQuery(document).ready(function($) {
                 client_id: clientId,
                 nonce: $('#arm_ajax_nonce').val()
             },
+            beforeSend: function() {
+                $applianceSelect.prop('disabled', true);
+            },
             success: function(response) {
-                if (response.success) {
+                if (response.success && response.data.appliances) {
                     var options = '<option value="">' + armL10n.selectAppliance + '</option>';
-                    response.data.forEach(function(appliance) {
+                    response.data.appliances.forEach(function(appliance) {
                         options += '<option value="' + appliance.id + '">' + 
                                   appliance.brand + ' ' + appliance.type + ' - ' + appliance.model + 
                                   '</option>';
                     });
-                    $('#appliance_id').html(options).trigger('change');
+                    $applianceSelect.html(options);
                 } else {
                     console.error('ARM Error:', response);
                     alert(armL10n.errorLoadingAppliances);
                 }
             },
             error: function(xhr, status, error) {
-                console.error('ARM Error:', {
+                console.error('ARM Ajax Error:', {
                     status: status,
                     error: error,
                     response: xhr.responseText
                 });
                 alert(armL10n.errorLoadingAppliances);
+            },
+            complete: function() {
+                $applianceSelect.prop('disabled', false);
             }
         });
     });
 
-    // Manejar envío de notas
+    // View repair details
+    $(document).on('click', '.view-repair-details', function(e) {
+        e.preventDefault();
+        var repairId = $(this).data('repair-id');
+        var $modal = $('#repair-details-modal');
+        var $content = $('#repair-details-content');
+        
+        $.ajax({
+            url: armL10n.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'arm_get_repair_details',
+                repair_id: repairId,
+                nonce: $('#arm_ajax_nonce').val()
+            },
+            beforeSend: function() {
+                $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
+                $modal.show();
+            },
+            success: function(response) {
+                if (response.success) {
+                    $content.html(response.data.html);
+                } else {
+                    console.error('ARM Error:', response);
+                    $content.html('<div class="arm-error">' + armL10n.errorLoadingRepairDetails + '</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('ARM Ajax Error:', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
+                });
+                $content.html('<div class="arm-error">' + armL10n.errorLoadingRepairDetails + '</div>');
+            }
+        });
+    });
+
+    // Handle notes form submission
     $(document).on('submit', '.arm-note-form', function(e) {
         e.preventDefault();
         var $form = $(this);
         var $submitButton = $form.find('button[type="submit"]');
         var $notesList = $form.closest('.arm-notes-container').find('.arm-notes-list');
 
-        // Validar que haya texto en la nota
         var noteText = $form.find('textarea[name="note"]').val().trim();
         if (!noteText) {
             alert(armL10n.pleaseEnterNote);
@@ -75,7 +121,6 @@ jQuery(document).ready(function($) {
                 nonce: $('#arm_ajax_nonce').val()
             },
             success: function(response) {
-                console.log('ARM Note Response:', response);
                 if (response.success) {
                     if (response.data && response.data.html) {
                         $notesList.html(response.data.html);
@@ -103,6 +148,4 @@ jQuery(document).ready(function($) {
             }
         });
     });
-
-    // ... resto del código JavaScript permanece igual ...
 });

@@ -63,11 +63,9 @@ class ApplianceHandler {
         try {
             check_ajax_referer('arm_ajax_nonce', 'nonce');
 
-            if (!current_user_can('edit_arm_repairs')) {
-                throw new \Exception('Insufficient permissions');
-            }
-
             $repair_id = isset($_POST['repair_id']) ? intval($_POST['repair_id']) : 0;
+            $is_public = isset($_POST['is_public']) ? (bool)$_POST['is_public'] : false;
+
             if (!$repair_id) {
                 throw new \Exception('Invalid repair ID');
             }
@@ -79,6 +77,7 @@ class ApplianceHandler {
                         a.brand, 
                         a.model,
                         c.name as client_name,
+                        c.email as client_email,
                         u.display_name as technician_name
                 FROM {$this->wpdb->prefix}arm_repairs r
                 LEFT JOIN {$this->wpdb->prefix}arm_appliances a ON r.appliance_id = a.id
@@ -92,15 +91,23 @@ class ApplianceHandler {
                 throw new \Exception('Repair not found');
             }
 
-            // Get repair notes
-            $notes = $this->wpdb->get_results($this->wpdb->prepare(
+            // Verify access permissions
+            if (!$this->canAccessRepairDetails($repair, $is_public)) {
+                throw new \Exception('Insufficient permissions');
+            }
+
+            // Get repair notes (only public notes for public view)
+            $notes_query = $this->wpdb->prepare(
                 "SELECT n.*, u.display_name as author_name
                 FROM {$this->wpdb->prefix}arm_repair_notes n
                 LEFT JOIN {$this->wpdb->users} u ON n.user_id = u.ID
-                WHERE n.repair_id = %d
-                ORDER BY n.created_at DESC",
+                WHERE n.repair_id = %d " .
+                ($is_public ? "AND n.is_public = 1 " : "") .
+                "ORDER BY n.created_at DESC",
                 $repair_id
-            ));
+            );
+
+            $notes = $this->wpdb->get_results($notes_query);
 
             // Add notes to repair object
             $repair->notes = $notes;
@@ -108,8 +115,8 @@ class ApplianceHandler {
             // Start output buffering
             ob_start();
             
-            // Include the template
-            $template_path = ARM_PLUGIN_DIR . 'templates/admin/modals/repair-details.php';
+            // Include the appropriate template
+            $template_path = ARM_PLUGIN_DIR . 'templates/'. ($is_public ? 'public' : 'admin') .'/modals/repair-details.php';
             if (!file_exists($template_path)) {
                 throw new \Exception('Template file not found: ' . $template_path);
             }
@@ -128,6 +135,7 @@ class ApplianceHandler {
         } catch (\Exception $e) {
             $this->logger->logAjaxError('arm_get_repair_details', $e->getMessage(), [
                 'repair_id' => $repair_id ?? null,
+                'is_public' => $is_public ?? false,
                 'wpdb_error' => $this->wpdb->last_error ?? null,
                 'template_path' => $template_path ?? null,
                 'user_id' => get_current_user_id(),
@@ -136,8 +144,29 @@ class ApplianceHandler {
             
             wp_send_json_error([
                 'message' => __('Error loading repair details', 'appliance-repair-manager'),
-                'error' => WP_DEBUG ? $e->getMessage() : null
+                'error' => $e->getMessage()
             ]);
         }
+    }
+
+    private function canAccessRepairDetails($repair, $is_public) {
+        // Admin users can always access
+        if (current_user_can('manage_options')) {
+            return true;
+        }
+
+        // Technicians can access their assigned repairs
+        if (current_user_can('edit_arm_repairs') && get_current_user_id() == $repair->technician_id) {
+            return true;
+        }
+
+        // Public access requires valid token
+        if ($is_public) {
+            $token = isset($_POST['token']) ? sanitize_text_field($_POST['token']) : '';
+            $expected_token = wp_hash($repair->id . $repair->client_email . wp_salt());
+            return hash_equals($expected_token, $token);
+        }
+
+        return false;
     }
 }

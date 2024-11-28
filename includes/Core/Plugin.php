@@ -45,7 +45,7 @@ class Plugin {
     private function init_hooks() {
         add_action('init', [$this, 'init']);
         add_action('admin_menu', [$this, 'add_admin_menu']);
-        add_filter('map_meta_cap', [$this, 'map_arm_capabilities'], 10, 4);
+        add_filter('map_meta_cap', [$this, 'map_meta_cap'], 10, 4);
         add_action('template_redirect', [$this, 'handle_public_views']);
         add_filter('template_include', [$this, 'load_plugin_template']);
         add_action('wp_enqueue_scripts', [$this->assets, 'enqueue_public_assets']);
@@ -55,6 +55,66 @@ class Plugin {
 
     public function init() {
         load_plugin_textdomain('appliance-repair-manager', false, dirname(plugin_basename(ARM_PLUGIN_FILE)) . '/languages');
+    }
+
+    public function add_admin_menu() {
+        add_menu_page(
+            __('Repair Manager', 'appliance-repair-manager'),
+            __('Repair Manager', 'appliance-repair-manager'),
+            'manage_options',
+            'appliance-repair-manager',
+            [$this, 'render_dashboard'],
+            'dashicons-admin-tools',
+            30
+        );
+
+        add_submenu_page(
+            'appliance-repair-manager',
+            __('Dashboard', 'appliance-repair-manager'),
+            __('Dashboard', 'appliance-repair-manager'),
+            'manage_options',
+            'appliance-repair-manager',
+            [$this, 'render_dashboard']
+        );
+
+        // Let each manager add its own submenu items
+        if ($this->client_manager) {
+            $this->client_manager->add_clients_menu();
+        }
+        if ($this->appliance_manager) {
+            $this->appliance_manager->add_appliances_menu();
+        }
+        if ($this->repair_manager) {
+            $this->repair_manager->add_repairs_menu();
+        }
+        if ($this->user_manager) {
+            $this->user_manager->add_users_menu();
+        }
+        if ($this->settings_manager) {
+            $this->settings_manager->add_settings_menu();
+        }
+    }
+
+    public function render_dashboard() {
+        if (!current_user_can('manage_options') && !current_user_can('edit_arm_repairs')) {
+            wp_die(__('You do not have sufficient permissions to access this page.', 'appliance-repair-manager'));
+        }
+        include ARM_PLUGIN_DIR . 'templates/admin/dashboard.php';
+    }
+
+    public function map_meta_cap($caps, $cap, $user_id, $args) {
+        switch ($cap) {
+            case 'edit_arm_repairs':
+                $caps = ['edit_arm_repairs'];
+                break;
+            case 'view_arm_repairs':
+                $caps = ['view_arm_repairs'];
+                break;
+            case 'manage_arm_settings':
+                $caps = ['manage_options'];
+                break;
+        }
+        return $caps;
     }
 
     public function handle_public_views() {
@@ -117,5 +177,12 @@ class Plugin {
         return $template;
     }
 
-    // ... rest of the class methods remain the same ...
+    public static function get_repair_statuses() {
+        return [
+            'pending' => __('Pending Review', 'appliance-repair-manager'),
+            'in_progress' => __('In Repair', 'appliance-repair-manager'),
+            'completed' => __('Repaired', 'appliance-repair-manager'),
+            'delivered' => __('Delivered', 'appliance-repair-manager'),
+        ];
+    }
 }

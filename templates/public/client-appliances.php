@@ -21,6 +21,7 @@ get_header();
 
 // Cargar estilos del admin
 wp_enqueue_style('arm-admin-styles', ARM_PLUGIN_URL . 'assets/css/admin.css', [], ARM_VERSION);
+wp_enqueue_style('arm-modal-styles', ARM_PLUGIN_URL . 'assets/css/modal-manager.css', [], ARM_VERSION);
 ?>
 
 <div class="arm-public-view">
@@ -101,15 +102,15 @@ wp_enqueue_style('arm-admin-styles', ARM_PLUGIN_URL . 'assets/css/admin.css', []
     <div id="repair-details-content" class="arm-modal-content"></div>
 </div>
 
-<!-- Agregar nonce field para las peticiones AJAX -->
 <?php wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce'); ?>
 
 <script>
 jQuery(document).ready(function($) {
-    // Manejar clic en el botón de ver detalles
     $('.view-repair-details').click(function(e) {
         e.preventDefault();
         var repairId = $(this).data('repair-id');
+        var modal = $('#repair-details-modal');
+        var modalContent = $('#repair-details-content');
         
         $.ajax({
             url: '<?php echo admin_url('admin-ajax.php'); ?>',
@@ -117,25 +118,34 @@ jQuery(document).ready(function($) {
             data: {
                 action: 'arm_get_repair_details',
                 repair_id: repairId,
-                nonce: $('#arm_ajax_nonce').val()
+                nonce: $('#arm_ajax_nonce').val(),
+                is_public: true
+            },
+            beforeSend: function() {
+                modalContent.html('<div class="arm-loading"><?php _e('Loading...', 'appliance-repair-manager'); ?></div>');
+                modal.fadeIn(300);
             },
             success: function(response) {
-                if (response.success) {
-                    $('#repair-details-content').html(response.data.html);
-                    $('#repair-details-modal').fadeIn(300);
+                if (response.success && response.data && response.data.html) {
+                    modalContent.html(response.data.html);
                 } else {
-                    alert(armL10n.errorLoadingRepairDetails);
+                    modalContent.html('<div class="arm-error"><?php _e('Error loading repair details.', 'appliance-repair-manager'); ?></div>');
                 }
             },
-            error: function() {
-                alert(armL10n.errorLoadingRepairDetails);
+            error: function(xhr, status, error) {
+                console.error('ARM Error:', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
+                });
+                modalContent.html('<div class="arm-error"><?php _e('Error loading repair details.', 'appliance-repair-manager'); ?></div>');
             }
         });
     });
 
-    // Cerrar modal al hacer clic en el botón de cerrar
+    // Cerrar modal
     $(document).on('click', '.arm-modal-close', function() {
-        $(this).closest('.arm-modal').fadeOut(300);
+        $('#repair-details-modal').fadeOut(300);
     });
 
     // Cerrar modal al hacer clic fuera
@@ -145,12 +155,12 @@ jQuery(document).ready(function($) {
         }
     });
 
-    // Prevenir que el clic dentro del modal lo cierre
-    $(document).on('click', '.arm-modal-content', function(e) {
+    // Prevenir cierre del modal al hacer clic dentro
+    $('.arm-modal-content').on('click', function(e) {
         e.stopPropagation();
     });
 
-    // Tecla ESC para cerrar modales
+    // Cerrar modal con ESC
     $(document).keyup(function(e) {
         if (e.key === "Escape") {
             $('.arm-modal').fadeOut(300);
@@ -162,8 +172,12 @@ jQuery(document).ready(function($) {
 <?php
 // Cargar scripts necesarios
 wp_enqueue_script('jquery');
-wp_enqueue_script('arm-admin-scripts', ARM_PLUGIN_URL . 'assets/js/admin.js', ['jquery'], ARM_VERSION, true);
+wp_enqueue_script('arm-modal-manager', ARM_PLUGIN_URL . 'assets/js/modal-manager.js', ['jquery'], ARM_VERSION, true);
+wp_enqueue_script('arm-admin-scripts', ARM_PLUGIN_URL . 'assets/js/admin.js', ['jquery', 'arm-modal-manager'], ARM_VERSION, true);
+
 wp_localize_script('arm-admin-scripts', 'armL10n', [
+    'ajaxurl' => admin_url('admin-ajax.php'),
+    'nonce' => wp_create_nonce('arm_ajax_nonce'),
     'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager')
 ]);
 

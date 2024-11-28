@@ -13,6 +13,7 @@ class Plugin {
     private $system_check;
     private $debug;
     private $hook_manager;
+    private $notes_handler;
     private $ajax_handler;
 
     private function __construct() {
@@ -39,6 +40,7 @@ class Plugin {
         $this->email_manager = new EmailManager();
         $this->assets = new Assets();
         $this->system_check = new \ApplianceRepairManager\Admin\SystemCheck();
+        $this->notes_handler = new Ajax\NotesHandler();
         $this->ajax_handler = new Ajax\ApplianceHandler();
     }
 
@@ -148,9 +150,6 @@ class Plugin {
     private function __clone() {}
 
     public function __wakeup() {
-        // Handle unserialization
-        $this->debug = Debug\ErrorLogger::getInstance();
-        $this->hook_manager = HookManager::getInstance();
-        $this->init_managers();
+        throw new \Exception("Cannot unserialize singleton");
     }
 }

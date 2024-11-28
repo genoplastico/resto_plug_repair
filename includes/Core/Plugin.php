@@ -65,13 +65,31 @@ class Plugin {
 
     public function add_admin_menu() {
         add_menu_page(
-            __('Repair Manager', 'appliance-repair-manager'),
-            __('Repair Manager', 'appliance-repair-manager'),
+            __('Dashboard', 'appliance-repair-manager'),
+            __('Dashboard', 'appliance-repair-manager'),
             'manage_options',
             'appliance-repair-manager',
             [$this, 'render_dashboard'],
             'dashicons-admin-tools',
             30
+        );
+
+        // Add submenu pages
+        add_submenu_page(
+            'appliance-repair-manager',
+            __('Dashboard', 'appliance-repair-manager'),
+            __('Dashboard', 'appliance-repair-manager'),
+            'manage_options',
+            'appliance-repair-manager'
+        );
+
+        add_submenu_page(
+            'appliance-repair-manager',
+            __('Repairs', 'appliance-repair-manager'),
+            __('Repairs', 'appliance-repair-manager'),
+            'edit_arm_repairs',
+            'arm-repairs',
+            [$this->repair_manager, 'render_repairs_page']
         );
 
         do_action('arm_admin_menu');
@@ -129,5 +147,5 @@ class Plugin {
     private function __clone() {}
 
     // Prevent unserializing of the instance
-    private function __wakeup() {}
+    public function __wakeup() {}
 }

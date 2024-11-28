@@ -19,7 +19,11 @@ class ApplianceHandler {
     public function getClientAppliances() {
         try {
             if (!check_ajax_referer('arm_ajax_nonce', 'nonce', false)) {
-                throw new \Exception('Invalid nonce');
+                throw new \Exception('Invalid security token');
+            }
+
+            if (!current_user_can('edit_arm_repairs')) {
+                throw new \Exception('Insufficient permissions');
             }
 
             $client_id = isset($_POST['client_id']) ? intval($_POST['client_id']) : 0;
@@ -44,7 +48,8 @@ class ApplianceHandler {
         } catch (\Exception $e) {
             $this->logger->logAjaxError('arm_get_client_appliances', $e->getMessage(), [
                 'client_id' => $client_id ?? null,
-                'wpdb_error' => $this->wpdb->last_error
+                'wpdb_error' => $this->wpdb->last_error,
+                'user_id' => get_current_user_id()
             ]);
             
             wp_send_json_error([
@@ -57,7 +62,11 @@ class ApplianceHandler {
     public function getRepairDetails() {
         try {
             if (!check_ajax_referer('arm_ajax_nonce', 'nonce', false)) {
-                throw new \Exception('Invalid nonce');
+                throw new \Exception('Invalid security token');
+            }
+
+            if (!current_user_can('edit_arm_repairs')) {
+                throw new \Exception('Insufficient permissions');
             }
 
             $repair_id = isset($_POST['repair_id']) ? intval($_POST['repair_id']) : 0;
@@ -80,12 +89,29 @@ class ApplianceHandler {
                 $repair_id
             ));
 
+            if ($repair === false) {
+                throw new \Exception($this->wpdb->last_error);
+            }
+
             if (!$repair) {
                 throw new \Exception('Repair not found');
             }
 
+            // Get repair notes
+            $notes = $this->wpdb->get_results($this->wpdb->prepare(
+                "SELECT n.*, u.display_name as author_name
+                FROM {$this->wpdb->prefix}arm_repair_notes n
+                LEFT JOIN {$this->wpdb->users} u ON n.user_id = u.ID
+                WHERE n.repair_id = %d
+                ORDER BY n.created_at DESC",
+                $repair_id
+            ));
+
+            // Add notes to repair object
+            $repair->notes = $notes;
+
             ob_start();
-            require ARM_PLUGIN_DIR . 'templates/admin/modals/repair-details.php';
+            include ARM_PLUGIN_DIR . 'templates/admin/modals/repair-details.php';
             $html = ob_get_clean();
 
             if (empty($html)) {
@@ -98,7 +124,8 @@ class ApplianceHandler {
             $this->logger->logAjaxError('arm_get_repair_details', $e->getMessage(), [
                 'repair_id' => $repair_id ?? null,
                 'wpdb_error' => $this->wpdb->last_error,
-                'template_path' => ARM_PLUGIN_DIR . 'templates/admin/modals/repair-details.php'
+                'template_path' => ARM_PLUGIN_DIR . 'templates/admin/modals/repair-details.php',
+                'user_id' => get_current_user_id()
             ]);
             
             wp_send_json_error([

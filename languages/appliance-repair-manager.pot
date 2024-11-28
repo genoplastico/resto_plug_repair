@@ -617,3 +617,327 @@ msgstr ""
 #: includes/Core/Plugin.php:90
 msgid "Invalid or expired access token."
 msgstr ""
+
+#: includes/Core/Plugin.php:150
+msgid "Active"
+msgstr ""
+
+#: includes/Core/Plugin.php:151
+msgid "Inactive"
+msgstr ""
+
+#: includes/Core/Plugin.php:152
+msgid "Created At"
+msgstr ""
+
+#: includes/Core/Plugin.php:153
+msgid "Updated At"
+msgstr ""
+
+#: includes/Core/Plugin.php:154
+msgid "Last Update"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:245
+msgid "View Details"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:246
+msgid "Edit Details"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:247
+msgid "Save Changes"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:248
+msgid "Cancel"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:249
+msgid "Delete"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:250
+msgid "Search"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:251
+msgid "Filter"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:252
+msgid "Reset Filters"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:253
+msgid "No results found"
+msgstr ""
+
+#: includes/Core/Assets.php:120
+msgid "Loading..."
+msgstr ""
+
+#: includes/Core/Assets.php:121
+msgid "Please wait..."
+msgstr ""
+
+#: includes/Core/Assets.php:122
+msgid "Success!"
+msgstr ""
+
+#: includes/Core/Assets.php:123
+msgid "Error"
+msgstr ""
+
+#: includes/Core/Assets.php:124
+msgid "Warning"
+msgstr ""
+
+#: includes/Core/Assets.php:125
+msgid "Information"
+msgstr ""
+
+#: includes/Core/Assets.php:126
+msgid "Confirm"
+msgstr ""
+
+#: includes/Core/Assets.php:127
+msgid "Are you sure?"
+msgstr ""
+
+#: includes/Core/Assets.php:128
+msgid "This action cannot be undone."
+msgstr ""
+
+#: includes/Core/Assets.php:129
+msgid "Yes, proceed"
+msgstr ""
+
+#: includes/Core/Assets.php:130
+msgid "No, cancel"
+msgstr ""
+
+#: includes/Core/Assets.php:131
+msgid "Required field"
+msgstr ""
+
+#: includes/Core/Assets.php:132
+msgid "Invalid format"
+msgstr ""
+
+#: includes/Core/Assets.php:133
+msgid "Must be a valid email"
+msgstr ""
+
+#: includes/Core/Assets.php:134
+msgid "Must be a valid phone number"
+msgstr ""
+
+#: includes/Core/Assets.php:135
+msgid "Must be a number"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:254
+msgid "Print"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:255
+msgid "Export"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:256
+msgid "Import"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:257
+msgid "Download"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:258
+msgid "Upload"
+msgstr ""
+
+#: includes/Core/Plugin.php:155
+msgid "Previous"
+msgstr ""
+
+#: includes/Core/Plugin.php:156
+msgid "Next"
+msgstr ""
+
+#: includes/Core/Plugin.php:157
+msgid "First"
+msgstr ""
+
+#: includes/Core/Plugin.php:158
+msgid "Last"
+msgstr ""
+
+#: includes/Core/Plugin.php:159
+msgid "Items per page"
+msgstr ""
+
+#: includes/Core/Plugin.php:160
+msgid "All"
+msgstr ""
+
+#: includes/Core/Plugin.php:161
+msgid "None"
+msgstr ""
+
+#: includes/Core/Plugin.php:162
+msgid "Select..."
+msgstr ""
+
+#: includes/Core/Plugin.php:163
+msgid "Other"
+msgstr ""
+
+#: includes/Core/Plugin.php:164
+msgid "Custom"
+msgstr ""
+
+#: includes/Core/Plugin.php:165
+msgid "Default"
+msgstr ""
+
+#: includes/Core/Plugin.php:166
+msgid "Enabled"
+msgstr ""
+
+#: includes/Core/Plugin.php:167
+msgid "Disabled"
+msgstr ""
+
+#: includes/Core/Plugin.php:168
+msgid "Not available"
+msgstr ""
+
+#: includes/Core/Plugin.php:169
+msgid "More information"
+msgstr ""
+
+#: includes/Core/Plugin.php:170
+msgid "Less information"
+msgstr ""
+
+#: includes/Core/Plugin.php:171
+msgid "Show more"
+msgstr ""
+
+#: includes/Core/Plugin.php:172
+msgid "Show less"
+msgstr ""
+
+#: includes/Core/Plugin.php:173
+msgid "Expand"
+msgstr ""
+
+#: includes/Core/Plugin.php:174
+msgid "Collapse"
+msgstr ""
+
+#: includes/Core/Plugin.php:175
+msgid "Open"
+msgstr ""
+
+#: includes/Core/Plugin.php:176
+msgid "Close"
+msgstr ""
+
+#: includes/Core/Plugin.php:177
+msgid "Start"
+msgstr ""
+
+#: includes/Core/Plugin.php:178
+msgid "End"
+msgstr ""
+
+#: includes/Core/Plugin.php:179
+msgid "Duration"
+msgstr ""
+
+#: includes/Core/Plugin.php:180
+msgid "Time"
+msgstr ""
+
+#: includes/Core/Plugin.php:181
+msgid "Date"
+msgstr ""
+
+#: includes/Core/Plugin.php:182
+msgid "From"
+msgstr ""
+
+#: includes/Core/Plugin.php:183
+msgid "To"
+msgstr ""
+
+#: includes/Core/Plugin.php:184
+msgid "Range"
+msgstr ""
+
+#: includes/Core/Assets.php:136
+msgid "Status changed successfully"
+msgstr ""
+
+#: includes/Core/Assets.php:137
+msgid "Changes saved successfully"
+msgstr ""
+
+#: includes/Core/Assets.php:138
+msgid "Operation completed successfully"
+msgstr ""
+
+#: includes/Core/Assets.php:139
+msgid "An error occurred while processing your request"
+msgstr ""
+
+#: includes/Core/Assets.php:140
+msgid "Please try again later"
+msgstr ""
+
+#: includes/Core/Assets.php:141
+msgid "Session expired"
+msgstr ""
+
+#: includes/Core/Assets.php:142
+msgid "Please log in again"
+msgstr ""
+
+#: includes/Core/Assets.php:143
+msgid "Unauthorized access"
+msgstr ""
+
+#: includes/Core/Assets.php:144
+msgid "Permission denied"
+msgstr ""
+
+#: includes/Core/Assets.php:145
+msgid "Access restricted"
+msgstr ""
+
+#: includes/Core/Assets.php:146
+msgid "File not found"
+msgstr ""
+
+#: includes/Core/Assets.php:147
+msgid "Page not found"
+msgstr ""
+
+#: includes/Core/Assets.php:148
+msgid "Resource not available"
+msgstr ""
+
+#: includes/Core/Assets.php:149
+msgid "Connection error"
+msgstr ""
+
+#: includes/Core/Assets.php:150
+msgid "Network error"
+msgstr ""
+
+#: includes/Core/Assets.php:151
+msgid "Server error"
+msgstr ""

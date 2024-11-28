@@ -64,7 +64,7 @@ jQuery(document).ready(function($) {
         var $modal = $('#repair-details-modal');
         var $content = $('#repair-details-content');
         
-        // Show modal first
+        // Show modal with loading state
         $modal.show();
         $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
         

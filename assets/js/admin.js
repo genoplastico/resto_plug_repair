@@ -1,4 +1,11 @@
 jQuery(document).ready(function($) {
+    // Debug logging function
+    function logDebug(message, data = {}) {
+        if (window.console && window.console.log) {
+            console.log('ARM Debug:', message, data);
+        }
+    }
+
     // Initialize select2
     if ($.fn.select2) {
         $('.arm-select2').select2({
@@ -7,49 +14,148 @@ jQuery(document).ready(function($) {
         });
     }
 
-    // Debug logging function
-    function logDebug(message, data = {}) {
-        if (window.console && window.console.log) {
-            console.log('ARM Debug:', message, data);
-        }
-    }
-
-    // Form submission handler
-    $('.arm-form').on('submit', function(e) {
-        logDebug('Form submission started', {
-            form: this.id || 'unnamed-form',
-            action: this.action
-        });
-
-        var $form = $(this);
-        var $submitButton = $form.find('button[type="submit"]');
+    // View repair details handler
+    $(document).on('click', '.view-repair-details', function(e) {
+        e.preventDefault();
+        var repairId = $(this).data('repair-id');
+        var $modal = $('#repair-details-modal');
+        var $content = $('#repair-details-content');
         
-        // Validate required fields
-        var isValid = true;
-        $form.find('[required]').each(function() {
-            if (!$(this).val()) {
-                isValid = false;
-                $(this).addClass('arm-error-field');
-                logDebug('Required field empty', {
-                    field: this.name,
-                    id: this.id
+        logDebug('Opening repair details', { repairId: repairId });
+        
+        $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
+        $modal.show();
+
+        $.ajax({
+            url: armL10n.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'arm_get_repair_details',
+                repair_id: repairId,
+                nonce: $('#arm_ajax_nonce').val()
+            },
+            success: function(response) {
+                logDebug('Repair details loaded', { response: response });
+                
+                if (response.success && response.data.html) {
+                    $content.html(response.data.html);
+                } else {
+                    $content.html('<div class="arm-error">' + armL10n.errorLoadingRepairDetails + '</div>');
+                    console.error('ARM Error:', response);
+                }
+            },
+            error: function(xhr, status, error) {
+                logDebug('Error loading repair details', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
                 });
-            } else {
-                $(this).removeClass('arm-error-field');
+                
+                $content.html('<div class="arm-error">' + armL10n.errorLoadingRepairDetails + '</div>');
             }
         });
+    });
 
-        if (!isValid) {
-            e.preventDefault();
-            alert(armL10n.fillRequiredFields);
-            return false;
+    // Handle note form submission
+    $(document).on('submit', '.arm-note-form', function(e) {
+        e.preventDefault();
+        var $form = $(this);
+        var $submitButton = $form.find('button[type="submit"]');
+        var $notesList = $form.closest('.arm-detail-section').find('.arm-notes-list');
+        
+        // Validate note content
+        var noteText = $form.find('textarea[name="note"]').val().trim();
+        if (!noteText) {
+            alert(armL10n.pleaseEnterNote);
+            return;
         }
 
-        // Disable submit button to prevent double submission
+        logDebug('Submitting note', {
+            repairId: $form.find('input[name="repair_id"]').val(),
+            isPublic: $form.find('input[name="is_public"]').is(':checked')
+        });
+
         $submitButton.prop('disabled', true);
+
+        $.ajax({
+            url: armL10n.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'arm_add_note',
+                repair_id: $form.find('input[name="repair_id"]').val(),
+                note: noteText,
+                is_public: $form.find('input[name="is_public"]').is(':checked'),
+                nonce: $form.find('input[name="note_nonce"]').val()
+            },
+            success: function(response) {
+                logDebug('Note submission response', { response: response });
+                
+                if (response.success) {
+                    $notesList.html(response.data.html);
+                    $form.find('textarea[name="note"]').val('');
+                    $form.find('input[name="is_public"]').prop('checked', false);
+                } else {
+                    alert(response.data.message || armL10n.errorAddingNote);
+                }
+            },
+            error: function(xhr, status, error) {
+                logDebug('Error adding note', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
+                });
+                alert(armL10n.errorAddingNote);
+            },
+            complete: function() {
+                $submitButton.prop('disabled', false);
+            }
+        });
+    });
+
+    // Delete note handler
+    $(document).on('click', '.arm-delete-note', function(e) {
+        e.preventDefault();
         
-        logDebug('Form validation passed, submitting', {
-            formData: $form.serialize()
+        if (!confirm(armL10n.confirmDeleteNote)) {
+            return;
+        }
+
+        var $button = $(this);
+        var $note = $button.closest('.arm-note');
+        var noteId = $note.data('note-id');
+        var $notesList = $note.closest('.arm-notes-list');
+
+        logDebug('Deleting note', { noteId: noteId });
+
+        $button.prop('disabled', true);
+
+        $.ajax({
+            url: armL10n.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'arm_delete_note',
+                note_id: noteId,
+                nonce: $('#arm_ajax_nonce').val()
+            },
+            success: function(response) {
+                logDebug('Note deletion response', { response: response });
+                
+                if (response.success) {
+                    $notesList.html(response.data.html);
+                } else {
+                    alert(response.data.message || armL10n.errorDeletingNote);
+                    $button.prop('disabled', false);
+                }
+            },
+            error: function(xhr, status, error) {
+                logDebug('Error deleting note', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
+                });
+                alert(armL10n.errorDeletingNote);
+                $button.prop('disabled', false);
+            }
         });
     });
 
@@ -58,9 +164,7 @@ jQuery(document).ready(function($) {
         var clientId = $(this).val();
         var $applianceSelect = $('#appliance_id');
         
-        logDebug('Client selected', {
-            clientId: clientId
-        });
+        logDebug('Client selected', { clientId: clientId });
         
         $applianceSelect.html('<option value="">' + armL10n.selectAppliance + '</option>').trigger('change');
         
@@ -78,14 +182,9 @@ jQuery(document).ready(function($) {
             },
             beforeSend: function() {
                 $applianceSelect.prop('disabled', true);
-                logDebug('Loading appliances', {
-                    clientId: clientId
-                });
             },
             success: function(response) {
-                logDebug('Appliances loaded', {
-                    response: response
-                });
+                logDebug('Appliances loaded', { response: response });
                 
                 if (response.success && response.data.appliances) {
                     var options = '<option value="">' + armL10n.selectAppliance + '</option>';
@@ -101,7 +200,7 @@ jQuery(document).ready(function($) {
                 }
             },
             error: function(xhr, status, error) {
-                console.error('ARM Ajax Error:', {
+                logDebug('Error loading appliances', {
                     status: status,
                     error: error,
                     response: xhr.responseText
@@ -113,6 +212,4 @@ jQuery(document).ready(function($) {
             }
         });
     });
-
-    // Rest of your existing JavaScript code...
 });

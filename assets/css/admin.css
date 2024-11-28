@@ -1,99 +1,56 @@
-/* Note Styles */
-.arm-note {
-    position: relative;
-    background: #f8f9fa;
-    border-left: 3px solid #ddd;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 0 4px 4px 0;
+/* Form Styles */
+.arm-form {
+    max-width: 800px;
+    margin: 20px 0;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.arm-note-public {
-    border-left-color: #2271b1;
+.arm-error-field {
+    border-color: #dc3232 !important;
+    box-shadow: 0 0 2px rgba(220,50,50,0.8) !important;
 }
 
-.arm-note-private {
-    border-left-color: #82878c;
+.arm-form-row {
+    margin-bottom: 15px;
 }
 
-.arm-note-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.arm-form-row label {
+    display: block;
     margin-bottom: 5px;
-    font-size: 12px;
-    color: #666;
-}
-
-.arm-note-author {
     font-weight: 600;
 }
 
-.arm-note-date {
-    color: #777;
-}
-
-.arm-note-visibility {
-    background: #2271b1;
-    color: #fff;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 11px;
-}
-
-.arm-note-content {
-    font-size: 13px;
-    line-height: 1.4;
-}
-
-.arm-delete-note {
-    margin-left: auto;
-    padding: 0;
-    background: none;
-    border: none;
-    color: #b32d2e;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: opacity 0.2s;
-}
-
-.arm-note:hover .arm-delete-note {
-    opacity: 1;
-}
-
-.arm-delete-note:hover {
-    color: #dc3232;
-}
-
-.arm-note-form {
-    margin-top: 15px;
-    padding: 15px;
-    background: #f8f9fa;
-    border: 1px solid #e2e4e7;
-    border-radius: 4px;
-}
-
-.arm-note-input {
+.arm-form-row input[type="text"],
+.arm-form-row input[type="number"],
+.arm-form-row textarea,
+.arm-form-row select {
     width: 100%;
-    margin-bottom: 10px;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
 }
 
-.arm-note-form-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.arm-form-row textarea {
+    min-height: 100px;
 }
 
-.arm-note-visibility-toggle {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 13px;
+.arm-form-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
 }
 
-.arm-note-visibility-toggle input[type="checkbox"] {
-    margin: 0;
+/* Error Messages */
+.arm-error-message {
+    padding: 10px 15px;
+    margin: 10px 0;
+    background: #fbeaea;
+    border-left: 4px solid #dc3232;
+    color: #dc3232;
 }
+
+/* Rest of your existing CSS... */

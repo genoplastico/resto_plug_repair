@@ -36,6 +36,7 @@
     padding: 0;
     font-size: 1.3em;
     line-height: 1.4;
+    color: #23282d;
 }
 
 .arm-modal-close {
@@ -55,6 +56,7 @@
     line-height: 30px;
     text-align: center;
     border-radius: 4px;
+    z-index: 1;
 }
 
 .arm-modal-close:hover {
@@ -64,6 +66,8 @@
 
 .arm-modal-body {
     padding: 20px;
+    background-color: #fff;
+    border-radius: 0 0 4px 4px;
     max-height: calc(100vh - 200px);
     overflow-y: auto;
 }
@@ -72,6 +76,7 @@
     text-align: center;
     padding: 40px;
     color: #666;
+    background-color: #fff;
 }
 
 .arm-error {
@@ -80,6 +85,7 @@
     color: #dc3232;
     background: #fbeaea;
     border-radius: 4px;
+    margin: 10px 0;
 }
 
 /* Detail Sections */
@@ -87,6 +93,7 @@
     margin-bottom: 20px;
     padding-bottom: 20px;
     border-bottom: 1px solid #eee;
+    background-color: #fff;
 }
 
 .arm-detail-section:last-child {
@@ -107,10 +114,100 @@
 .arm-detail-section p {
     margin: 0 0 10px;
     line-height: 1.5;
+    background-color: #fff;
 }
 
 .arm-detail-section strong {
     color: #23282d;
+}
+
+/* Notes Section */
+.arm-notes-list {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.arm-note {
+    background-color: #fff;
+    border-left: 3px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 0 4px 4px 0;
+}
+
+.arm-note-public {
+    border-left-color: #2271b1;
+}
+
+.arm-note-private {
+    border-left-color: #82878c;
+}
+
+.arm-note-header {
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #666;
+}
+
+.arm-note-content {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #2c3338;
+}
+
+.arm-note-form {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+.arm-note-input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.arm-note-form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Status Badges */
+.arm-status {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    background-color: #f0f0f1;
+    color: #50575e;
+}
+
+.arm-status-pending {
+    background-color: #f0f6fc;
+    color: #2271b1;
+}
+
+.arm-status-in_progress {
+    background-color: #fcf9e8;
+    color: #996800;
+}
+
+.arm-status-completed {
+    background-color: #edfaef;
+    color: #008a20;
+}
+
+.arm-status-delivered {
+    background-color: #f0f0f1;
+    color: #50575e;
 }
 
 /* Responsive Design */
@@ -127,4 +224,31 @@
     .arm-modal-body {
         max-height: calc(100vh - 150px);
     }
+
+    .arm-note-form-footer {
+        flex-direction: column;
+    }
+
+    .arm-note-form-footer button {
+        width: 100%;
+    }
+}
+
+/* Custom Scrollbar */
+.arm-modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.arm-modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.arm-modal-body::-webkit-scrollbar-thumb {
+    background: #c3c4c7;
+    border-radius: 3px;
+}
+
+.arm-modal-body::-webkit-scrollbar-thumb:hover {
+    background: #a7aaad;
 }

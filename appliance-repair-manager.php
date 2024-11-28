@@ -52,12 +52,15 @@ register_activation_hook(__FILE__, function() {
     \ApplianceRepairManager\Core\Activator::activate();
 });
 
+// Load translations early
+function arm_load_textdomain() {
+    load_plugin_textdomain('appliance-repair-manager', false, dirname(plugin_basename(__FILE__)) . '/languages');
+}
+add_action('plugins_loaded', 'arm_load_textdomain');
+
 // Initialize plugin
 function arm_init() {
-    // Cargar traducciones antes de inicializar el plugin
-    load_plugin_textdomain('appliance-repair-manager', false, dirname(plugin_basename(__FILE__)) . '/languages');
-    
     // Initialize main plugin class
     \ApplianceRepairManager\Core\Plugin::get_instance();
 }
-add_action('init', 'arm_init', 0);
+add_action('init', 'arm_init');

@@ -17,22 +17,11 @@ if (!$client || wp_hash($client->id . $client->email . wp_salt()) !== $token) {
     wp_die(__('Invalid or expired access token.', 'appliance-repair-manager'));
 }
 
-// Cargar estilos y scripts antes del header
-wp_enqueue_style('arm-admin-styles', ARM_PLUGIN_URL . 'assets/css/admin.css', [], ARM_VERSION);
-wp_enqueue_style('arm-modal-styles', ARM_PLUGIN_URL . 'assets/css/modal-manager.css', [], ARM_VERSION);
+// Remove theme styles that might conflict
+wp_dequeue_style('hello-elementor');
+wp_dequeue_style('hello-elementor-theme-style');
 
-wp_enqueue_script('jquery');
-wp_enqueue_script('arm-modal-manager', ARM_PLUGIN_URL . 'assets/js/modal-manager.js', ['jquery'], ARM_VERSION, true);
-wp_enqueue_script('arm-admin-scripts', ARM_PLUGIN_URL . 'assets/js/admin.js', ['jquery', 'arm-modal-manager'], ARM_VERSION, true);
-
-wp_localize_script('arm-admin-scripts', 'armL10n', [
-    'ajaxurl' => admin_url('admin-ajax.php'),
-    'nonce' => wp_create_nonce('arm_ajax_nonce'),
-    'loading' => __('Loading...', 'appliance-repair-manager'),
-    'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager')
-]);
-
-get_header();
+get_header('blank'); // Use a blank header if available, or create one
 ?>
 
 <div class="arm-public-view">
@@ -113,4 +102,32 @@ get_header();
 
 <?php wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce'); ?>
 
-<?php get_footer(); ?>
+<style>
+/* Override any theme styles that might interfere */
+.arm-public-view {
+    background: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.arm-public-view .wrap {
+    margin: 0;
+    padding: 0;
+}
+
+.arm-public-view h1 {
+    margin: 0 0 20px;
+    padding: 0;
+    font-size: 24px;
+    line-height: 1.4;
+}
+
+/* Ensure modal appears above everything */
+.arm-modal {
+    z-index: 999999;
+}
+</style>
+
+<?php get_footer('blank'); // Use a blank footer if available, or create one ?>

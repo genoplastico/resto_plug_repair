@@ -47,14 +47,40 @@ class Plugin {
         add_action('admin_menu', [$this, 'add_admin_menu']);
         add_filter('map_meta_cap', [$this, 'map_meta_cap'], 10, 4);
         add_action('template_redirect', [$this, 'handle_public_views']);
-        add_filter('template_include', [$this, 'load_plugin_template']);
+        add_filter('template_include', [$this, 'load_plugin_template'], 999);
         add_action('wp_enqueue_scripts', [$this->assets, 'enqueue_public_assets']);
         add_action('wp_footer', [$this->debug, 'printDebugInfo']);
         add_action('admin_footer', [$this->debug, 'printDebugInfo']);
+        
+        // Add rewrite rules for public views
+        add_action('init', [$this, 'add_rewrite_rules']);
+        add_filter('query_vars', [$this, 'add_query_vars']);
     }
 
     public function init() {
         load_plugin_textdomain('appliance-repair-manager', false, dirname(plugin_basename(ARM_PLUGIN_FILE)) . '/languages');
+    }
+
+    public function add_rewrite_rules() {
+        add_rewrite_rule(
+            'repair/client/([^/]+)/?$',
+            'index.php?arm_action=view_client_appliances&client_id=$matches[1]',
+            'top'
+        );
+        add_rewrite_rule(
+            'repair/appliance/([^/]+)/?$',
+            'index.php?arm_action=view_appliance&appliance_id=$matches[1]',
+            'top'
+        );
+        flush_rewrite_rules();
+    }
+
+    public function add_query_vars($vars) {
+        $vars[] = 'arm_action';
+        $vars[] = 'client_id';
+        $vars[] = 'appliance_id';
+        $vars[] = 'token';
+        return $vars;
     }
 
     public function add_admin_menu() {
@@ -118,61 +144,68 @@ class Plugin {
     }
 
     public function handle_public_views() {
-        if (isset($_GET['arm_action'])) {
-            $action = sanitize_text_field($_GET['arm_action']);
-            
-            $this->debug->log('Public view requested', [
-                'action' => $action,
-                'request_uri' => $_SERVER['REQUEST_URI'],
-                'query_string' => $_SERVER['QUERY_STRING']
-            ]);
-            
-            switch ($action) {
-                case 'view_client_appliances':
-                case 'view_appliance':
-                    // Let template_include handle the template loading
-                    status_header(200);
-                    return;
-                default:
-                    $this->debug->log('Invalid public view action', ['action' => $action], 'error');
-                    return;
-            }
+        global $wp_query;
+        
+        if (!isset($_GET['arm_action'])) {
+            return;
+        }
+
+        $action = sanitize_text_field($_GET['arm_action']);
+        
+        $this->debug->log('Public view requested', [
+            'action' => $action,
+            'request_uri' => $_SERVER['REQUEST_URI'],
+            'query_string' => isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '',
+            'wp_query' => $wp_query->query_vars
+        ]);
+
+        // Prevent 404 for our custom endpoints
+        if (in_array($action, ['view_client_appliances', 'view_appliance'])) {
+            $wp_query->is_404 = false;
+            $wp_query->is_page = true;
+            $wp_query->is_singular = true;
+            status_header(200);
         }
     }
 
     public function load_plugin_template($template) {
-        if (isset($_GET['arm_action'])) {
-            $action = sanitize_text_field($_GET['arm_action']);
-            
-            $this->debug->log('Template loading', [
-                'action' => $action,
-                'current_template' => $template
-            ]);
-            
-            switch ($action) {
-                case 'view_client_appliances':
-                    $new_template = ARM_PLUGIN_DIR . 'templates/public/client-appliances.php';
-                    break;
-                case 'view_appliance':
-                    $new_template = ARM_PLUGIN_DIR . 'templates/public/appliance-view.php';
-                    break;
-                default:
-                    $this->debug->log('No matching template for action', ['action' => $action], 'warning');
-                    return $template;
-            }
-
-            if (file_exists($new_template)) {
-                $this->debug->log('Loading plugin template', [
-                    'template' => $new_template,
-                    'exists' => true
-                ]);
-                return $new_template;
-            } else {
-                $this->debug->log('Template file not found', [
-                    'template' => $new_template
-                ], 'error');
-            }
+        global $wp_query;
+        
+        if (!isset($_GET['arm_action'])) {
+            return $template;
         }
+
+        $action = sanitize_text_field($_GET['arm_action']);
+        
+        $this->debug->log('Template loading attempt', [
+            'action' => $action,
+            'current_template' => $template,
+            'wp_query' => $wp_query->query_vars
+        ]);
+        
+        switch ($action) {
+            case 'view_client_appliances':
+                $new_template = ARM_PLUGIN_DIR . 'templates/public/client-appliances.php';
+                break;
+            case 'view_appliance':
+                $new_template = ARM_PLUGIN_DIR . 'templates/public/appliance-view.php';
+                break;
+            default:
+                $this->debug->log('No matching template for action', ['action' => $action], 'warning');
+                return $template;
+        }
+
+        if (file_exists($new_template)) {
+            $this->debug->log('Loading plugin template', [
+                'template' => $new_template,
+                'exists' => true
+            ]);
+            return $new_template;
+        }
+
+        $this->debug->log('Template file not found', [
+            'template' => $new_template
+        ], 'error');
 
         return $template;
     }

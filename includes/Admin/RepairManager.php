@@ -11,17 +11,6 @@ class RepairManager {
         global $wpdb;
         $this->wpdb = $wpdb;
         $this->logger = ErrorLogger::getInstance();
-
-        // Register hooks for repair management
-        add_action('admin_post_arm_add_repair', [$this, 'handleAddRepair']);
-        add_action('admin_post_arm_update_repair_status', [$this, 'handleUpdateRepairStatus']);
-        add_action('admin_post_arm_assign_technician', [$this, 'handleAssignTechnician']);
-        
-        // Register AJAX handlers
-        add_action('wp_ajax_arm_get_client_appliances', [$this, 'getClientAppliances']);
-        add_action('wp_ajax_arm_get_repair_details', [$this, 'getRepairDetails']);
-        add_action('wp_ajax_nopriv_arm_get_repair_details', [$this, 'getRepairDetails']);
-        add_action('wp_ajax_arm_get_appliance_history', [$this, 'getApplianceHistory']);
     }
 
     public function render_repairs_page() {
@@ -76,14 +65,10 @@ class RepairManager {
             check_ajax_referer('arm_ajax_nonce', 'nonce');
 
             $repair_id = isset($_POST['repair_id']) ? intval($_POST['repair_id']) : 0;
-            $is_public = isset($_POST['is_public']) ? (bool)$_POST['is_public'] : false;
-            $token = isset($_POST['token']) ? sanitize_text_field($_POST['token']) : '';
-
             if (!$repair_id) {
                 throw new \Exception('Invalid repair ID');
             }
 
-            // Get repair details with joins
             $repair = $this->wpdb->get_row($this->wpdb->prepare(
                 "SELECT r.*, 
                         a.type as appliance_type, 
@@ -104,32 +89,20 @@ class RepairManager {
                 throw new \Exception('Repair not found');
             }
 
-            // Verify access permissions
-            if ($is_public) {
-                $expected_token = wp_hash($repair->id . $repair->client_email . wp_salt());
-                if (!hash_equals($expected_token, $token)) {
-                    throw new \Exception('Invalid token');
-                }
-            } elseif (!current_user_can('edit_arm_repairs')) {
-                throw new \Exception('Insufficient permissions');
-            }
-
             // Get repair notes
-            $notes_query = $this->wpdb->prepare(
+            $notes = $this->wpdb->get_results($this->wpdb->prepare(
                 "SELECT n.*, u.display_name as author_name
                 FROM {$this->wpdb->prefix}arm_repair_notes n
                 LEFT JOIN {$this->wpdb->users} u ON n.user_id = u.ID
-                WHERE n.repair_id = %d " .
-                ($is_public ? "AND n.is_public = 1 " : "") .
-                "ORDER BY n.created_at DESC",
+                WHERE n.repair_id = %d
+                ORDER BY n.created_at DESC",
                 $repair_id
-            );
+            ));
 
-            $repair->notes = $this->wpdb->get_results($notes_query);
+            $repair->notes = $notes;
 
-            // Load appropriate template
             ob_start();
-            include ARM_PLUGIN_DIR . 'templates/' . ($is_public ? 'public' : 'admin') . '/modals/repair-details.php';
+            include ARM_PLUGIN_DIR . 'templates/admin/modals/repair-details.php';
             $html = ob_get_clean();
 
             wp_send_json_success(['html' => $html]);
@@ -137,8 +110,6 @@ class RepairManager {
         } catch (\Exception $e) {
             $this->logger->logAjaxError('arm_get_repair_details', $e->getMessage(), [
                 'repair_id' => $repair_id ?? null,
-                'is_public' => $is_public ?? false,
-                'token' => $token ?? null,
                 'wpdb_error' => $this->wpdb->last_error
             ]);
             
@@ -148,6 +119,4 @@ class RepairManager {
             ]);
         }
     }
-
-    // ... rest of the methods remain the same ...
 }

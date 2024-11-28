@@ -36,13 +36,17 @@ class Assets {
         // Modal Manager CSS
         wp_enqueue_style(
             'arm-modal-styles',
-            ARM_PLUGIN_URL . 'assets/css/modal-manager.css'
+            ARM_PLUGIN_URL . 'assets/css/modal-manager.css',
+            [],
+            ARM_VERSION
         );
 
         // Admin CSS
         wp_enqueue_style(
             'arm-admin-styles',
-            ARM_PLUGIN_URL . 'assets/css/admin.css'
+            ARM_PLUGIN_URL . 'assets/css/admin.css',
+            [],
+            ARM_VERSION
         );
 
         // Modal Manager JS
@@ -50,7 +54,7 @@ class Assets {
             'arm-modal-manager',
             ARM_PLUGIN_URL . 'assets/js/modal-manager.js',
             ['jquery'],
-            null,
+            ARM_VERSION,
             true
         );
 
@@ -59,11 +63,10 @@ class Assets {
             'arm-admin-scripts',
             ARM_PLUGIN_URL . 'assets/js/admin.js',
             ['jquery', 'select2', 'arm-modal-manager'],
-            null,
+            ARM_VERSION,
             true
         );
 
-        // Localize scripts
         wp_localize_script('arm-modal-manager', 'armAjax', [
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('arm_ajax_nonce'),
@@ -73,21 +76,8 @@ class Assets {
         wp_localize_script('arm-admin-scripts', 'armL10n', [
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('arm_ajax_nonce'),
-            'confirmStatusChange' => __('Are you sure you want to change the status?', 'appliance-repair-manager'),
-            'fillRequiredFields' => __('Please fill in all required fields.', 'appliance-repair-manager'),
-            'errorAddingNote' => __('Error adding note.', 'appliance-repair-manager'),
-            'publicUrlCopied' => __('Public URL has been copied to clipboard.', 'appliance-repair-manager'),
-            'selectClient' => __('Select Client', 'appliance-repair-manager'),
-            'selectAppliance' => __('Select Appliance', 'appliance-repair-manager'),
-            'errorLoadingHistory' => __('Error loading appliance history.', 'appliance-repair-manager'),
-            'modalError' => __('Error processing modal.', 'appliance-repair-manager'),
-            'generalError' => __('An error has occurred.', 'appliance-repair-manager'),
-            'errorLoadingAppliances' => __('Error loading appliances.', 'appliance-repair-manager'),
-            'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager'),
-            'assetLoadError' => __('Error loading required assets.', 'appliance-repair-manager')
+            'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager')
         ]);
-
-        $this->debug->checkModalStructure();
     }
 
     public function enqueue_public_assets() {
@@ -95,20 +85,22 @@ class Assets {
             return;
         }
 
-        $this->debug->log('Enqueuing public assets');
-
         wp_enqueue_script('jquery');
 
         // Modal Manager CSS
         wp_enqueue_style(
             'arm-modal-styles',
-            ARM_PLUGIN_URL . 'assets/css/modal-manager.css'
+            ARM_PLUGIN_URL . 'assets/css/modal-manager.css',
+            [],
+            ARM_VERSION
         );
 
-        // Public styles
+        // Public styles (using admin styles for consistency)
         wp_enqueue_style(
             'arm-public-styles',
-            ARM_PLUGIN_URL . 'assets/css/admin.css'
+            ARM_PLUGIN_URL . 'assets/css/admin.css',
+            [],
+            ARM_VERSION
         );
 
         // Modal Manager JS
@@ -116,7 +108,7 @@ class Assets {
             'arm-modal-manager',
             ARM_PLUGIN_URL . 'assets/js/modal-manager.js',
             ['jquery'],
-            null,
+            ARM_VERSION,
             true
         );
 
@@ -125,7 +117,7 @@ class Assets {
             'arm-public-scripts',
             ARM_PLUGIN_URL . 'assets/js/admin.js',
             ['jquery', 'arm-modal-manager'],
-            null,
+            ARM_VERSION,
             true
         );
 
@@ -137,7 +129,8 @@ class Assets {
 
         wp_localize_script('arm-public-scripts', 'armL10n', [
             'ajaxurl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('arm_ajax_nonce')
+            'nonce' => wp_create_nonce('arm_ajax_nonce'),
+            'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager')
         ]);
     }
 

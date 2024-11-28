@@ -41,6 +41,8 @@ class Plugin {
         add_action('init', [$this, 'init']);
         add_action('admin_menu', [$this, 'add_admin_menu']);
         add_filter('map_meta_cap', [$this, 'map_arm_capabilities'], 10, 4);
+        add_action('template_redirect', [$this, 'handle_public_views']);
+        add_filter('template_include', [$this, 'load_plugin_template']);
     }
 
     public function init() {
@@ -143,6 +145,44 @@ class Plugin {
         }
         
         return $caps;
+    }
+
+    public function handle_public_views() {
+        if (isset($_GET['arm_action'])) {
+            $action = sanitize_text_field($_GET['arm_action']);
+            
+            switch ($action) {
+                case 'view_client_appliances':
+                case 'view_appliance':
+                    // Let template_include handle the template loading
+                    return;
+                default:
+                    return;
+            }
+        }
+    }
+
+    public function load_plugin_template($template) {
+        if (isset($_GET['arm_action'])) {
+            $action = sanitize_text_field($_GET['arm_action']);
+            
+            switch ($action) {
+                case 'view_client_appliances':
+                    $new_template = ARM_PLUGIN_DIR . 'templates/public/client-appliances.php';
+                    break;
+                case 'view_appliance':
+                    $new_template = ARM_PLUGIN_DIR . 'templates/public/appliance-view.php';
+                    break;
+                default:
+                    return $template;
+            }
+
+            if (file_exists($new_template)) {
+                return $new_template;
+            }
+        }
+
+        return $template;
     }
 
     public static function get_repair_statuses() {

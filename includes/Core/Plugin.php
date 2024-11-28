@@ -103,11 +103,11 @@ class Plugin {
     }
 
     public static function get_repair_statuses() {
-        return get_option('arm_repair_statuses', [
-            'pending' => __('Pending Review', 'appliance-repair-manager'),
-            'in_progress' => __('In Repair', 'appliance-repair-manager'),
-            'completed' => __('Repaired', 'appliance-repair-manager'),
-            'delivered' => __('Delivered', 'appliance-repair-manager'),
-        ]);
+        return [
+            'pending' => __('Pendiente de Revisión', 'appliance-repair-manager'),
+            'in_progress' => __('En Reparación', 'appliance-repair-manager'),
+            'completed' => __('Reparado', 'appliance-repair-manager'),
+            'delivered' => __('Entregado', 'appliance-repair-manager'),
+        ];
     }
 }

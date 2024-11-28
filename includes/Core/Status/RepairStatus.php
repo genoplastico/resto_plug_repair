@@ -19,10 +19,10 @@ class RepairStatus {
 
     private function initializeStatuses() {
         $this->statuses = [
-            'pending' => __('Pending Review', 'appliance-repair-manager'),
-            'in_progress' => __('In Repair', 'appliance-repair-manager'),
-            'completed' => __('Repaired', 'appliance-repair-manager'),
-            'delivered' => __('Delivered', 'appliance-repair-manager'),
+            'pending' => __('Pendiente de Revisión', 'appliance-repair-manager'),
+            'in_progress' => __('En Reparación', 'appliance-repair-manager'),
+            'completed' => __('Reparado', 'appliance-repair-manager'),
+            'delivered' => __('Entregado', 'appliance-repair-manager'),
         ];
     }
 

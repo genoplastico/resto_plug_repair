@@ -137,7 +137,7 @@ class RepairManager {
 
         $repair_id = intval($_POST['repair_id']);
         $note = sanitize_textarea_field($_POST['note']);
-        $is_public = isset($_POST['is_public']) ? 1 : 0;
+        $is_public = isset($_POST['is_public']) && $_POST['is_public'] === '1' ? 1 : 0;
 
         if (empty($note)) {
             wp_send_json_error(['message' => __('Note cannot be empty.', 'appliance-repair-manager')]);
@@ -152,9 +152,10 @@ class RepairManager {
                 'repair_id' => $repair_id,
                 'user_id' => get_current_user_id(),
                 'note' => $note,
-                'is_public' => $is_public
+                'is_public' => $is_public,
+                'created_at' => current_time('mysql')
             ],
-            ['%d', '%d', '%s', '%d']
+            ['%d', '%d', '%s', '%d', '%s']
         );
 
         if ($result === false) {

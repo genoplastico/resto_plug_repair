@@ -23,10 +23,30 @@ class ErrorLogger {
         $log_dir = dirname($this->log_file);
         if (!file_exists($log_dir)) {
             wp_mkdir_p($log_dir);
-            // Protect log directory
-            file_put_contents($log_dir . '/.htaccess', 'Deny from all');
-            file_put_contents($log_dir . '/index.php', '<?php // Silence is golden');
         }
+        
+        // Create or update .htaccess
+        $htaccess = $log_dir . '/.htaccess';
+        if (!file_exists($htaccess)) {
+            file_put_contents($htaccess, "Order Deny,Allow\nDeny from all");
+        }
+        
+        // Create or update index.php
+        $index = $log_dir . '/index.php';
+        if (!file_exists($index)) {
+            file_put_contents($index, '<?php // Silence is golden');
+        }
+        
+        // Ensure log file exists and is writable
+        if (!file_exists($this->log_file)) {
+            touch($this->log_file);
+        }
+        
+        // Set proper permissions
+        chmod($log_dir, 0755);
+        chmod($this->log_file, 0644);
+        chmod($htaccess, 0644);
+        chmod($index, 0644);
     }
 
     public function logError($message, $context = [], $severity = 'ERROR') {
@@ -69,7 +89,9 @@ class ErrorLogger {
             json_encode($context, JSON_PRETTY_PRINT)
         );
 
-        error_log($log_message, 3, $this->log_file);
+        if (!@error_log($log_message, 3, $this->log_file)) {
+            error_log('Failed to write to ARM error log: ' . $this->log_file);
+        }
 
         if ($severity === 'CRITICAL') {
             $this->notifyAdmin($log_entry);
@@ -122,7 +144,7 @@ class ErrorLogger {
             return [];
         }
 
-        $logs = file($this->log_file);
+        $logs = @file($this->log_file);
         if (!$logs) {
             return [];
         }
@@ -132,7 +154,7 @@ class ErrorLogger {
 
     public function clearLogs() {
         if (file_exists($this->log_file)) {
-            unlink($this->log_file);
+            @unlink($this->log_file);
         }
         $this->init_log_directory();
     }
@@ -148,11 +170,11 @@ class ErrorLogger {
         }
 
         $backup_file = $this->log_file . '.' . date('Y-m-d-H-i-s') . '.bak';
-        rename($this->log_file, $backup_file);
+        @rename($this->log_file, $backup_file);
         
         // Keep only last 5 backup files
         $backup_files = glob($this->log_file . '.*.bak');
-        if (count($backup_files) > 5) {
+        if ($backup_files && count($backup_files) > 5) {
             array_map('unlink', array_slice($backup_files, 0, -5));
         }
     }

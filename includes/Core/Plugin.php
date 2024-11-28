@@ -67,8 +67,8 @@ class Plugin {
 
     public function add_admin_menu() {
         add_menu_page(
-            __('Dashboard', 'appliance-repair-manager'),
-            __('Dashboard', 'appliance-repair-manager'),
+            __('Panel de Control', 'appliance-repair-manager'),
+            __('Panel de Control', 'appliance-repair-manager'),
             'manage_options',
             'appliance-repair-manager',
             [$this, 'render_dashboard'],
@@ -79,16 +79,16 @@ class Plugin {
         // Add submenu pages
         add_submenu_page(
             'appliance-repair-manager',
-            __('Dashboard', 'appliance-repair-manager'),
-            __('Dashboard', 'appliance-repair-manager'),
+            __('Panel de Control', 'appliance-repair-manager'),
+            __('Panel de Control', 'appliance-repair-manager'),
             'manage_options',
             'appliance-repair-manager'
         );
 
         add_submenu_page(
             'appliance-repair-manager',
-            __('Repairs', 'appliance-repair-manager'),
-            __('Repairs', 'appliance-repair-manager'),
+            __('Reparaciones', 'appliance-repair-manager'),
+            __('Reparaciones', 'appliance-repair-manager'),
             'edit_arm_repairs',
             'arm-repairs',
             [$this->repair_manager, 'render_repairs_page']
@@ -147,5 +147,10 @@ class Plugin {
 
     private function __clone() {}
 
-    public function __wakeup() {}
+    public function __wakeup() {
+        // Handle unserialization
+        $this->debug = Debug\ErrorLogger::getInstance();
+        $this->hook_manager = HookManager::getInstance();
+        $this->init_managers();
+    }
 }

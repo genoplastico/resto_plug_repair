@@ -43,22 +43,46 @@ function arm_get_recent_repairs($limit = 5) {
 }
 
 /**
- * Format a repair status for display
+ * Get status label
  *
  * @param string $status The status key
  * @return string The formatted status label
  */
 function arm_get_status_label($status) {
-    $statuses = get_option('arm_repair_statuses', []);
-    return isset($statuses[$status]) ? $statuses[$status] : ucfirst($status);
+    return \ApplianceRepairManager\Core\Status\RepairStatus::getInstance()->getLabel($status);
 }
 
 /**
- * Get CSS class for a repair status
+ * Get status CSS class
  *
  * @param string $status The status key
  * @return string The CSS class
  */
 function arm_get_status_class($status) {
-    return 'arm-status-' . sanitize_html_class($status);
+    return \ApplianceRepairManager\Core\Status\RepairStatus::getInstance()->getClass($status);
+}
+
+/**
+ * Render a status badge
+ *
+ * @param string $status The status to render
+ * @return string HTML for the status badge
+ */
+function arm_render_status_badge($status) {
+    $renderer = new \ApplianceRepairManager\Core\Status\StatusRenderer();
+    return $renderer->renderStatusBadge($status);
+}
+
+/**
+ * Render a status select dropdown
+ *
+ * @param string $current_status Current status value
+ * @param string $name Form field name
+ * @param string $id Form field ID
+ * @param string $class CSS classes
+ * @return string HTML for the select dropdown
+ */
+function arm_render_status_select($current_status, $name = 'status', $id = '', $class = '') {
+    $renderer = new \ApplianceRepairManager\Core\Status\StatusRenderer();
+    return $renderer->renderStatusSelect($current_status, $name, $id, $class);
 }

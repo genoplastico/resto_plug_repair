@@ -54,8 +54,8 @@ register_activation_hook(__FILE__, function() {
 
 // Initialize plugin
 function arm_init() {
-    // Establecer el idioma español por defecto
-    load_textdomain('appliance-repair-manager', ARM_PLUGIN_DIR . 'languages/appliance-repair-manager-es_ES.mo');
+    // Cargar traducciones
+    load_plugin_textdomain('appliance-repair-manager', false, dirname(plugin_basename(__FILE__)) . '/languages');
     
     // Initialize main plugin class
     \ApplianceRepairManager\Core\Plugin::get_instance();

@@ -25,9 +25,11 @@ class Plugin {
     }
 
     private function init_managers() {
+        // Initialize managers needed for both admin and public
         $this->repair_manager = new \ApplianceRepairManager\Admin\RepairManager();
         $this->assets = new Assets();
         
+        // Initialize admin-only managers
         if (is_admin()) {
             $this->client_manager = new \ApplianceRepairManager\Admin\ClientManager();
             $this->appliance_manager = new \ApplianceRepairManager\Admin\ApplianceManager();
@@ -44,6 +46,7 @@ class Plugin {
         add_filter('map_meta_cap', [$this, 'map_arm_capabilities'], 10, 4);
         add_action('template_redirect', [$this, 'handle_public_views']);
         add_filter('template_include', [$this, 'load_plugin_template']);
+        add_action('wp_enqueue_scripts', [$this->assets, 'enqueue_public_assets']);
     }
 
     public function init() {
@@ -51,7 +54,7 @@ class Plugin {
     }
 
     public function add_admin_menu() {
-        // Add main menu page
+        // Add main menu
         add_menu_page(
             __('Repair Manager', 'appliance-repair-manager'),
             __('Repair Manager', 'appliance-repair-manager'),
@@ -72,7 +75,17 @@ class Plugin {
             [$this, 'render_dashboard']
         );
 
-        // Add other submenu pages
+        if ($this->repair_manager) {
+            add_submenu_page(
+                'appliance-repair-manager',
+                __('Repairs', 'appliance-repair-manager'),
+                __('Repairs', 'appliance-repair-manager'),
+                'manage_options',
+                'arm-repairs',
+                [$this->repair_manager, 'render_repairs_page']
+            );
+        }
+
         if ($this->client_manager) {
             add_submenu_page(
                 'appliance-repair-manager',
@@ -92,17 +105,6 @@ class Plugin {
                 'manage_options',
                 'arm-appliances',
                 [$this->appliance_manager, 'render_appliances_page']
-            );
-        }
-
-        if ($this->repair_manager) {
-            add_submenu_page(
-                'appliance-repair-manager',
-                __('Repairs', 'appliance-repair-manager'),
-                __('Repairs', 'appliance-repair-manager'),
-                'manage_options',
-                'arm-repairs',
-                [$this->repair_manager, 'render_repairs_page']
             );
         }
 
@@ -156,6 +158,7 @@ class Plugin {
                 case 'view_client_appliances':
                 case 'view_appliance':
                     // Let template_include handle the template loading
+                    status_header(200);
                     return;
                 default:
                     return;
@@ -179,8 +182,6 @@ class Plugin {
             }
 
             if (file_exists($new_template)) {
-                // Force the template to be loaded
-                status_header(200);
                 return $new_template;
             }
         }

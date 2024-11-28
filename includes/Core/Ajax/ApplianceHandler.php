@@ -65,6 +65,7 @@ class ApplianceHandler {
 
             $repair_id = isset($_POST['repair_id']) ? intval($_POST['repair_id']) : 0;
             $is_public = isset($_POST['is_public']) ? (bool)$_POST['is_public'] : false;
+            $token = isset($_POST['token']) ? sanitize_text_field($_POST['token']) : '';
 
             if (!$repair_id) {
                 throw new \Exception('Invalid repair ID');
@@ -92,7 +93,33 @@ class ApplianceHandler {
             }
 
             // Verify access permissions
-            if (!$this->canAccessRepairDetails($repair, $is_public)) {
+            if ($is_public) {
+                // Get client info for token validation
+                $client = $this->wpdb->get_row($this->wpdb->prepare(
+                    "SELECT c.* 
+                    FROM {$this->wpdb->prefix}arm_clients c
+                    JOIN {$this->wpdb->prefix}arm_appliances a ON c.id = a.client_id
+                    JOIN {$this->wpdb->prefix}arm_repairs r ON a.id = r.appliance_id
+                    WHERE r.id = %d",
+                    $repair_id
+                ));
+
+                if (!$client) {
+                    throw new \Exception('Client not found');
+                }
+
+                $expected_token = wp_hash($client->id . $client->email . wp_salt());
+                
+                if (!hash_equals($expected_token, $token)) {
+                    $this->logger->logError('Invalid token provided', [
+                        'repair_id' => $repair_id,
+                        'provided_token' => $token,
+                        'expected_token' => $expected_token,
+                        'client_id' => $client->id
+                    ]);
+                    throw new \Exception('Invalid token');
+                }
+            } elseif (!current_user_can('edit_arm_repairs')) {
                 throw new \Exception('Insufficient permissions');
             }
 
@@ -107,28 +134,12 @@ class ApplianceHandler {
                 $repair_id
             );
 
-            $notes = $this->wpdb->get_results($notes_query);
+            $repair->notes = $this->wpdb->get_results($notes_query);
 
-            // Add notes to repair object
-            $repair->notes = $notes;
-
-            // Start output buffering
+            // Load appropriate template
             ob_start();
-            
-            // Include the appropriate template
-            $template_path = ARM_PLUGIN_DIR . 'templates/'. ($is_public ? 'public' : 'admin') .'/modals/repair-details.php';
-            if (!file_exists($template_path)) {
-                throw new \Exception('Template file not found: ' . $template_path);
-            }
-            
-            include $template_path;
-            
-            // Get the buffered content
+            include ARM_PLUGIN_DIR . 'templates/' . ($is_public ? 'public' : 'admin') . '/modals/repair-details.php';
             $html = ob_get_clean();
-
-            if (empty($html)) {
-                throw new \Exception('Failed to generate repair details HTML');
-            }
 
             wp_send_json_success(['html' => $html]);
 
@@ -136,10 +147,10 @@ class ApplianceHandler {
             $this->logger->logAjaxError('arm_get_repair_details', $e->getMessage(), [
                 'repair_id' => $repair_id ?? null,
                 'is_public' => $is_public ?? false,
+                'token' => $token ?? null,
                 'wpdb_error' => $this->wpdb->last_error ?? null,
-                'template_path' => $template_path ?? null,
-                'user_id' => get_current_user_id(),
-                'trace' => $e->getTraceAsString()
+                'ajax_action' => 'arm_get_repair_details',
+                'request_data' => $_POST
             ]);
             
             wp_send_json_error([
@@ -147,26 +158,5 @@ class ApplianceHandler {
                 'error' => $e->getMessage()
             ]);
         }
-    }
-
-    private function canAccessRepairDetails($repair, $is_public) {
-        // Admin users can always access
-        if (current_user_can('manage_options')) {
-            return true;
-        }
-
-        // Technicians can access their assigned repairs
-        if (current_user_can('edit_arm_repairs') && get_current_user_id() == $repair->technician_id) {
-            return true;
-        }
-
-        // Public access requires valid token
-        if ($is_public) {
-            $token = isset($_POST['token']) ? sanitize_text_field($_POST['token']) : '';
-            $expected_token = wp_hash($repair->id . $repair->client_email . wp_salt());
-            return hash_equals($expected_token, $token);
-        }
-
-        return false;
     }
 }

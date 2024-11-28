@@ -78,6 +78,7 @@ get_header();
                             <td>
                                 <button type="button" class="button button-small view-repair-details" 
                                         data-repair-id="<?php echo esc_attr($repair->id); ?>"
+                                        data-client-id="<?php echo esc_attr($client_id); ?>"
                                         data-token="<?php echo esc_attr($token); ?>">
                                     <?php _e('View Details', 'appliance-repair-manager'); ?>
                                 </button>
@@ -98,5 +99,65 @@ get_header();
 </div>
 
 <?php wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce'); ?>
+
+<script>
+jQuery(document).ready(function($) {
+    // View repair details handler
+    $(document).on('click', '.view-repair-details', function(e) {
+        e.preventDefault();
+        var $button = $(this);
+        var repairId = $button.data('repair-id');
+        var token = $button.data('token');
+        var $modal = $('#repair-details-modal');
+        var $content = $('#repair-details-content');
+        
+        $content.html('<div class="arm-loading"><?php echo esc_js(__('Loading...', 'appliance-repair-manager')); ?></div>');
+        $modal.show();
+
+        $.ajax({
+            url: '<?php echo esc_url(admin_url('admin-ajax.php')); ?>',
+            type: 'POST',
+            data: {
+                action: 'arm_get_repair_details',
+                repair_id: repairId,
+                token: token,
+                is_public: true,
+                nonce: $('#arm_ajax_nonce').val()
+            },
+            success: function(response) {
+                if (response.success && response.data.html) {
+                    $content.html(response.data.html);
+                } else {
+                    var errorMessage = response.data && response.data.message 
+                        ? response.data.message 
+                        : '<?php echo esc_js(__('Error loading repair details.', 'appliance-repair-manager')); ?>';
+                    
+                    $content.html('<div class="arm-error">' + errorMessage + '</div>');
+                }
+            },
+            error: function() {
+                $content.html('<div class="arm-error"><?php echo esc_js(__('Error loading repair details.', 'appliance-repair-manager')); ?></div>');
+            }
+        });
+    });
+
+    // Close modal handlers
+    $(document).on('click', '.arm-modal-close', function() {
+        $(this).closest('.arm-modal').hide();
+    });
+
+    $(document).on('click', '.arm-modal', function(e) {
+        if ($(e.target).hasClass('arm-modal')) {
+            $(this).hide();
+        }
+    });
+
+    $(document).keyup(function(e) {
+        if (e.key === 'Escape') {
+            $('.arm-modal').hide();
+        }
+    });
+});
+</script>
 
 <?php get_footer(); ?>

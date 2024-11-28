@@ -13,7 +13,119 @@ class RepairManager {
         add_action('wp_ajax_arm_get_client_appliances', [$this, 'get_client_appliances']);
     }
 
-    // ... (otros métodos permanecen igual)
+    public function add_repairs_menu() {
+        add_submenu_page(
+            'appliance-repair-manager',
+            __('Repairs', 'appliance-repair-manager'),
+            __('Repairs', 'appliance-repair-manager'),
+            'manage_options',
+            'arm-repairs',
+            [$this, 'render_repairs_page']
+        );
+    }
+
+    public function render_repairs_page() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+        include ARM_PLUGIN_DIR . 'templates/admin/repairs.php';
+    }
+
+    public function handle_add_repair() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+
+        check_admin_referer('arm_add_repair');
+
+        $repair_data = [
+            'appliance_id' => intval($_POST['appliance_id']),
+            'technician_id' => intval($_POST['technician_id']),
+            'diagnosis' => sanitize_textarea_field($_POST['diagnosis']),
+            'parts_used' => sanitize_textarea_field($_POST['parts_used']),
+            'cost' => floatval($_POST['cost']),
+            'status' => 'pending'
+        ];
+
+        global $wpdb;
+        $wpdb->insert(
+            $wpdb->prefix . 'arm_repairs',
+            $repair_data,
+            ['%d', '%d', '%s', '%s', '%f', '%s']
+        );
+
+        wp_redirect(add_query_arg([
+            'page' => 'arm-repairs',
+            'message' => 'repair_added'
+        ], admin_url('admin.php')));
+        exit;
+    }
+
+    public function handle_update_repair_status() {
+        if (!current_user_can('edit_arm_repairs')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+
+        check_admin_referer('arm_update_repair_status');
+
+        $repair_id = intval($_POST['repair_id']);
+        $status = sanitize_text_field($_POST['status']);
+        $appliance_id = intval($_POST['appliance_id']);
+
+        global $wpdb;
+        
+        // Update repair status
+        $wpdb->update(
+            $wpdb->prefix . 'arm_repairs',
+            ['status' => $status],
+            ['id' => $repair_id],
+            ['%s'],
+            ['%d']
+        );
+
+        // Update appliance status if repair is completed or delivered
+        if (in_array($status, ['completed', 'delivered'])) {
+            $wpdb->update(
+                $wpdb->prefix . 'arm_appliances',
+                ['status' => $status],
+                ['id' => $appliance_id],
+                ['%s'],
+                ['%d']
+            );
+        }
+
+        wp_redirect(add_query_arg([
+            'page' => 'arm-repairs',
+            'message' => 'status_updated'
+        ], admin_url('admin.php')));
+        exit;
+    }
+
+    public function handle_assign_technician() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+
+        check_admin_referer('arm_assign_technician');
+
+        $repair_id = intval($_POST['repair_id']);
+        $technician_id = intval($_POST['technician_id']);
+
+        global $wpdb;
+        $wpdb->update(
+            $wpdb->prefix . 'arm_repairs',
+            ['technician_id' => $technician_id],
+            ['id' => $repair_id],
+            ['%d'],
+            ['%d']
+        );
+
+        wp_redirect(add_query_arg([
+            'page' => 'arm-repairs',
+            'message' => 'technician_assigned'
+        ], admin_url('admin.php')));
+        exit;
+    }
 
     public function handle_add_note_ajax() {
         check_ajax_referer('arm_ajax_nonce', 'nonce');
@@ -73,6 +185,87 @@ class RepairManager {
             'note_html' => $note_html,
             'note_id' => $note_id
         ]);
+    }
+
+    public function get_repair_details() {
+        check_ajax_referer('arm_ajax_nonce', 'nonce');
+
+        $repair_id = intval($_POST['repair_id']);
+
+        global $wpdb;
+        $repair = $wpdb->get_row($wpdb->prepare("
+            SELECT r.*, 
+                   a.type as appliance_type,
+                   a.brand,
+                   a.model,
+                   c.name as client_name,
+                   u.display_name as technician_name
+            FROM {$wpdb->prefix}arm_repairs r
+            LEFT JOIN {$wpdb->prefix}arm_appliances a ON r.appliance_id = a.id
+            LEFT JOIN {$wpdb->prefix}arm_clients c ON a.client_id = c.id
+            LEFT JOIN {$wpdb->users} u ON r.technician_id = u.ID
+            WHERE r.id = %d
+        ", $repair_id));
+
+        if (!$repair) {
+            wp_send_json_error(['message' => __('Repair not found.', 'appliance-repair-manager')]);
+            return;
+        }
+
+        ob_start();
+        include ARM_PLUGIN_DIR . 'templates/admin/modals/repair-details.php';
+        $html = ob_get_clean();
+
+        wp_send_json_success(['html' => $html]);
+    }
+
+    public function get_appliance_history() {
+        check_ajax_referer('arm_ajax_nonce', 'nonce');
+
+        $appliance_id = intval($_POST['appliance_id']);
+
+        global $wpdb;
+        $appliance = $wpdb->get_row($wpdb->prepare("
+            SELECT a.*, c.name as client_name
+            FROM {$wpdb->prefix}arm_appliances a
+            LEFT JOIN {$wpdb->prefix}arm_clients c ON a.client_id = c.id
+            WHERE a.id = %d
+        ", $appliance_id));
+
+        if (!$appliance) {
+            wp_send_json_error(['message' => __('Appliance not found.', 'appliance-repair-manager')]);
+            return;
+        }
+
+        $repairs = $wpdb->get_results($wpdb->prepare("
+            SELECT r.*, u.display_name as technician_name
+            FROM {$wpdb->prefix}arm_repairs r
+            LEFT JOIN {$wpdb->users} u ON r.technician_id = u.ID
+            WHERE r.appliance_id = %d
+            ORDER BY r.created_at DESC
+        ", $appliance_id));
+
+        ob_start();
+        include ARM_PLUGIN_DIR . 'templates/admin/modals/appliance-history.php';
+        $html = ob_get_clean();
+
+        wp_send_json_success(['html' => $html]);
+    }
+
+    public function get_client_appliances() {
+        check_ajax_referer('arm_ajax_nonce', 'nonce');
+
+        $client_id = intval($_POST['client_id']);
+
+        global $wpdb;
+        $appliances = $wpdb->get_results($wpdb->prepare("
+            SELECT id, type, brand, model 
+            FROM {$wpdb->prefix}arm_appliances 
+            WHERE client_id = %d 
+            ORDER BY type ASC
+        ", $client_id));
+
+        wp_send_json_success($appliances);
     }
 
     public function get_repair_notes($repair_id, $include_private = true) {

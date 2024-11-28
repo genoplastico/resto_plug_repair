@@ -512,3 +512,61 @@ msgstr "Error de red"
 
 msgid "Server error"
 msgstr "Error del servidor"
+
+# Menú principal y submenús
+msgid "Repair Manager"
+msgstr "Gestor de Reparaciones"
+
+msgid "Dashboard"
+msgstr "Panel de Control"
+
+msgid "Appliances"
+msgstr "Electrodomésticos"
+
+msgid "Clients"
+msgstr "Clientes"
+
+msgid "Repairs"
+msgstr "Reparaciones"
+
+msgid "Technicians"
+msgstr "Técnicos"
+
+msgid "Settings"
+msgstr "Configuración"
+
+# Estados de reparación
+msgid "Pending Review"
+msgstr "Pendiente de Revisión"
+
+msgid "In Repair"
+msgstr "En Reparación"
+
+msgid "Repaired"
+msgstr "Reparado"
+
+msgid "Delivered"
+msgstr "Entregado"
+
+# Títulos de secciones
+msgid "Appliances Management"
+msgstr "Gestión de Electrodomésticos"
+
+msgid "Clients Management"
+msgstr "Gestión de Clientes"
+
+msgid "Repairs Management"
+msgstr "Gestión de Reparaciones"
+
+msgid "Technicians Management"
+msgstr "Gestión de Técnicos"
+
+# Estados en el dashboard
+msgid "Pending Repairs"
+msgstr "Reparaciones Pendientes"
+
+msgid "In Progress"
+msgstr "En Progreso"
+
+msgid "Completed"
+msgstr "Completadas"

@@ -34,7 +34,7 @@ jQuery(document).ready(function($) {
                     $('#appliance_id').html(options).trigger('change');
                 } else {
                     console.error('ARM Error:', response);
-                    alert(response.data.message || armL10n.errorLoadingAppliances);
+                    alert(armL10n.errorLoadingAppliances);
                 }
             },
             error: function(xhr, status, error) {
@@ -53,6 +53,7 @@ jQuery(document).ready(function($) {
         e.preventDefault();
         var repairId = $(this).data('repair-id');
         var modal = $('#repair-details-modal');
+        var modalContent = $('#repair-details-content');
         
         $.ajax({
             url: armL10n.ajaxurl,
@@ -60,15 +61,18 @@ jQuery(document).ready(function($) {
             data: {
                 action: 'arm_get_repair_details',
                 repair_id: repairId,
-                nonce: $('#arm_ajax_nonce').val()
+                nonce: $('#arm_ajax_nonce').val(),
+                is_public: window.location.href.indexOf('arm_action=view_client_appliances') > -1
+            },
+            beforeSend: function() {
+                modalContent.html('<div class="arm-loading">' + armL10n.loading + '</div>');
+                modal.fadeIn(300);
             },
             success: function(response) {
-                if (response.success) {
-                    $('#repair-details-content').html(response.data.html);
-                    modal.fadeIn(300);
+                if (response.success && response.data && response.data.html) {
+                    modalContent.html(response.data.html);
                 } else {
-                    console.error('ARM Error:', response);
-                    alert(response.data.message || armL10n.errorLoadingRepairDetails);
+                    modalContent.html('<div class="arm-error">' + armL10n.errorLoadingRepairDetails + '</div>');
                 }
             },
             error: function(xhr, status, error) {
@@ -77,54 +81,46 @@ jQuery(document).ready(function($) {
                     error: error,
                     response: xhr.responseText
                 });
-                alert(armL10n.errorLoadingRepairDetails);
+                modalContent.html('<div class="arm-error">' + armL10n.errorLoadingRepairDetails + '</div>');
             }
         });
     });
 
-    // Agregar nota vía AJAX
-    $(document).on('submit', '.arm-note-form', function(e) {
-        e.preventDefault();
-        var form = $(this);
-        var noteInput = form.find('textarea[name="note"]');
-        var notesList = form.closest('.arm-detail-section').find('.arm-notes-list');
-        var isPublic = form.find('input[name="is_public"]').is(':checked') ? '1' : '0';
-
-        $.ajax({
-            url: armL10n.ajaxurl,
-            type: 'POST',
-            data: {
-                action: 'arm_add_note_ajax',
-                repair_id: form.find('input[name="repair_id"]').val(),
-                note: noteInput.val(),
-                is_public: isPublic,
-                nonce: $('#arm_ajax_nonce').val()
-            },
-            success: function(response) {
-                if (response.success) {
-                    if (notesList.find('.arm-note').length === 0) {
-                        notesList.empty(); // Remove "No notes available" message
-                    }
-                    notesList.prepend(response.data.note_html);
-                    noteInput.val('');
-                    form.find('input[name="is_public"]').prop('checked', false);
-                } else {
-                    console.error('ARM Error:', response);
-                    alert(response.data.message || armL10n.errorAddingNote);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('ARM Error:', {
-                    status: status,
-                    error: error,
-                    response: xhr.responseText
-                });
-                alert(armL10n.errorAddingNote);
-            }
-        });
+    // Copiar URL pública
+    $('.copy-public-url').click(function() {
+        var url = $(this).data('url');
+        if (!url) {
+            alert(armL10n.errorCopyingUrl);
+            return;
+        }
+        
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(url).then(function() {
+                alert(armL10n.publicUrlCopied);
+            }).catch(function() {
+                fallbackCopyToClipboard(url);
+            });
+        } else {
+            fallbackCopyToClipboard(url);
+        }
     });
 
-    // Cerrar modales
+    function fallbackCopyToClipboard(text) {
+        var textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            alert(armL10n.publicUrlCopied);
+        } catch (err) {
+            console.error('ARM Error: Fallback clipboard copy failed', err);
+            alert(armL10n.errorCopyingUrl);
+        }
+        document.body.removeChild(textArea);
+    }
+
+    // Modal handling
     $(document).on('click', '.arm-modal-close', function() {
         $(this).closest('.arm-modal').fadeOut(300);
     });
@@ -135,19 +131,13 @@ jQuery(document).ready(function($) {
         }
     });
 
-    // Copiar URL pública
-    $('.copy-public-url').click(function() {
-        var url = $(this).data('url');
-        navigator.clipboard.writeText(url).then(function() {
-            alert(armL10n.publicUrlCopied);
-        }).catch(function() {
-            // Fallback para navegadores que no soportan clipboard API
-            var temp = $("<input>");
-            $("body").append(temp);
-            temp.val(url).select();
-            document.execCommand("copy");
-            temp.remove();
-            alert(armL10n.publicUrlCopied);
-        });
+    $('.arm-modal-content').on('click', function(e) {
+        e.stopPropagation();
+    });
+
+    $(document).keyup(function(e) {
+        if (e.key === "Escape") {
+            $('.arm-modal').fadeOut(300);
+        }
     });
 });

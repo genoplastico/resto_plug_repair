@@ -18,7 +18,7 @@ class Assets {
 
         $this->debug->log('Enqueuing admin assets', ['hook' => $hook]);
 
-        wp_enqueue_script('jquery');
+        $this->enqueue_common_assets();
 
         // Select2
         wp_enqueue_style(
@@ -33,6 +33,30 @@ class Assets {
             true
         );
 
+        wp_localize_script('arm-admin-scripts', 'armL10n', array_merge(
+            $this->get_common_translations(),
+            [
+                'selectClient' => __('Select Client', 'appliance-repair-manager'),
+                'selectAppliance' => __('Select Appliance', 'appliance-repair-manager'),
+                'confirmStatusChange' => __('Are you sure you want to change the status?', 'appliance-repair-manager'),
+                'fillRequiredFields' => __('Please fill in all required fields.', 'appliance-repair-manager')
+            ]
+        ));
+    }
+
+    public function enqueue_public_assets() {
+        if (!isset($_GET['arm_action'])) {
+            return;
+        }
+
+        $this->enqueue_common_assets();
+
+        wp_localize_script('arm-admin-scripts', 'armL10n', $this->get_common_translations());
+    }
+
+    private function enqueue_common_assets() {
+        wp_enqueue_script('jquery');
+
         // Modal Manager CSS
         wp_enqueue_style(
             'arm-modal-styles',
@@ -41,7 +65,7 @@ class Assets {
             ARM_VERSION
         );
 
-        // Admin CSS
+        // Admin/Public CSS
         wp_enqueue_style(
             'arm-admin-styles',
             ARM_PLUGIN_URL . 'assets/css/admin.css',
@@ -58,63 +82,9 @@ class Assets {
             true
         );
 
-        // Admin JS
+        // Admin/Public JS
         wp_enqueue_script(
             'arm-admin-scripts',
-            ARM_PLUGIN_URL . 'assets/js/admin.js',
-            ['jquery', 'select2', 'arm-modal-manager'],
-            ARM_VERSION,
-            true
-        );
-
-        wp_localize_script('arm-modal-manager', 'armAjax', [
-            'ajaxurl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('arm_ajax_nonce'),
-            'debug' => $this->debug->getDebugInfo()
-        ]);
-
-        wp_localize_script('arm-admin-scripts', 'armL10n', [
-            'ajaxurl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('arm_ajax_nonce'),
-            'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager')
-        ]);
-    }
-
-    public function enqueue_public_assets() {
-        if (!isset($_GET['arm_action'])) {
-            return;
-        }
-
-        wp_enqueue_script('jquery');
-
-        // Modal Manager CSS
-        wp_enqueue_style(
-            'arm-modal-styles',
-            ARM_PLUGIN_URL . 'assets/css/modal-manager.css',
-            [],
-            ARM_VERSION
-        );
-
-        // Public styles (using admin styles for consistency)
-        wp_enqueue_style(
-            'arm-public-styles',
-            ARM_PLUGIN_URL . 'assets/css/admin.css',
-            [],
-            ARM_VERSION
-        );
-
-        // Modal Manager JS
-        wp_enqueue_script(
-            'arm-modal-manager',
-            ARM_PLUGIN_URL . 'assets/js/modal-manager.js',
-            ['jquery'],
-            ARM_VERSION,
-            true
-        );
-
-        // Public scripts
-        wp_enqueue_script(
-            'arm-public-scripts',
             ARM_PLUGIN_URL . 'assets/js/admin.js',
             ['jquery', 'arm-modal-manager'],
             ARM_VERSION,
@@ -126,12 +96,18 @@ class Assets {
             'nonce' => wp_create_nonce('arm_ajax_nonce'),
             'debug' => $this->debug->getDebugInfo()
         ]);
+    }
 
-        wp_localize_script('arm-public-scripts', 'armL10n', [
+    private function get_common_translations() {
+        return [
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('arm_ajax_nonce'),
-            'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager')
-        ]);
+            'loading' => __('Loading...', 'appliance-repair-manager'),
+            'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager'),
+            'errorLoadingAppliances' => __('Error loading appliances.', 'appliance-repair-manager'),
+            'publicUrlCopied' => __('Public URL has been copied to clipboard.', 'appliance-repair-manager'),
+            'errorCopyingUrl' => __('Error copying URL to clipboard.', 'appliance-repair-manager')
+        ];
     }
 
     public function print_debug_info() {

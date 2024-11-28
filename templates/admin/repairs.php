@@ -7,7 +7,7 @@ $message = isset($_GET['message']) ? $_GET['message'] : '';
 global $wpdb;
 
 // Get repair statuses
-$repair_statuses = \ApplianceRepairManager\Core\Plugin::get_repair_statuses();
+$repair_statuses = \ApplianceRepairManager\Core\Status\RepairStatusManager::getInstance()->getStatuses();
 
 // Get technicians for dropdown
 $technicians = get_users(['role' => 'arm_technician']);
@@ -25,6 +25,7 @@ $clients = $wpdb->get_results("SELECT id, name FROM {$wpdb->prefix}arm_clients O
 // Add nonce field for AJAX requests
 wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
 ?>
+
 <div class="wrap">
     <h1><?php _e('Repairs Management', 'appliance-repair-manager'); ?></h1>
 

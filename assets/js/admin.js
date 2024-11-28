@@ -9,48 +9,43 @@ jQuery(document).ready(function($) {
 
     // Cliente seleccionado -> Cargar aparatos
     $('#client_select').on('change', function() {
-        try {
-            var clientId = $(this).val();
-            if (!clientId) {
-                $('#appliance_id').html('<option value="">' + armL10n.selectAppliance + '</option>').trigger('change');
-                return;
-            }
-
-            $.ajax({
-                url: armL10n.ajaxurl,
-                type: 'POST',
-                data: {
-                    action: 'arm_get_client_appliances',
-                    client_id: clientId,
-                    nonce: $('#arm_ajax_nonce').val()
-                },
-                success: function(response) {
-                    if (response.success) {
-                        var options = '<option value="">' + armL10n.selectAppliance + '</option>';
-                        response.data.forEach(function(appliance) {
-                            options += '<option value="' + appliance.id + '">' + 
-                                      appliance.brand + ' ' + appliance.type + ' - ' + appliance.model + 
-                                      '</option>';
-                        });
-                        $('#appliance_id').html(options).trigger('change');
-                    } else {
-                        console.error('ARM Error:', response);
-                        alert(response.data.message || armL10n.errorLoadingAppliances);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('ARM Error:', {
-                        status: status,
-                        error: error,
-                        response: xhr.responseText
-                    });
-                    alert(armL10n.errorLoadingAppliances);
-                }
-            });
-        } catch (error) {
-            console.error('ARM Error:', error);
-            alert(armL10n.generalError);
+        var clientId = $(this).val();
+        if (!clientId) {
+            $('#appliance_id').html('<option value="">' + armL10n.selectAppliance + '</option>').trigger('change');
+            return;
         }
+
+        $.ajax({
+            url: armL10n.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'arm_get_client_appliances',
+                client_id: clientId,
+                nonce: $('#arm_ajax_nonce').val()
+            },
+            success: function(response) {
+                if (response.success) {
+                    var options = '<option value="">' + armL10n.selectAppliance + '</option>';
+                    response.data.forEach(function(appliance) {
+                        options += '<option value="' + appliance.id + '">' + 
+                                  appliance.brand + ' ' + appliance.type + ' - ' + appliance.model + 
+                                  '</option>';
+                    });
+                    $('#appliance_id').html(options).trigger('change');
+                } else {
+                    console.error('ARM Error:', response);
+                    alert(response.data.message || armL10n.errorLoadingAppliances);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('ARM Error:', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
+                });
+                alert(armL10n.errorLoadingAppliances);
+            }
+        });
     });
 
     // Ver detalles de reparación
@@ -58,8 +53,6 @@ jQuery(document).ready(function($) {
         e.preventDefault();
         var repairId = $(this).data('repair-id');
         var modal = $('#repair-details-modal');
-        
-        console.log('Opening repair details modal for ID:', repairId);
         
         $.ajax({
             url: armL10n.ajaxurl,
@@ -72,8 +65,7 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     $('#repair-details-content').html(response.data.html);
-                    modal.show();
-                    console.log('Modal content updated and shown');
+                    modal.fadeIn(300);
                 } else {
                     console.error('ARM Error:', response);
                     alert(response.data.message || armL10n.errorLoadingRepairDetails);
@@ -90,62 +82,13 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Ver historial de aparato
-    $(document).on('click', '.view-appliance-history', function(e) {
-        e.preventDefault();
-        var applianceId = $(this).data('appliance-id');
-        var modal = $('#appliance-history-modal');
-        
-        console.log('Opening appliance history modal for ID:', applianceId);
-        
-        $.ajax({
-            url: armL10n.ajaxurl,
-            type: 'POST',
-            data: {
-                action: 'arm_get_appliance_history',
-                appliance_id: applianceId,
-                nonce: $('#arm_ajax_nonce').val()
-            },
-            success: function(response) {
-                if (response.success) {
-                    $('#appliance-history-content').html(response.data.html);
-                    modal.show();
-                    console.log('Modal content updated and shown');
-                } else {
-                    console.error('ARM Error:', response);
-                    alert(response.data.message || armL10n.errorLoadingHistory);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('ARM Error:', {
-                    status: status,
-                    error: error,
-                    response: xhr.responseText
-                });
-                alert(armL10n.errorLoadingHistory);
-            }
-        });
-    });
-
-    // Cerrar modales
-    $(document).on('click', '.arm-modal-close', function() {
-        $(this).closest('.arm-modal').hide();
-        console.log('Modal closed');
-    });
-
-    $(window).on('click', function(e) {
-        if ($(e.target).hasClass('arm-modal')) {
-            $('.arm-modal').hide();
-            console.log('Modal closed by outside click');
-        }
-    });
-
     // Agregar nota vía AJAX
     $(document).on('submit', '.arm-note-form', function(e) {
         e.preventDefault();
         var form = $(this);
         var noteInput = form.find('textarea[name="note"]');
         var notesList = form.closest('.arm-detail-section').find('.arm-notes-list');
+        var isPublic = form.find('input[name="is_public"]').is(':checked') ? '1' : '0';
 
         $.ajax({
             url: armL10n.ajaxurl,
@@ -154,20 +97,17 @@ jQuery(document).ready(function($) {
                 action: 'arm_add_note_ajax',
                 repair_id: form.find('input[name="repair_id"]').val(),
                 note: noteInput.val(),
+                is_public: isPublic,
                 nonce: $('#arm_ajax_nonce').val()
             },
             success: function(response) {
                 if (response.success) {
-                    var noteHtml = '<div class="arm-note">' + response.data.note + '</div>';
-                    notesList.append(noteHtml);
-                    noteInput.val('');
-                    notesList.scrollTop(notesList[0].scrollHeight);
-                    
-                    var repairId = form.find('input[name="repair_id"]').val();
-                    var mainNotesList = $('.repair-row-' + repairId + ' .arm-notes-list');
-                    if (mainNotesList.length) {
-                        mainNotesList.append(noteHtml);
+                    if (notesList.find('.arm-note').length === 0) {
+                        notesList.empty(); // Remove "No notes available" message
                     }
+                    notesList.prepend(response.data.note_html);
+                    noteInput.val('');
+                    form.find('input[name="is_public"]').prop('checked', false);
                 } else {
                     console.error('ARM Error:', response);
                     alert(response.data.message || armL10n.errorAddingNote);
@@ -182,6 +122,17 @@ jQuery(document).ready(function($) {
                 alert(armL10n.errorAddingNote);
             }
         });
+    });
+
+    // Cerrar modales
+    $(document).on('click', '.arm-modal-close', function() {
+        $(this).closest('.arm-modal').fadeOut(300);
+    });
+
+    $(window).on('click', function(e) {
+        if ($(e.target).hasClass('arm-modal')) {
+            $('.arm-modal').fadeOut(300);
+        }
     });
 
     // Copiar URL pública

@@ -114,7 +114,7 @@ jQuery(document).ready(function($) {
         e.preventDefault();
         var $form = $(this);
         var $submitButton = $form.find('button[type="submit"]');
-        var $notesList = $form.closest('.arm-notes-container').find('.arm-notes-list');
+        var $notesList = $form.closest('.arm-detail-section').find('.arm-notes-list');
 
         var noteText = $form.find('textarea[name="note"]').val().trim();
         if (!noteText) {
@@ -135,18 +135,13 @@ jQuery(document).ready(function($) {
                 nonce: $('#arm_ajax_nonce').val()
             },
             success: function(response) {
-                if (response.success) {
-                    if (response.data && response.data.html) {
-                        $notesList.html(response.data.html);
-                        $form.find('textarea[name="note"]').val('');
-                        $form.find('input[name="is_public"]').prop('checked', false);
-                    } else {
-                        console.error('ARM Error: Invalid response format', response);
-                        alert(armL10n.errorAddingNote);
-                    }
+                if (response.success && response.data.html) {
+                    $notesList.html(response.data.html);
+                    $form.find('textarea[name="note"]').val('');
+                    $form.find('input[name="is_public"]').prop('checked', false);
                 } else {
                     console.error('ARM Error:', response);
-                    alert(response.data.message || armL10n.errorAddingNote);
+                    alert(armL10n.errorAddingNote);
                 }
             },
             error: function(xhr, status, error) {
@@ -159,6 +154,44 @@ jQuery(document).ready(function($) {
             },
             complete: function() {
                 $submitButton.prop('disabled', false);
+            }
+        });
+    });
+
+    // Delete note handler
+    $(document).on('click', '.arm-delete-note', function(e) {
+        e.preventDefault();
+        if (!confirm(armL10n.confirmDeleteNote)) {
+            return;
+        }
+
+        var $note = $(this).closest('.arm-note');
+        var noteId = $note.data('note-id');
+        var $notesList = $note.closest('.arm-notes-list');
+
+        $.ajax({
+            url: armL10n.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'arm_delete_note',
+                note_id: noteId,
+                nonce: $('#arm_ajax_nonce').val()
+            },
+            success: function(response) {
+                if (response.success && response.data.html) {
+                    $notesList.html(response.data.html);
+                } else {
+                    console.error('ARM Error:', response);
+                    alert(armL10n.errorDeletingNote);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('ARM Ajax Error:', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
+                });
+                alert(armL10n.errorDeletingNote);
             }
         });
     });

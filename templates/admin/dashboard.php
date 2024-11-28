@@ -6,6 +6,13 @@ if (!defined('ABSPATH')) {
 <div class="wrap">
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
     
+    <?php 
+    // Include system check partial if user has permissions
+    if (current_user_can('manage_options')) {
+        include ARM_PLUGIN_DIR . 'templates/admin/partials/system-check.php';
+    }
+    ?>
+    
     <div class="arm-dashboard-wrapper">
         <div class="arm-dashboard-header">
             <div class="arm-stats-container">

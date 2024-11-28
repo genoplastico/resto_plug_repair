@@ -10,6 +10,7 @@ class Plugin {
     private $settings_manager;
     private $email_manager;
     private $assets;
+    private $system_check;
 
     private function __construct() {
         $this->init_managers();
@@ -33,6 +34,7 @@ class Plugin {
             $this->settings_manager = new \ApplianceRepairManager\Admin\SettingsManager();
             $this->email_manager = new EmailManager();
             $this->assets = new Assets();
+            $this->system_check = new \ApplianceRepairManager\Admin\SystemCheck();
         }
     }
 
@@ -48,7 +50,6 @@ class Plugin {
     }
 
     public function add_admin_menu() {
-        // Add main menu
         add_menu_page(
             __('Repair Manager', 'appliance-repair-manager'),
             __('Repair Manager', 'appliance-repair-manager'),
@@ -59,7 +60,6 @@ class Plugin {
             30
         );
 
-        // Add submenu pages
         add_submenu_page(
             'appliance-repair-manager',
             __('Dashboard', 'appliance-repair-manager'),
@@ -69,7 +69,6 @@ class Plugin {
             [$this, 'render_dashboard']
         );
 
-        // Los submenús serán manejados por sus respectivos managers
         do_action('arm_admin_menu');
     }
 

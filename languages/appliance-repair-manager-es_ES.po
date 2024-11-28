@@ -195,3 +195,77 @@ msgstr "Se encontraron problemas de permisos y no se pudieron corregir automáti
 
 msgid "All system checks passed successfully."
 msgstr "Todas las verificaciones del sistema pasaron exitosamente."
+# Mensajes del Dashboard
+msgid "Dashboard Stats"
+msgstr "Estadísticas del Panel"
+
+msgid "Recent Activity"
+msgstr "Actividad Reciente"
+
+# Mensajes de Electrodomésticos
+msgid "Add New Appliance"
+msgstr "Agregar Nuevo Electrodoméstico"
+
+msgid "Edit Appliance"
+msgstr "Editar Electrodoméstico"
+
+msgid "View Appliance History"
+msgstr "Ver Historial del Electrodoméstico"
+
+msgid "No appliances found for this client."
+msgstr "No se encontraron electrodomésticos para este cliente."
+
+# Mensajes de Estado
+msgid "Status updated successfully"
+msgstr "Estado actualizado exitosamente"
+
+msgid "Error updating status"
+msgstr "Error al actualizar el estado"
+
+# Mensajes de Notas
+msgid "Add repair note"
+msgstr "Agregar nota de reparación"
+
+msgid "Note added successfully"
+msgstr "Nota agregada exitosamente"
+
+msgid "Error adding note"
+msgstr "Error al agregar nota"
+
+# Mensajes de Diagnóstico
+msgid "Diagnosis Details"
+msgstr "Detalles del Diagnóstico"
+
+msgid "Parts and Labor"
+msgstr "Repuestos y Mano de Obra"
+
+# Mensajes de Validación
+msgid "Please fill in all required fields"
+msgstr "Por favor complete todos los campos requeridos"
+
+msgid "Invalid email address"
+msgstr "Dirección de correo electrónico inválida"
+
+msgid "Phone number is required"
+msgstr "El número de teléfono es requerido"
+
+# Mensajes de Confirmación
+msgid "Are you sure you want to delete this record?"
+msgstr "¿Está seguro de que desea eliminar este registro?"
+
+msgid "This action cannot be undone"
+msgstr "Esta acción no se puede deshacer"
+
+# Mensajes de Éxito/Error
+msgid "Operation completed successfully"
+msgstr "Operación completada exitosamente"
+
+msgid "An error occurred while processing your request"
+msgstr "Ocurrió un error al procesar su solicitud"
+
+# Mensajes de Acceso
+msgid "You do not have permission to perform this action"
+msgstr "No tiene permisos para realizar esta acción"
+
+msgid "Access denied"
+msgstr "Acceso denegado"

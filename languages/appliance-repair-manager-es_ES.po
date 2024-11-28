@@ -17,7 +17,7 @@ msgid "Repair Manager"
 msgstr "Gestor de Reparaciones"
 
 msgid "Dashboard"
-msgstr "Panel de Control"
+msgstr "Panel de Control "
 
 msgid "Appliances Management"
 msgstr "Gestión de Electrodomésticos"

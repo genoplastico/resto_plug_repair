@@ -73,7 +73,8 @@ class Assets {
                 'selectClient' => __('Select Client', 'appliance-repair-manager'),
                 'selectAppliance' => __('Select Appliance', 'appliance-repair-manager'),
                 'confirmDeleteNote' => __('Are you sure you want to delete this note?', 'appliance-repair-manager'),
-                'publicUrlCopied' => __('Public URL has been copied to clipboard.', 'appliance-repair-manager')
+                'publicUrlCopied' => __('Public URL has been copied to clipboard.', 'appliance-repair-manager'),
+                'errorDeletingNote' => __('Error deleting note', 'appliance-repair-manager')
             ]
         ));
     }

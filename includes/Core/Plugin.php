@@ -16,10 +16,12 @@ class Plugin {
     private $hook_manager;
     private $notes_handler;
     private $ajax_handler;
+    private $translation_debugger;
 
     private function __construct() {
         $this->debug = Debug\ErrorLogger::getInstance();
         $this->hook_manager = HookManager::getInstance();
+        $this->translation_debugger = Debug\TranslationDebugger::getInstance();
         $this->init_managers();
         $this->register_hooks();
     }
@@ -66,6 +68,9 @@ class Plugin {
 
     public function init() {
         do_action('arm_init');
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            add_action('admin_footer', [$this->translation_debugger, 'print_debug_info']);
+        }
     }
 
     public function add_admin_menu() {

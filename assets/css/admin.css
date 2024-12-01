@@ -53,4 +53,28 @@
     color: #dc3232;
 }
 
+/* Translation Debug Styles */
+#arm-translation-debug {
+    margin: 20px 0;
+    padding: 15px;
+}
+
+#arm-translation-debug table {
+    margin-top: 10px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#arm-translation-debug th,
+#arm-translation-debug td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+#arm-translation-debug th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+}
+
 /* Rest of your existing CSS... */

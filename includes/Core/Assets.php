@@ -109,7 +109,8 @@ class Assets {
             'nonce' => wp_create_nonce('arm_ajax_nonce'),
             'loading' => __('Loading...', 'appliance-repair-manager'),
             'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager'),
-            'errorLoadingAppliances' => __('Error loading appliances.', 'appliance-repair-manager')
+            'errorLoadingAppliances' => __('Error loading appliances.', 'appliance-repair-manager'),
+            'errorLoadingHistory' => __('Error loading appliance history.', 'appliance-repair-manager')
         ];
     }
 }

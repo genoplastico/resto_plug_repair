@@ -14,8 +14,64 @@ class ApplianceHandler {
         
         // Register AJAX handlers
         add_action('wp_ajax_arm_get_client_appliances', [$this, 'getClientAppliances']);
+        add_action('wp_ajax_arm_get_appliance_history', [$this, 'getApplianceHistory']);
         add_action('wp_ajax_arm_get_repair_details', [$this, 'getRepairDetails']);
         add_action('wp_ajax_nopriv_arm_get_repair_details', [$this, 'getRepairDetails']);
+    }
+
+    public function getApplianceHistory() {
+        try {
+            check_ajax_referer('arm_ajax_nonce', 'nonce');
+
+            if (!current_user_can('edit_arm_repairs')) {
+                throw new \Exception('Insufficient permissions');
+            }
+
+            $appliance_id = isset($_POST['appliance_id']) ? intval($_POST['appliance_id']) : 0;
+            if (!$appliance_id) {
+                throw new \Exception('Invalid appliance ID');
+            }
+
+            // Get appliance details with client info
+            $appliance = $this->wpdb->get_row($this->wpdb->prepare(
+                "SELECT a.*, c.name as client_name 
+                FROM {$this->wpdb->prefix}arm_appliances a
+                LEFT JOIN {$this->wpdb->prefix}arm_clients c ON a.client_id = c.id
+                WHERE a.id = %d",
+                $appliance_id
+            ));
+
+            if (!$appliance) {
+                throw new \Exception('Appliance not found');
+            }
+
+            // Get repair history
+            $repairs = $this->wpdb->get_results($this->wpdb->prepare(
+                "SELECT r.*, u.display_name as technician_name
+                FROM {$this->wpdb->prefix}arm_repairs r
+                LEFT JOIN {$this->wpdb->users} u ON r.technician_id = u.ID
+                WHERE r.appliance_id = %d
+                ORDER BY r.created_at DESC",
+                $appliance_id
+            ));
+
+            ob_start();
+            include ARM_PLUGIN_DIR . 'templates/admin/modals/appliance-history.php';
+            $html = ob_get_clean();
+
+            wp_send_json_success(['html' => $html]);
+
+        } catch (\Exception $e) {
+            $this->logger->logAjaxError('arm_get_appliance_history', $e->getMessage(), [
+                'appliance_id' => $appliance_id ?? null,
+                'wpdb_error' => $this->wpdb->last_error
+            ]);
+            
+            wp_send_json_error([
+                'message' => __('Error loading appliance history', 'appliance-repair-manager'),
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     public function getClientAppliances() {

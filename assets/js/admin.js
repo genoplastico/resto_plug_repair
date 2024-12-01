@@ -1,21 +1,22 @@
 jQuery(document).ready(function($) {
     // Enhanced debug logging system
     function logDebug(message, data = {}) {
-        const styles = {
+        window.armDebug = true; // Enable debug mode
+        const debugStyles = {
             info: 'color: #2271b1; font-weight: bold;',
             error: 'color: #dc3232; font-weight: bold;',
             success: 'color: #46b450; font-weight: bold;',
             warning: 'color: #f0b849; font-weight: bold;'
         };
 
-        if (!window.console) return;
+        if (!window.console || !window.armDebug) return;
 
         const timestamp = new Date().toISOString();
         const prefix = '%cARM Debug';
 
         // Add stack trace for errors
         if (data.error) {
-            console.group(`${prefix} [${timestamp}]`, styles.error);
+            console.group(`${prefix} [${timestamp}]`, debugStyles.error);
             console.error(message);
             console.error('Error details:', data.error);
             console.trace('Stack trace:');
@@ -24,11 +25,58 @@ jQuery(document).ready(function($) {
         }
 
         // Regular debug logging
-        console.groupCollapsed(`${prefix} [${timestamp}]`, styles.info);
+        console.groupCollapsed(`${prefix} [${timestamp}]`, debugStyles.info);
         console.log('Message:', message);
         console.log('Data:', data);
         console.groupEnd();
     }
+
+    // View appliance history handler
+    $(document).on('click', '.view-appliance-history', function(e) {
+        e.preventDefault();
+        const $button = $(this);
+        const applianceId = $button.data('appliance-id');
+        const $modal = $('#appliance-history-modal');
+        const $content = $('#appliance-history-content');
+        
+        logDebug('Opening appliance history modal', { 
+            applianceId: applianceId,
+            button: $button[0],
+            modal: $modal[0]
+        });
+        
+        $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
+        $modal.show();
+
+        $.ajax({
+            url: armL10n.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'arm_get_appliance_history',
+                appliance_id: applianceId,
+                nonce: $('#arm_ajax_nonce').val()
+            },
+            success: function(response) {
+                logDebug('Appliance history response received', { response: response });
+                
+                if (response.success && response.data.html) {
+                    $content.html(response.data.html);
+                } else {
+                    $content.html('<div class="arm-error">' + armL10n.errorLoadingHistory + '</div>');
+                    console.error('ARM Error:', response);
+                }
+            },
+            error: function(xhr, status, error) {
+                logDebug('Error loading appliance history', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
+                });
+                
+                $content.html('<div class="arm-error">' + armL10n.errorLoadingHistory + '</div>');
+            }
+        });
+    });
 
     // AJAX error handler
     function handleAjaxError(xhr, status, error, action) {

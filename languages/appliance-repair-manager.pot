@@ -1,0 +1,459 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Appliance Repair Manager 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/appliance-repair-manager\n"
+"POT-Creation-Date: 2024-01-19 12:00:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: includes/Core/Plugin.php:56
+msgid "Repair Manager"
+msgstr ""
+
+#: includes/Core/Plugin.php:65
+msgid "Dashboard"
+msgstr ""
+
+#: includes/Admin/ApplianceManager.php:31
+msgid "Appliances Management"
+msgstr ""
+
+#: includes/Admin/ClientManager.php:31
+msgid "Clients Management"
+msgstr ""
+
+#: includes/Admin/RepairManager.php:31
+msgid "Repairs Management"
+msgstr ""
+
+#: includes/Admin/SettingsManager.php:31
+msgid "Settings"
+msgstr ""
+
+#: includes/Admin/UserManager.php:31
+msgid "Technicians Management"
+msgstr ""
+
+#: templates/admin/dashboard.php:15
+msgid "Pending Repairs"
+msgstr ""
+
+#: templates/admin/dashboard.php:21
+msgid "In Progress"
+msgstr ""
+
+#: templates/admin/dashboard.php:27
+msgid "Completed"
+msgstr ""
+
+#: templates/admin/dashboard.php:33
+msgid "Delivered"
+msgstr ""
+
+msgid "Client Details"
+msgstr ""
+
+msgid "Appliance Information"
+msgstr ""
+
+msgid "Serial Number"
+msgstr ""
+
+msgid "Brand"
+msgstr ""
+
+msgid "Model"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Error loading repair details"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "No repair records found."
+msgstr ""
+
+msgid "Select Client"
+msgstr ""
+
+msgid "Select Technician"
+msgstr ""
+
+msgid "Please fill in all required fields."
+msgstr ""
+
+msgid "Are you sure you want to change the status?"
+msgstr ""
+
+msgid "Public"
+msgstr ""
+
+msgid "Make this note visible to client"
+msgstr ""
+
+msgid "No notes available."
+msgstr ""
+
+msgid "Add a note..."
+msgstr ""
+
+msgid "Delete Note"
+msgstr ""
+
+msgid "Are you sure you want to delete this note?"
+msgstr ""
+
+msgid "Repair Details"
+msgstr ""
+
+msgid "Repair Information"
+msgstr ""
+
+msgid "Public Notes"
+msgstr ""
+
+msgid "Repair details not found."
+msgstr ""
+
+msgid "Repairs Assigned to %s"
+msgstr ""
+
+msgid "Select Client First"
+msgstr ""
+
+msgid "Add Repair Record"
+msgstr ""
+
+msgid "Repair record added successfully."
+msgstr ""
+
+msgid "Repair status updated successfully."
+msgstr ""
+
+msgid "Technician assigned successfully."
+msgstr ""
+
+msgid "Note added successfully."
+msgstr ""
+
+msgid "Note deleted successfully."
+msgstr ""
+
+msgid "Error deleting note."
+msgstr ""
+
+msgid "Private note"
+msgstr ""
+
+msgid "Added by"
+msgstr ""
+
+msgid "on"
+msgstr ""
+
+msgid "Edit note"
+msgstr ""
+
+msgid "Save note"
+msgstr ""
+
+msgid "Cancel editing"
+msgstr ""
+
+msgid "Notes History"
+msgstr ""
+
+msgid "Internal Notes"
+msgstr ""
+
+msgid "Customer Notes"
+msgstr ""
+
+msgid "System Status"
+msgstr ""
+
+msgid "Permission Check Results"
+msgstr ""
+
+msgid "File System Check"
+msgstr ""
+
+msgid "Directory Permissions"
+msgstr ""
+
+msgid "File Access"
+msgstr ""
+
+msgid "System Requirements"
+msgstr ""
+
+msgid "PHP Version"
+msgstr ""
+
+msgid "WordPress Version"
+msgstr ""
+
+msgid "Database Version"
+msgstr ""
+
+msgid "Memory Limit"
+msgstr ""
+
+msgid "Max Upload Size"
+msgstr ""
+
+msgid "Post Max Size"
+msgstr ""
+
+msgctxt "repair status"
+msgid "Pending Review"
+msgstr ""
+
+msgctxt "repair status"
+msgid "In Repair"
+msgstr ""
+
+msgctxt "repair status"
+msgid "Repaired"
+msgstr ""
+
+msgctxt "repair status"
+msgid "Delivered"
+msgstr ""
+
+msgid "Repair Status"
+msgstr ""
+
+msgid "Current Status"
+msgstr ""
+
+msgid "Status History"
+msgstr ""
+
+msgid "Changed from %s to %s"
+msgstr ""
+
+msgid "Status changed by"
+msgstr ""
+
+msgid "Change Status"
+msgstr ""
+
+msgid "Update Status"
+msgstr ""
+
+msgid "Status Update"
+msgstr ""
+
+msgid "Add Status Note"
+msgstr ""
+
+msgid "Status Note"
+msgstr ""
+
+msgid "Note Type"
+msgstr ""
+
+msgid "Status Note"
+msgstr ""
+
+msgid "Technical Note"
+msgstr ""
+
+msgid "Customer Communication"
+msgstr ""
+
+msgid "Internal Comment"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:15
+msgid "Pending"
+msgstr ""
+
+msgid "In Progress"
+msgstr ""
+
+msgid "Completed"
+msgstr ""
+
+msgid "Delivered"
+msgstr ""
+
+msgid "View repair details"
+msgstr ""
+
+msgid "View repair history"
+msgstr ""
+
+msgid "Add Note"
+msgstr ""
+
+msgid "Delete Note"
+msgstr ""
+
+msgid "Are you sure you want to delete this note?"
+msgstr ""
+
+msgid "Make this note visible to client"
+msgstr ""
+
+msgid "Add a note..."
+msgstr ""
+
+msgid "No notes available."
+msgstr ""
+
+msgid "Public Notes"
+msgstr ""
+
+msgid "Private Notes"
+msgstr ""
+
+msgid "Note visibility"
+msgstr ""
+
+msgid "Public"
+msgstr ""
+
+msgid "Private"
+msgstr ""
+
+msgid "Note Details"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Date Added"
+msgstr ""
+
+msgid "Last Modified"
+msgstr ""
+
+msgid "Note Content"
+msgstr ""
+
+msgid "Error adding note"
+msgstr ""
+
+msgid "Please enter a note"
+msgstr ""
+
+msgid "System Check"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:18
+msgid "Check File Permissions"
+
+#: includes/Admin/SystemCheck.php:45
+msgid "Checking permissions..."
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:52
+msgid "Check completed"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:89
+msgid "Item"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:90
+msgid "Details"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:98
+msgid "Plugin Directory"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:103
+msgid "Assets Directory"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:125
+msgid "OK"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:126
+msgid "Issue Found"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:129
+msgid "Not readable"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:130
+msgid "Not writable"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:131
+msgid "Permissions:"
+msgstr ""
+
+#: includes/Admin/SystemCheck.php:134
+msgid "Error checking permissions"
+msgstr ""
+
+#: templates/admin/dashboard.php:41
+msgid "Recent Repairs"
+msgstr ""
+
+#: templates/admin/repairs.php:89
+msgid "Status"
+msgstr ""
+
+#: templates/admin/repairs.php:90
+msgid "Technician"
+msgstr ""
+
+#: templates/admin/repairs.php:91
+msgid "Date"
+msgstr ""
+
+#: templates/admin/repairs.php:15
+msgid "Add New Repair Record"
+msgstr ""
+
+#: templates/admin/repairs.php:45
+msgid "Client"
+msgstr ""
+
+#: templates/admin/repairs.php:60
+msgid "Appliance"
+msgstr ""
+
+#: templates/admin/repairs.php:75
+msgid "Assign Technician"
+msgstr ""
+
+#: templates/admin/repairs.php:90
+msgid "Diagnosis"
+msgstr ""
+
+#: templates/admin/repairs.php:98
+msgid "Parts Used"
+msgstr ""
+
+#: templates/admin/repairs.php:106
+msgid "Cost"
+msgstr ""
+
+#: templates/admin/repairs.php:116
+msgid "Add Repair"
+msgstr ""
+
+#: templates/admin/repairs.php:124
+msgid "Repair History"
+msgstr ""
+
+[... rest of the file remains the same ...]

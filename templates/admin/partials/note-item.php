@@ -9,7 +9,7 @@
         <?php if ($note->is_public): ?>
             <span class="arm-note-visibility"><?php _e('Public', 'appliance-repair-manager'); ?></span>
         <?php endif; ?>
-        <?php if (current_user_can('manage_options') || $note->user_id == get_current_user_id()): ?>
+        <?php if (current_user_can('manage_options') || get_current_user_id() == $note->user_id): ?>
             <button type="button" class="arm-delete-note" title="<?php esc_attr_e('Delete Note', 'appliance-repair-manager'); ?>">
                 <span class="dashicons dashicons-trash"></span>
             </button>

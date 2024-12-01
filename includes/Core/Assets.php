@@ -72,7 +72,8 @@ class Assets {
             [
                 'selectClient' => __('Select Client', 'appliance-repair-manager'),
                 'selectAppliance' => __('Select Appliance', 'appliance-repair-manager'),
-                'confirmDeleteNote' => __('Are you sure you want to delete this note?', 'appliance-repair-manager')
+                'confirmDeleteNote' => __('Are you sure you want to delete this note?', 'appliance-repair-manager'),
+                'publicUrlCopied' => __('Public URL has been copied to clipboard.', 'appliance-repair-manager')
             ]
         ));
     }
@@ -98,7 +99,8 @@ class Assets {
         wp_localize_script('arm-public-scripts', 'armPublicL10n', array_merge(
             $this->get_common_translations(),
             [
-                'viewDetails' => __('View Details', 'appliance-repair-manager')
+                'viewDetails' => __('View Details', 'appliance-repair-manager'),
+                'publicUrlCopied' => __('Public URL has been copied to clipboard.', 'appliance-repair-manager')
             ]
         ));
     }

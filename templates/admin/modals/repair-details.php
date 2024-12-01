@@ -45,20 +45,7 @@ if (!defined('ABSPATH')) {
                 <div class="arm-notes-list">
                     <?php if (!empty($repair->notes)): ?>
                         <?php foreach ($repair->notes as $note): ?>
-                            <div class="arm-note <?php echo $note->is_public ? 'arm-note-public' : 'arm-note-private'; ?>">
-                                <div class="arm-note-header">
-                                    <span class="arm-note-author"><?php echo esc_html($note->author_name); ?></span>
-                                    <span class="arm-note-date">
-                                        <?php echo esc_html(mysql2date(get_option('date_format') . ' ' . get_option('time_format'), $note->created_at)); ?>
-                                    </span>
-                                    <?php if ($note->is_public): ?>
-                                        <span class="arm-note-visibility"><?php _e('Public', 'appliance-repair-manager'); ?></span>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="arm-note-content">
-                                    <?php echo nl2br(esc_html($note->note)); ?>
-                                </div>
-                            </div>
+                            <?php include ARM_PLUGIN_DIR . 'templates/admin/partials/note-item.php'; ?>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <p><?php _e('No notes available.', 'appliance-repair-manager'); ?></p>

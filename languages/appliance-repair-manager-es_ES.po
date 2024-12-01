@@ -49,6 +49,66 @@ msgstr "Reparado"
 msgid "Delivered"
 msgstr "Entregado"
 
+msgid "System Check"
+msgstr "Verificación del Sistema"
+
+msgid "Check File Permissions"
+msgstr "Verificar Permisos de Archivos"
+
+msgid "Checking permissions..."
+msgstr "Verificando permisos..."
+
+msgid "Check completed"
+msgstr "Verificación completada"
+
+msgid "Item"
+msgstr "Elemento"
+
+msgid "Details"
+msgstr "Detalles"
+
+msgid "Plugin Directory"
+msgstr "Directorio del Plugin"
+
+msgid "Assets Directory"
+msgstr "Directorio de Recursos"
+
+msgid "OK"
+msgstr "Correcto"
+
+msgid "Issue Found"
+msgstr "Problema Encontrado"
+
+msgid "Not readable"
+msgstr "No legible"
+
+msgid "Not writable"
+msgstr "No escribible"
+
+msgid "Permissions:"
+msgstr "Permisos:"
+
+msgid "Error checking permissions"
+msgstr "Error al verificar permisos"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "Technician"
+msgstr "Técnico"
+
+msgid "Date"
+msgstr "Fecha"
+
+msgid "Pending Repairs"
+msgstr "Reparaciones Pendientes"
+
+msgid "In Progress"
+msgstr "En Progreso"
+
+msgid "Completed"
+msgstr "Completadas"
+
 msgid "Recent Repairs"
 msgstr "Reparaciones Recientes"
 

@@ -1,11 +1,18 @@
 /* Public View Styles */
 .arm-public-view {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 40px auto;
     padding: 20px;
     background: #fff;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     border-radius: 4px;
+}
+
+@media (min-width: 1024px) {
+    .arm-public-view {
+        max-width: 1200px;
+        margin: 40px auto;
+    }
 }
 
 .arm-public-view h1 {
@@ -14,6 +21,13 @@
     font-size: 24px;
     line-height: 1.4;
     color: #23282d;
+}
+
+@media (max-width: 768px) {
+    .arm-public-view h1 {
+        font-size: 20px;
+        margin: 0 0 15px;
+    }
 }
 
 /* Status Badges */
@@ -59,6 +73,32 @@
     border-bottom: none;
 }
 
+/* Responsive Table Styles */
+@media (max-width: 768px) {
+    .wp-list-table {
+        display: block;
+    }
+    
+    .wp-list-table thead {
+        display: none;
+    }
+    
+    .wp-list-table tr {
+        display: block;
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .wp-list-table td {
+        display: block;
+        padding: 8px 0;
+        border: none;
+    }
+}
+
 .arm-detail-section h3 {
     margin: 0 0 15px;
     padding: 0;
@@ -73,7 +113,7 @@
 
 .arm-note {
     margin-bottom: 15px;
-    padding: 15px;
+    padding: 12px;
     background: #f8f9fa;
     border-left: 3px solid #ddd;
     border-radius: 0 4px 4px 0;
@@ -85,7 +125,7 @@
 
 .arm-note-header {
     margin-bottom: 8px;
-    font-size: 12px;
+    font-size: 13px;
     color: #666;
 }
 
@@ -99,7 +139,7 @@
 }
 
 .arm-note-content {
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.5;
     color: #333;
 }
@@ -122,11 +162,50 @@
 
 /* Responsive Design */
 @media screen and (max-width: 782px) {
+    /* Card Layout for Mobile */
+    .wp-list-table td {
+        position: relative;
+        padding-left: 45%;
+        min-height: 30px;
+    }
+    
+    .wp-list-table td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 45%;
+        padding-right: 10px;
+        font-weight: 600;
+        color: #23282d;
+    }
+    
+    /* Status Badge Adjustments */
+    .arm-status {
+        display: inline-block;
+        margin: 5px 0;
+    }
+    
+    /* Button Adjustments */
+    .button {
+        width: 100%;
+        margin: 5px 0;
+        text-align: center;
+    }
+    
+    /* Notes Section */
+    .arm-notes-list {
+        margin-top: 15px;
+    }
+    
+    .arm-note {
+        margin-bottom: 10px;
+    }
+    
     .arm-public-view {
-        margin: 20px auto;
+        margin: 10px auto;
         padding: 15px;
     }
-
+    
     .arm-public-view h1 {
         font-size: 20px;
     }

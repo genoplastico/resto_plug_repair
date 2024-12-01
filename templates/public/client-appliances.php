@@ -47,7 +47,6 @@ get_header();
                     <tr>
                         <th><?php _e('Appliance', 'appliance-repair-manager'); ?></th>
                         <th><?php _e('Diagnosis', 'appliance-repair-manager'); ?></th>
-                        <th><?php _e('Technician', 'appliance-repair-manager'); ?></th>
                         <th><?php _e('Status', 'appliance-repair-manager'); ?></th>
                         <th><?php _e('Date', 'appliance-repair-manager'); ?></th>
                         <th><?php _e('Actions', 'appliance-repair-manager'); ?></th>
@@ -56,7 +55,7 @@ get_header();
                 <tbody>
                     <?php foreach ($repairs as $repair): ?>
                         <tr>
-                            <td>
+                            <td data-label="<?php _e('Appliance', 'appliance-repair-manager'); ?>">
                                 <?php echo esc_html(sprintf(
                                     '%s %s - %s',
                                     $repair->brand,
@@ -64,18 +63,21 @@ get_header();
                                     $repair->model
                                 )); ?>
                             </td>
-                            <td><?php echo esc_html($repair->diagnosis); ?></td>
-                            <td><?php echo esc_html($repair->technician_name); ?></td>
-                            <td>
+                            <td data-label="<?php _e('Diagnosis', 'appliance-repair-manager'); ?>">
+                                <?php echo esc_html($repair->diagnosis); ?>
+                            </td>
+                            <td data-label="<?php _e('Status', 'appliance-repair-manager'); ?>">
                                 <span class="arm-status <?php echo esc_attr(arm_get_status_class($repair->status)); ?>">
                                     <?php echo esc_html(arm_get_status_label($repair->status)); ?>
                                 </span>
                             </td>
-                            <td><?php echo esc_html(mysql2date(
+                            <td data-label="<?php _e('Date', 'appliance-repair-manager'); ?>">
+                                <?php echo esc_html(mysql2date(
                                 get_option('date_format') . ' ' . get_option('time_format'),
                                 $repair->created_at
-                            )); ?></td>
-                            <td>
+                                )); ?>
+                            </td>
+                            <td data-label="<?php _e('Actions', 'appliance-repair-manager'); ?>">
                                 <button type="button" class="button button-small view-repair-details" 
                                         data-repair-id="<?php echo esc_attr($repair->id); ?>"
                                         data-client-id="<?php echo esc_attr($client_id); ?>"

@@ -180,6 +180,51 @@ msgstr ""
 msgid "Customer Notes"
 msgstr ""
 
+msgid "Repair Status"
+msgstr ""
+
+msgid "Current Status"
+msgstr ""
+
+msgid "Status History"
+msgstr ""
+
+msgid "Changed from %s to %s"
+msgstr ""
+
+msgid "Status changed by"
+msgstr ""
+
+msgid "Change Status"
+msgstr ""
+
+msgid "Update Status"
+msgstr ""
+
+msgid "Status Update"
+msgstr ""
+
+msgid "Add Status Note"
+msgstr ""
+
+msgid "Status Note"
+msgstr ""
+
+msgid "Note Type"
+msgstr ""
+
+msgid "Status Note"
+msgstr ""
+
+msgid "Technical Note"
+msgstr ""
+
+msgid "Customer Communication"
+msgstr ""
+
+msgid "Internal Comment"
+msgstr ""
+
 #: includes/Admin/SystemCheck.php:15
 msgid "Add Note"
 msgstr ""

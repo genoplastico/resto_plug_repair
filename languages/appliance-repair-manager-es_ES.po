@@ -49,6 +49,51 @@ msgstr "Reparado"
 msgid "Delivered"
 msgstr "Entregado"
 
+msgid "Repair Status"
+msgstr "Estado de la Reparación"
+
+msgid "Current Status"
+msgstr "Estado Actual"
+
+msgid "Status History"
+msgstr "Historial de Estados"
+
+msgid "Changed from %s to %s"
+msgstr "Cambiado de %s a %s"
+
+msgid "Status changed by"
+msgstr "Estado cambiado por"
+
+msgid "Change Status"
+msgstr "Cambiar Estado"
+
+msgid "Update Status"
+msgstr "Actualizar Estado"
+
+msgid "Status Update"
+msgstr "Actualización de Estado"
+
+msgid "Add Status Note"
+msgstr "Agregar Nota de Estado"
+
+msgid "Status Note"
+msgstr "Nota de Estado"
+
+msgid "Note Type"
+msgstr "Tipo de Nota"
+
+msgid "Status Note"
+msgstr "Nota de Estado"
+
+msgid "Technical Note"
+msgstr "Nota Técnica"
+
+msgid "Customer Communication"
+msgstr "Comunicación con Cliente"
+
+msgid "Internal Comment"
+msgstr "Comentario Interno"
+
 msgid "System Check"
 msgstr "Verificación del Sistema"
 

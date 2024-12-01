@@ -34,6 +34,8 @@ jQuery(document).ready(function($) {
     // View appliance history handler
     $(document).on('click', '.view-appliance-history', function(e) {
         e.preventDefault();
+        e.stopPropagation();
+        
         const $button = $(this);
         const applianceId = $button.data('appliance-id');
         const $modal = $('#appliance-history-modal');
@@ -46,7 +48,7 @@ jQuery(document).ready(function($) {
         });
         
         $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
-        $modal.show();
+        window.armModalManager.openModal('appliance-history-modal');
 
         $.ajax({
             url: armL10n.ajaxurl,
@@ -128,6 +130,8 @@ jQuery(document).ready(function($) {
     // View repair details handler
     $(document).on('click', '.view-repair-details', function(e) {
         e.preventDefault();
+        e.stopPropagation();
+        
         const $button = $(this);
         const repairId = $button.data('repair-id');
         const $modal = $('#repair-details-modal');
@@ -140,7 +144,7 @@ jQuery(document).ready(function($) {
         });
         
         $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
-        $modal.show();
+        window.armModalManager.openModal('repair-details-modal');
 
         $.ajax({
             url: armL10n.ajaxurl,

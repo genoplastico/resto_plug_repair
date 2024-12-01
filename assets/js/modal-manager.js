@@ -59,19 +59,15 @@ class ModalManager {
     openModal(modalId) {
         const modal = document.getElementById(modalId);
         if (modal) {
+            modal.style.display = 'block';
             this.log('Opening modal', { modalId, modal });
             
             // Prevent body scroll
             document.body.style.overflow = 'hidden';
             
-            // Reset modal state
-            modal.style.display = 'block';
-            modal.style.opacity = '0';
-            
-            // Force reflow and animate
+            // Animate in
             requestAnimationFrame(() => {
-                modal.style.opacity = '1';
-                modal.style.transform = 'translateY(0)';
+                modal.classList.add('arm-modal-visible');
             });
             
             this.activeModals.add(modal);
@@ -83,28 +79,27 @@ class ModalManager {
     closeModal(modal) {
         if (modal) {
             this.log('Closing modal', { modal });
-            
-            // Start animation
-            modal.style.opacity = '0';
-            modal.style.transform = 'translateY(20px)';
-            
+
+            // Remove visible class to trigger animation
+            modal.classList.remove('arm-modal-visible');
+
             // Remove from active modals
             this.activeModals.delete(modal);
             
             // Wait for animation to complete
             setTimeout(() => {
                 modal.style.display = 'none';
-                modal.style.transform = '';
                 
                 // Only restore body scroll if no other modals are active
                 if (this.activeModals.size === 0) {
                     document.body.style.overflow = '';
                 }
-            }, 150);
+            }, 200);
         } else {
             console.error('Invalid modal element:', modal);
         }
     }
+}
 }
 
 // Initialize Modal Manager

@@ -1,9 +1,48 @@
 jQuery(document).ready(function($) {
-    // Debug logging function
+    // Enhanced debug logging system
     function logDebug(message, data = {}) {
-        if (window.console && window.console.log) {
-            console.log('ARM Debug:', message, data);
+        const styles = {
+            info: 'color: #2271b1; font-weight: bold;',
+            error: 'color: #dc3232; font-weight: bold;',
+            success: 'color: #46b450; font-weight: bold;',
+            warning: 'color: #f0b849; font-weight: bold;'
+        };
+
+        if (!window.console) return;
+
+        const timestamp = new Date().toISOString();
+        const prefix = '%cARM Debug';
+
+        // Add stack trace for errors
+        if (data.error) {
+            console.group(`${prefix} [${timestamp}]`, styles.error);
+            console.error(message);
+            console.error('Error details:', data.error);
+            console.trace('Stack trace:');
+            console.groupEnd();
+            return;
         }
+
+        // Regular debug logging
+        console.groupCollapsed(`${prefix} [${timestamp}]`, styles.info);
+        console.log('Message:', message);
+        console.log('Data:', data);
+        console.groupEnd();
+    }
+
+    // AJAX error handler
+    function handleAjaxError(xhr, status, error, action) {
+        logDebug('AJAX Error', {
+            error: error,
+            status: status,
+            response: xhr.responseText,
+            action: action
+        });
+        
+        return {
+            success: false,
+            message: armL10n.errorGeneric
+        };
     }
 
     // Initialize select2
@@ -17,11 +56,16 @@ jQuery(document).ready(function($) {
     // View repair details handler
     $(document).on('click', '.view-repair-details', function(e) {
         e.preventDefault();
-        var repairId = $(this).data('repair-id');
-        var $modal = $('#repair-details-modal');
-        var $content = $('#repair-details-content');
+        const $button = $(this);
+        const repairId = $button.data('repair-id');
+        const $modal = $('#repair-details-modal');
+        const $content = $('#repair-details-content');
         
-        logDebug('Opening repair details', { repairId: repairId });
+        logDebug('Opening repair details modal', { 
+            repairId: repairId,
+            button: $button[0],
+            modal: $modal[0]
+        });
         
         $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
         $modal.show();
@@ -35,7 +79,7 @@ jQuery(document).ready(function($) {
                 nonce: $('#arm_ajax_nonce').val()
             },
             success: function(response) {
-                logDebug('Repair details loaded', { response: response });
+                logDebug('Repair details response received', { response: response });
                 
                 if (response.success && response.data.html) {
                     $content.html(response.data.html);
@@ -44,13 +88,7 @@ jQuery(document).ready(function($) {
                     console.error('ARM Error:', response);
                 }
             },
-            error: function(xhr, status, error) {
-                logDebug('Error loading repair details', {
-                    status: status,
-                    error: error,
-                    response: xhr.responseText
-                });
-                
+            error: function(xhr, status, error) {                
                 $content.html('<div class="arm-error">' + armL10n.errorLoadingRepairDetails + '</div>');
             }
         });

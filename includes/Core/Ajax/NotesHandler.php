@@ -105,7 +105,7 @@ class NotesHandler {
 
             // Only allow users to delete their own notes unless they're admins
             if (!current_user_can('manage_options') && $note->user_id !== get_current_user_id()) {
-                throw new \Exception('Permission denied');
+                throw new \Exception(__('You can only delete your own notes.', 'appliance-repair-manager'));
             }
 
             // Delete the note

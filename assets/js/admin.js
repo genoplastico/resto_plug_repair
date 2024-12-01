@@ -249,7 +249,7 @@ jQuery(document).ready(function($) {
                 if (response.success) {
                     $notesList.html(response.data.html);
                 } else {
-                    alert(response.data.message || armL10n.errorDeletingNote);
+                    alert(response.data.message);
                     $button.prop('disabled', false);
                 }
             },

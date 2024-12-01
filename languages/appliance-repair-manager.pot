@@ -180,6 +180,42 @@ msgstr ""
 msgid "Customer Notes"
 msgstr ""
 
+msgid "System Status"
+msgstr ""
+
+msgid "Permission Check Results"
+msgstr ""
+
+msgid "File System Check"
+msgstr ""
+
+msgid "Directory Permissions"
+msgstr ""
+
+msgid "File Access"
+msgstr ""
+
+msgid "System Requirements"
+msgstr ""
+
+msgid "PHP Version"
+msgstr ""
+
+msgid "WordPress Version"
+msgstr ""
+
+msgid "Database Version"
+msgstr ""
+
+msgid "Memory Limit"
+msgstr ""
+
+msgid "Max Upload Size"
+msgstr ""
+
+msgid "Post Max Size"
+msgstr ""
+
 msgid "Repair Status"
 msgstr ""
 
@@ -226,6 +262,24 @@ msgid "Internal Comment"
 msgstr ""
 
 #: includes/Admin/SystemCheck.php:15
+msgid "Pending"
+msgstr ""
+
+msgid "In Progress"
+msgstr ""
+
+msgid "Completed"
+msgstr ""
+
+msgid "Delivered"
+msgstr ""
+
+msgid "View repair details"
+msgstr ""
+
+msgid "View repair history"
+msgstr ""
+
 msgid "Add Note"
 msgstr ""
 

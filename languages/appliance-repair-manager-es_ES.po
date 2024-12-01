@@ -193,6 +193,24 @@ msgstr "Acciones"
 msgid "View Details"
 msgstr "Ver Detalles"
 
+msgid "Pending"
+msgstr "Pendiente"
+
+msgid "In Progress"
+msgstr "En Progreso"
+
+msgid "Completed"
+msgstr "Completado"
+
+msgid "Delivered"
+msgstr "Entregado"
+
+msgid "View repair details"
+msgstr "Ver detalles de la reparación"
+
+msgid "View repair history"
+msgstr "Ver historial de reparación"
+
 msgid "Add Note"
 msgstr "Agregar Nota"
 
@@ -384,3 +402,39 @@ msgstr "Notas Internas"
 
 msgid "Customer Notes"
 msgstr "Notas del Cliente"
+
+msgid "System Status"
+msgstr "Estado del Sistema"
+
+msgid "Permission Check Results"
+msgstr "Resultados de Verificación de Permisos"
+
+msgid "File System Check"
+msgstr "Verificación del Sistema de Archivos"
+
+msgid "Directory Permissions"
+msgstr "Permisos de Directorio"
+
+msgid "File Access"
+msgstr "Acceso a Archivos"
+
+msgid "System Requirements"
+msgstr "Requisitos del Sistema"
+
+msgid "PHP Version"
+msgstr "Versión de PHP"
+
+msgid "WordPress Version"
+msgstr "Versión de WordPress"
+
+msgid "Database Version"
+msgstr "Versión de Base de Datos"
+
+msgid "Memory Limit"
+msgstr "Límite de Memoria"
+
+msgid "Max Upload Size"
+msgstr "Tamaño Máximo de Carga"
+
+msgid "Post Max Size"
+msgstr "Tamaño Máximo de Post"

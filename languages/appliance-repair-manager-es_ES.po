@@ -1,5 +1,5 @@
 msgid ""
-msgstr ""
+msgstr "Reparaciones"
 "Project-Id-Version: Appliance Repair Manager 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/appliance-repair-manager\n"
 "POT-Creation-Date: 2024-01-19 12:00:00+00:00\n"

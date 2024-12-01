@@ -224,14 +224,15 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                                             <input type="hidden" name="repair_id" value="<?php echo esc_attr($repair->id); ?>">
                                             <textarea name="note" class="arm-note-input" rows="2" placeholder="<?php esc_attr_e('Add a note...', 'appliance-repair-manager'); ?>"></textarea>
                                             <button type="submit" class="button button-small">
-                                                <?php _e('Add Note', 'appliance-repair-manager'); ?>
+                                                <?php _e('Agregar Nota', 'appliance-repair-manager'); ?>
                                             </button>
                                         </form>
                                     <?php endif; ?>
                                 </div>
-                                <a href="#" class="button button-small view-repair-details" data-repair-id="<?php echo esc_attr($repair->id); ?>">
-                                    <?php _e('View Details', 'appliance-repair-manager'); ?>
-                                </a>
+                                <button type="button" class="button button-small view-repair-details" 
+                                        data-repair-id="<?php echo esc_attr($repair->id); ?>">
+                                    <?php _e('Ver Detalles', 'appliance-repair-manager'); ?>
+                                </button>
                             </td>
                             <td><?php echo esc_html(number_format($repair->cost, 2)); ?></td>
                             <td><?php echo esc_html($repair->technician_name); ?></td>

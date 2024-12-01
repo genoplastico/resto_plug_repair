@@ -154,6 +154,60 @@ msgstr "Agregar Nota"
 msgid "Notes"
 msgstr "Notas"
 
+msgid "Add Note"
+msgstr "Agregar Nota"
+
+msgid "Delete Note"
+msgstr "Eliminar Nota"
+
+msgid "Are you sure you want to delete this note?"
+msgstr "¿Está seguro que desea eliminar esta nota?"
+
+msgid "Make this note visible to client"
+msgstr "Hacer esta nota visible para el cliente"
+
+msgid "Add a note..."
+msgstr "Agregar una nota..."
+
+msgid "No notes available."
+msgstr "No hay notas disponibles."
+
+msgid "Public Notes"
+msgstr "Notas Públicas"
+
+msgid "Private Notes"
+msgstr "Notas Privadas"
+
+msgid "Note visibility"
+msgstr "Visibilidad de la nota"
+
+msgid "Public"
+msgstr "Pública"
+
+msgid "Private"
+msgstr "Privada"
+
+msgid "Note Details"
+msgstr "Detalles de la Nota"
+
+msgid "Author"
+msgstr "Autor"
+
+msgid "Date Added"
+msgstr "Fecha de Creación"
+
+msgid "Last Modified"
+msgstr "Última Modificación"
+
+msgid "Note Content"
+msgstr "Contenido de la Nota"
+
+msgid "Error adding note"
+msgstr "Error al agregar la nota"
+
+msgid "Please enter a note"
+msgstr "Por favor ingrese una nota"
+
 msgid "Created"
 msgstr "Creado"
 
@@ -252,3 +306,36 @@ msgstr "Nota agregada exitosamente."
 #: includes/Core/Plugin.php:56
 msgid "Repair Manager"
 msgstr "Gestor de Reparaciones"
+
+msgid "Note deleted successfully."
+msgstr "Nota eliminada exitosamente."
+
+msgid "Error deleting note."
+msgstr "Error al eliminar la nota."
+
+msgid "Private note"
+msgstr "Nota privada"
+
+msgid "Added by"
+msgstr "Agregada por"
+
+msgid "on"
+msgstr "el"
+
+msgid "Edit note"
+msgstr "Editar nota"
+
+msgid "Save note"
+msgstr "Guardar nota"
+
+msgid "Cancel editing"
+msgstr "Cancelar edición"
+
+msgid "Notes History"
+msgstr "Historial de Notas"
+
+msgid "Internal Notes"
+msgstr "Notas Internas"
+
+msgid "Customer Notes"
+msgstr "Notas del Cliente"

@@ -147,7 +147,94 @@ msgstr ""
 msgid "Note added successfully."
 msgstr ""
 
+msgid "Note deleted successfully."
+msgstr ""
+
+msgid "Error deleting note."
+msgstr ""
+
+msgid "Private note"
+msgstr ""
+
+msgid "Added by"
+msgstr ""
+
+msgid "on"
+msgstr ""
+
+msgid "Edit note"
+msgstr ""
+
+msgid "Save note"
+msgstr ""
+
+msgid "Cancel editing"
+msgstr ""
+
+msgid "Notes History"
+msgstr ""
+
+msgid "Internal Notes"
+msgstr ""
+
+msgid "Customer Notes"
+msgstr ""
+
 #: includes/Admin/SystemCheck.php:15
+msgid "Add Note"
+msgstr ""
+
+msgid "Delete Note"
+msgstr ""
+
+msgid "Are you sure you want to delete this note?"
+msgstr ""
+
+msgid "Make this note visible to client"
+msgstr ""
+
+msgid "Add a note..."
+msgstr ""
+
+msgid "No notes available."
+msgstr ""
+
+msgid "Public Notes"
+msgstr ""
+
+msgid "Private Notes"
+msgstr ""
+
+msgid "Note visibility"
+msgstr ""
+
+msgid "Public"
+msgstr ""
+
+msgid "Private"
+msgstr ""
+
+msgid "Note Details"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Date Added"
+msgstr ""
+
+msgid "Last Modified"
+msgstr ""
+
+msgid "Note Content"
+msgstr ""
+
+msgid "Error adding note"
+msgstr ""
+
+msgid "Please enter a note"
+msgstr ""
+
 msgid "System Check"
 msgstr ""
 

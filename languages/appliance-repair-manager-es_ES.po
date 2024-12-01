@@ -31,6 +31,9 @@ msgstr "Órdenes de Trabajo"
 msgid "Repairs Management"
 msgstr "Gestión de Reparaciones"
 
+msgid "Clients Management"
+msgstr "Gestión de Clientes"
+
 msgid "Add New Client"
 msgstr "Agregar Nuevo Cliente"
 
@@ -63,6 +66,15 @@ msgstr "Copiar URL Pública"
 
 msgid "Public URL has been copied to clipboard."
 msgstr "La URL pública ha sido copiada al portapapeles."
+
+msgid "Select Appliance"
+msgstr "Seleccionar Electrodoméstico"
+
+msgid "Error loading appliances"
+msgstr "Error al cargar electrodomésticos"
+
+msgid "View Details"
+msgstr "Ver Detalles"
 
 msgid "Add New Client"
 msgstr "Agregar Nuevo Cliente"

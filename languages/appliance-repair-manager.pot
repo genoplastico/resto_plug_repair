@@ -27,6 +27,44 @@ msgstr ""
 msgid "Clients Management"
 msgstr ""
 
+msgid "Add New Client"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "Add Client"
+msgstr ""
+
+msgid "Existing Clients"
+msgstr ""
+
+msgid "No clients found."
+msgstr ""
+
+msgid "Copy Public URL"
+msgstr ""
+
+msgid "Public URL has been copied to clipboard."
+msgstr ""
+
+msgid "Select Appliance"
+msgstr ""
+
+msgid "Error loading appliances"
+msgstr ""
+
+msgid "View Details"
+msgstr ""
 #: templates/admin/clients.php:15 
 msgid "Add New Client"
 msgstr ""

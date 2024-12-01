@@ -127,7 +127,8 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
     <?php endif; ?>
 
     <div class="arm-repairs-list">
-        <h2>
+        <div class="arm-repairs-header">
+            <h2>
             <?php 
             if ($technician_id) {
                 $technician = get_user_by('id', $technician_id);
@@ -139,7 +140,26 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                 _e('Repair History', 'appliance-repair-manager');
             }
             ?>
-        </h2>
+            </h2>
+            
+            <!-- Client filter -->
+            <div class="arm-filter-section">
+                <form method="get" action="">
+                    <input type="hidden" name="page" value="arm-repairs">
+                    <?php if ($technician_id): ?>
+                        <input type="hidden" name="technician_id" value="<?php echo esc_attr($technician_id); ?>">
+                    <?php endif; ?>
+                    <select name="client_id" class="arm-select2" onchange="this.form.submit()">
+                        <option value=""><?php _e('All Clients', 'appliance-repair-manager'); ?></option>
+                        <?php foreach ($clients as $client): ?>
+                            <option value="<?php echo esc_attr($client->id); ?>" <?php selected(isset($_GET['client_id']) ? intval($_GET['client_id']) : 0, $client->id); ?>>
+                                <?php echo esc_html($client->name); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </form>
+            </div>
+        </div>
 
         <?php
         // Build the query based on user role and filters
@@ -158,6 +178,12 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
             LEFT JOIN {$wpdb->users} u ON r.technician_id = u.ID
             WHERE 1=1
         ";
+
+        // Add client filter
+        if (!empty($_GET['client_id'])) {
+            $client_id = intval($_GET['client_id']);
+            $query .= $wpdb->prepare(" AND a.client_id = %d", $client_id);
+        }
 
         // Add WHERE clause for technicians to see only their repairs
         if ($is_technician) {

@@ -249,7 +249,7 @@ jQuery(document).ready(function($) {
                 if (response.success) {
                     $notesList.html(response.data.html);
                 } else {
-                    alert(response.data.message || armL10n.errorDeletingNote);
+                    alert(response.data.error || response.data.message);
                     $button.prop('disabled', false);
                 }
             },
@@ -259,7 +259,7 @@ jQuery(document).ready(function($) {
                     error: error,
                     response: xhr.responseText
                 });
-                alert(response.data.message || armL10n.errorDeletingNote);
+                alert(armL10n.errorDeletingNote);
                 $button.prop('disabled', false);
             }
         });

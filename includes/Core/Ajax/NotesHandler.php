@@ -102,9 +102,11 @@ class NotesHandler {
             if (!$note) {
                 throw new \Exception('Note not found');
             }
-
+            
+            $current_user_id = get_current_user_id();
+            
             // Only allow users to delete their own notes unless they're admins
-            if (!current_user_can('manage_options') && $note->user_id !== get_current_user_id()) {
+            if (!current_user_can('manage_options') && intval($note->user_id) !== $current_user_id) {
                 throw new \Exception(__('You can only delete your own notes.', 'appliance-repair-manager'));
             }
 
@@ -144,7 +146,8 @@ class NotesHandler {
             ]);
             
             wp_send_json_error([
-                'message' => $e->getMessage()
+                'message' => __('Error deleting note', 'appliance-repair-manager'),
+                'error' => $e->getMessage()
             ]);
         }
     }

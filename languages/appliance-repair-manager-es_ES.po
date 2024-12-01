@@ -193,6 +193,51 @@ msgstr "Acciones"
 msgid "View Details"
 msgstr "Ver Detalles"
 
+msgid "View repair details"
+msgstr "Ver detalles de la reparación"
+
+msgid "View History"
+msgstr "Ver Historial"
+
+msgid "Loading..."
+msgstr "Cargando..."
+
+msgid "Error loading repair details"
+msgstr "Error al cargar detalles de la reparación"
+
+msgid "Error loading appliances"
+msgstr "Error al cargar electrodomésticos"
+
+msgid "Please enter a note"
+msgstr "Por favor ingrese una nota"
+
+msgid "Make this note visible to client"
+msgstr "Hacer esta nota visible para el cliente"
+
+msgid "Note visibility"
+msgstr "Visibilidad de la nota"
+
+msgid "Public"
+msgstr "Pública"
+
+msgid "Private"
+msgstr "Privada"
+
+msgid "Note Details"
+msgstr "Detalles de la Nota"
+
+msgid "Author"
+msgstr "Autor"
+
+msgid "Date Added"
+msgstr "Fecha de Creación"
+
+msgid "Last Modified"
+msgstr "Última Modificación"
+
+msgid "Note Content"
+msgstr "Contenido de la Nota"
+
 msgid "Pending"
 msgstr "Pendiente"
 

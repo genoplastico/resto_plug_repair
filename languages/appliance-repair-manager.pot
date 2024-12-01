@@ -216,6 +216,51 @@ msgstr ""
 msgid "Post Max Size"
 msgstr ""
 
+msgid "View repair details"
+msgstr ""
+
+msgid "View History"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Error loading repair details"
+msgstr ""
+
+msgid "Error loading appliances"
+msgstr ""
+
+msgid "Please enter a note"
+msgstr ""
+
+msgid "Make this note visible to client"
+msgstr ""
+
+msgid "Note visibility"
+msgstr ""
+
+msgid "Public"
+msgstr ""
+
+msgid "Private"
+msgstr ""
+
+msgid "Note Details"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Date Added"
+msgstr ""
+
+msgid "Last Modified"
+msgstr ""
+
+msgid "Note Content"
+msgstr ""
+
 msgctxt "repair status"
 msgid "Pending Review"
 msgstr ""

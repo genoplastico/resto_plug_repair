@@ -7,7 +7,7 @@ class TranslationDebugger {
     private $debug_mode;
 
     private function __construct() {
-        $this->debug_mode = defined('WP_DEBUG') && WP_DEBUG;
+        $this->debug_mode = defined('WP_DEBUG') && WP_DEBUG && get_option('arm_translation_debug_enabled', 0);
         if ($this->debug_mode) {
             add_filter('gettext', [$this, 'track_untranslated'], 999, 3);
             add_filter('gettext_with_context', [$this, 'track_untranslated_with_context'], 999, 4);

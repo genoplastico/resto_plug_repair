@@ -6,6 +6,42 @@ if (!defined('ABSPATH')) {
 <div class="wrap">
     <h1><?php _e('Appliance Repair Manager Settings', 'appliance-repair-manager'); ?></h1>
 
+    <?php settings_errors('arm_settings'); ?>
+
+    <form method="post" action="">
+        <?php wp_nonce_field('arm_settings_nonce'); ?>
+        
+        <div class="arm-settings-section">
+            <h2><?php _e('Debug Settings', 'appliance-repair-manager'); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row">
+                        <?php _e('Translation Debug', 'appliance-repair-manager'); ?>
+                    </th>
+                    <td>
+                        <label>
+                            <input type="checkbox" 
+                                   name="arm_translation_debug" 
+                                   value="1" 
+                                   <?php checked(get_option('arm_translation_debug_enabled', 0), 1); ?>>
+                            <?php _e('Enable translation debug logging', 'appliance-repair-manager'); ?>
+                        </label>
+                        <p class="description">
+                            <?php _e('When enabled, untranslated strings will be logged and displayed in the admin footer (requires WP_DEBUG).', 'appliance-repair-manager'); ?>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p class="submit">
+            <input type="submit" 
+                   name="arm_save_settings" 
+                   class="button button-primary" 
+                   value="<?php esc_attr_e('Save Settings', 'appliance-repair-manager'); ?>">
+        </p>
+    </form>
+
     <div class="arm-settings-section">
         <h2><?php _e('Email Configuration', 'appliance-repair-manager'); ?></h2>
         

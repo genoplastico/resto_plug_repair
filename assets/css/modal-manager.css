@@ -1,6 +1,7 @@
 /* Modal Manager Styles */
 .arm-modal {
     display: none;
+    opacity: 0;
     position: fixed;
     transform: translateZ(0);
     will-change: opacity;
@@ -9,7 +10,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+    transition: opacity 0.2s ease-out;
     background-color: rgba(0, 0, 0, 0.6);
     overflow-y: auto;
     padding: 20px;
@@ -21,12 +22,14 @@
 .arm-modal-content {
     background-color: #fff;
     margin: 40px auto;
+    transform: translateY(20px);
     padding: 0;
     width: 90%;
     max-width: 800px;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     position: relative;
+    transition: transform 0.2s ease-out;
     transform: translateY(0);
     transition: transform 0.2s ease-out;
 }
@@ -216,16 +219,9 @@
 
 .arm-modal-visible {
     opacity: 1;
+    pointer-events: auto;
 }
 
 .arm-modal-visible .arm-modal-content {
     transform: translateY(0);
-}
-
-.arm-modal:not(.arm-modal-visible) {
-    opacity: 0;
-}
-
-.arm-modal:not(.arm-modal-visible) .arm-modal-content {
-    transform: translateY(20px);
 }

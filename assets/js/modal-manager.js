@@ -1,10 +1,8 @@
 class ModalManager {
-    debug = false;
-
     constructor() {
         this.debug = window.armDebug || false;
-        this.init();
         this.activeModals = new Set();
+        this.init();
     }
 
     log(message, data = {}) {
@@ -59,11 +57,13 @@ class ModalManager {
     openModal(modalId) {
         const modal = document.getElementById(modalId);
         if (modal) {
-            modal.style.display = 'block';
             this.log('Opening modal', { modalId, modal });
             
             // Prevent body scroll
             document.body.style.overflow = 'hidden';
+            
+            // Show modal
+            modal.style.display = 'block';
             
             // Animate in
             requestAnimationFrame(() => {
@@ -99,7 +99,6 @@ class ModalManager {
             console.error('Invalid modal element:', modal);
         }
     }
-}
 }
 
 // Initialize Modal Manager

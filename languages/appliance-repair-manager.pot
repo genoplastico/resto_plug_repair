@@ -114,6 +114,39 @@ msgstr ""
 msgid "Are you sure you want to delete this note?"
 msgstr ""
 
+msgid "Repair Details"
+msgstr ""
+
+msgid "Repair Information"
+msgstr ""
+
+msgid "Public Notes"
+msgstr ""
+
+msgid "Repair details not found."
+msgstr ""
+
+msgid "Repairs Assigned to %s"
+msgstr ""
+
+msgid "Select Client First"
+msgstr ""
+
+msgid "Add Repair Record"
+msgstr ""
+
+msgid "Repair record added successfully."
+msgstr ""
+
+msgid "Repair status updated successfully."
+msgstr ""
+
+msgid "Technician assigned successfully."
+msgstr ""
+
+msgid "Note added successfully."
+msgstr ""
+
 #: includes/Admin/SystemCheck.php:15
 msgid "System Check"
 msgstr ""

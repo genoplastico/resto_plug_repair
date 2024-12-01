@@ -217,6 +217,38 @@ msgstr "Eliminar Nota"
 msgid "Are you sure you want to delete this note?"
 msgstr "¿Está seguro que desea eliminar esta nota?"
 
+msgid "Repair Details"
+msgstr "Detalles de la Reparación"
+
+msgid "Repair Information"
+msgstr "Información de la Reparación"
+
+msgid "Public Notes"
+msgstr "Notas Públicas"
+
+msgid "Repair details not found."
+msgstr "No se encontraron detalles de la reparación."
+
+msgid "Repairs Assigned to %s"
+msgstr "Reparaciones Asignadas a %s"
+
+msgid "Select Client First"
+msgstr "Seleccione Cliente Primero"
+
+msgid "Add Repair Record"
+msgstr "Agregar Registro de Reparación"
+
+msgid "Repair record added successfully."
+msgstr "Registro de reparación agregado exitosamente."
+
+msgid "Repair status updated successfully."
+msgstr "Estado de reparación actualizado exitosamente."
+
+msgid "Technician assigned successfully."
+msgstr "Técnico asignado exitosamente."
+
+msgid "Note added successfully."
+msgstr "Nota agregada exitosamente."
 #: includes/Core/Plugin.php:56
 msgid "Repair Manager"
 msgstr "Gestor de Reparaciones"

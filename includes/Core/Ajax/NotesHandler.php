@@ -144,7 +144,6 @@ class NotesHandler {
             ]);
             
             wp_send_json_error([
-                'message' => __('Error deleting note', 'appliance-repair-manager'),
                 'message' => $e->getMessage()
             ]);
         }

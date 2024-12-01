@@ -78,6 +78,26 @@ jQuery(document).ready(function($) {
         });
     });
 
+    // Modal close handlers
+    $(document).on('click', '.arm-modal-close', function() {
+        logDebug('Modal close button clicked');
+        $(this).closest('.arm-modal').hide();
+    });
+
+    $(document).on('click', '.arm-modal', function(e) {
+        if ($(e.target).hasClass('arm-modal')) {
+            logDebug('Modal background clicked');
+            $(this).hide();
+        }
+    });
+
+    $(document).keyup(function(e) {
+        if (e.key === 'Escape') {
+            logDebug('Escape key pressed');
+            $('.arm-modal:visible').hide();
+        }
+    });
+
     // AJAX error handler
     function handleAjaxError(xhr, status, error, action) {
         logDebug('AJAX Error', {

@@ -64,6 +64,36 @@ msgstr "Copiar URL Pública"
 msgid "Public URL has been copied to clipboard."
 msgstr "La URL pública ha sido copiada al portapapeles."
 
+msgid "Add New Client"
+msgstr "Agregar Nuevo Cliente"
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "Email"
+msgstr "Correo Electrónico"
+
+msgid "Phone"
+msgstr "Teléfono"
+
+msgid "Address"
+msgstr "Dirección"
+
+msgid "Add Client"
+msgstr "Agregar Cliente"
+
+msgid "Existing Clients"
+msgstr "Clientes Existentes"
+
+msgid "Appliances"
+msgstr "Electrodomésticos"
+
+msgid "Created"
+msgstr "Creado"
+
+msgid "Actions"
+msgstr "Acciones"
+
 msgid "Settings"
 msgstr "Configuración"
 

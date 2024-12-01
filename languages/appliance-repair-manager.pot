@@ -216,6 +216,22 @@ msgstr ""
 msgid "Post Max Size"
 msgstr ""
 
+msgctxt "repair status"
+msgid "Pending Review"
+msgstr ""
+
+msgctxt "repair status"
+msgid "In Repair"
+msgstr ""
+
+msgctxt "repair status"
+msgid "Repaired"
+msgstr ""
+
+msgctxt "repair status"
+msgid "Delivered"
+msgstr ""
+
 msgid "Repair Status"
 msgstr ""
 

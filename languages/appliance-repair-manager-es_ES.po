@@ -438,3 +438,19 @@ msgstr "Tamaño Máximo de Carga"
 
 msgid "Post Max Size"
 msgstr "Tamaño Máximo de Post"
+
+msgctxt "repair status"
+msgid "Pending Review"
+msgstr "Pendiente de Revisión"
+
+msgctxt "repair status"
+msgid "In Repair"
+msgstr "En Reparación"
+
+msgctxt "repair status"
+msgid "Repaired"
+msgstr "Reparado"
+
+msgctxt "repair status"
+msgid "Delivered"
+msgstr "Entregado"

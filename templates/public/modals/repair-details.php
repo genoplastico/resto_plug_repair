@@ -34,7 +34,12 @@
             <div class="arm-detail-section">
                 <h3><?php _e('Public Notes', 'appliance-repair-manager'); ?></h3>
                 <div class="arm-notes-list">
-                    <?php foreach ($repair->notes as $note): ?>
+                    <?php 
+                    $public_notes = array_filter($repair->notes, function($note) {
+                        return $note->is_public;
+                    });
+                    
+                    if ($public_notes): foreach ($public_notes as $note): ?>
                         <div class="arm-note arm-note-public">
                             <div class="arm-note-header">
                                 <span class="arm-note-date">
@@ -45,7 +50,10 @@
                                 <?php echo nl2br(esc_html($note->note)); ?>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                    <?php endforeach; 
+                    else: ?>
+                        <p class="arm-no-notes"><?php _e('No public notes available.', 'appliance-repair-manager'); ?></p>
+                    <?php endif; ?>
                 </div>
             </div>
             <?php endif; ?>

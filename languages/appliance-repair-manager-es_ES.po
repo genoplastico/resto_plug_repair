@@ -31,6 +31,39 @@ msgstr "Órdenes de Trabajo"
 msgid "Repairs Management"
 msgstr "Gestión de Reparaciones"
 
+msgid "Add New Client"
+msgstr "Agregar Nuevo Cliente"
+
+msgid "Client added successfully."
+msgstr "Cliente agregado exitosamente."
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "Email"
+msgstr "Correo Electrónico"
+
+msgid "Phone"
+msgstr "Teléfono"
+
+msgid "Address"
+msgstr "Dirección"
+
+msgid "Add Client"
+msgstr "Agregar Cliente"
+
+msgid "Existing Clients"
+msgstr "Clientes Existentes"
+
+msgid "No clients found."
+msgstr "No se encontraron clientes."
+
+msgid "Copy Public URL"
+msgstr "Copiar URL Pública"
+
+msgid "Public URL has been copied to clipboard."
+msgstr "La URL pública ha sido copiada al portapapeles."
+
 msgid "Settings"
 msgstr "Configuración"
 

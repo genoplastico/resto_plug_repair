@@ -27,6 +27,50 @@ msgstr ""
 msgid "Clients Management"
 msgstr ""
 
+#: templates/admin/clients.php:15 
+msgid "Add New Client"
+msgstr ""
+
+#: templates/admin/clients.php:25
+msgid "Client added successfully."
+msgstr ""
+
+#: templates/admin/clients.php:45
+msgid "Name"
+msgstr ""
+
+#: templates/admin/clients.php:55
+msgid "Email"
+msgstr ""
+
+#: templates/admin/clients.php:65
+msgid "Phone"
+msgstr ""
+
+#: templates/admin/clients.php:75
+msgid "Address"
+msgstr ""
+
+#: templates/admin/clients.php:85
+msgid "Add Client"
+msgstr ""
+
+#: templates/admin/clients.php:90
+msgid "Existing Clients"
+msgstr ""
+
+#: templates/admin/clients.php:120
+msgid "No clients found."
+msgstr ""
+
+#: templates/admin/clients.php:145
+msgid "Copy Public URL"
+msgstr ""
+
+#: templates/admin/clients.php:155
+msgid "Public URL has been copied to clipboard."
+msgstr ""
+
 #: includes/Admin/RepairManager.php:12
 msgid "Repairs Management"
 msgstr ""

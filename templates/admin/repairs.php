@@ -268,8 +268,8 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                                             <select name="status" class="arm-select2" onchange="this.form.submit()">
                                                 <?php foreach ($repair_statuses as $status_key => $status_label): ?>
                                                     <option value="<?php echo esc_attr($status_key); ?>" 
-                                                            <?php selected($repair->status, $status_key); ?>>
-                                                        <?php echo esc_html($status_label); ?>
+                                                           <?php selected($repair->status, $status_key); ?>>
+                                                        <?php echo esc_html(_x($status_label, 'repair status', 'appliance-repair-manager')); ?>
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>

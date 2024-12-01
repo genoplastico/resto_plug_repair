@@ -18,10 +18,10 @@ class RepairStatusManager {
 
     private function initializeStatuses() {
         $this->statuses = [
-            'pending' => __('Pending Review', 'appliance-repair-manager'),
-            'in_progress' => __('In Repair', 'appliance-repair-manager'),
-            'completed' => __('Repaired', 'appliance-repair-manager'),
-            'delivered' => __('Delivered', 'appliance-repair-manager'),
+            'pending' => _x('Pending Review', 'repair status', 'appliance-repair-manager'),
+            'in_progress' => _x('In Repair', 'repair status', 'appliance-repair-manager'),
+            'completed' => _x('Repaired', 'repair status', 'appliance-repair-manager'),
+            'delivered' => _x('Delivered', 'repair status', 'appliance-repair-manager'),
         ];
     }
 

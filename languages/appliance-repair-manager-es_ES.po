@@ -156,3 +156,67 @@ msgstr "Notas"
 
 msgid "Created"
 msgstr "Creado"
+
+msgid "Client Details"
+msgstr "Detalles del Cliente"
+
+msgid "Appliance Information"
+msgstr "Información del Electrodoméstico"
+
+msgid "Serial Number"
+msgstr "Número de Serie"
+
+msgid "Brand"
+msgstr "Marca"
+
+msgid "Model"
+msgstr "Modelo"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Loading..."
+msgstr "Cargando..."
+
+msgid "Error loading repair details"
+msgstr "Error al cargar detalles de la reparación"
+
+msgid "Close"
+msgstr "Cerrar"
+
+msgid "No repair records found."
+msgstr "No se encontraron registros de reparación."
+
+msgid "Select Client"
+msgstr "Seleccionar Cliente"
+
+msgid "Select Technician"
+msgstr "Seleccionar Técnico"
+
+msgid "Please fill in all required fields."
+msgstr "Por favor complete todos los campos requeridos."
+
+msgid "Are you sure you want to change the status?"
+msgstr "¿Está seguro que desea cambiar el estado?"
+
+msgid "Public"
+msgstr "Público"
+
+msgid "Make this note visible to client"
+msgstr "Hacer esta nota visible para el cliente"
+
+msgid "No notes available."
+msgstr "No hay notas disponibles."
+
+msgid "Add a note..."
+msgstr "Agregar una nota..."
+
+msgid "Delete Note"
+msgstr "Eliminar Nota"
+
+msgid "Are you sure you want to delete this note?"
+msgstr "¿Está seguro que desea eliminar esta nota?"
+
+#: includes/Core/Plugin.php:56
+msgid "Repair Manager"
+msgstr "Gestor de Reparaciones"

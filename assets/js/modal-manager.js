@@ -76,14 +76,14 @@ class ModalManager {
             this.log('Closing modal', {
                 modal: modal
             });
-        } else {
-            console.error('Invalid modal element:', modal);
             modal.style.opacity = '0';
             // Wait for fade out animation
             setTimeout(() => {
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
             }, 150);
+        } else {
+            console.error('Invalid modal element:', modal);
         }
     }
 }

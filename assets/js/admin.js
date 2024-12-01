@@ -81,20 +81,24 @@ jQuery(document).ready(function($) {
     // Modal close handlers
     $(document).on('click', '.arm-modal-close', function() {
         logDebug('Modal close button clicked');
-        $(this).closest('.arm-modal').hide();
+        const modal = $(this).closest('.arm-modal')[0];
+        window.armModalManager.closeModal(modal);
     });
 
     $(document).on('click', '.arm-modal', function(e) {
         if ($(e.target).hasClass('arm-modal')) {
             logDebug('Modal background clicked');
-            $(this).hide();
+            window.armModalManager.closeModal(this);
         }
     });
 
     $(document).keyup(function(e) {
         if (e.key === 'Escape') {
             logDebug('Escape key pressed');
-            $('.arm-modal:visible').hide();
+            const openModal = document.querySelector('.arm-modal[style*="display: block"]');
+            if (openModal) {
+                window.armModalManager.closeModal(openModal);
+            }
         }
     });
 

@@ -40,19 +40,20 @@ class TranslationDebugger {
         if (!$this->debug_mode || !current_user_can('manage_options')) {
             return;
         }
-
-        echo '<div id="arm-translation-debug" class="notice notice-warning">';
+        
+        echo '<div id="arm-translation-debug" class="notice notice-warning is-dismissible">';
         echo '<h3>Translation Debug Information</h3>';
         
         if (empty($this->untranslated)) {
             echo '<p>No untranslated strings found.</p>';
         } else {
+            echo '<p>The following strings are not being translated:</p>';
             echo '<table class="widefat">';
             echo '<thead><tr><th>String</th><th>File</th><th>Line</th><th>Count</th></tr></thead>';
             echo '<tbody>';
             foreach ($this->untranslated as $text => $info) {
                 printf(
-                    '<tr><td>%s</td><td>%s</td><td>%s</td><td>%d</td></tr>',
+                    '<tr><td><code>%s</code></td><td><small>%s</small></td><td>%d</td><td>%d</td></tr>',
                     esc_html($text),
                     esc_html(str_replace(WP_PLUGIN_DIR, '', $info['file'])),
                     esc_html($info['line']),
@@ -60,7 +61,17 @@ class TranslationDebugger {
                 );
             }
             echo '</tbody></table>';
+            echo '<p><small>Note: This information is only visible to administrators when WP_DEBUG is enabled.</small></p>';
         }
         echo '</div>';
+        
+        // Add some JavaScript to make the notice dismissible
+        echo '<script>
+            jQuery(document).ready(function($) {
+                $(".notice-warning.is-dismissible").on("click", ".notice-dismiss", function() {
+                    $(this).parent().slideUp();
+                });
+            });
+        </script>';
     }
 }

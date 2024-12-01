@@ -56,13 +56,15 @@
 /* Translation Debug Styles */
 #arm-translation-debug {
     margin: 20px 0;
-    padding: 15px;
+    padding: 15px 15px 25px;
+    position: relative;
 }
 
 #arm-translation-debug table {
     margin-top: 10px;
     border-collapse: collapse;
     width: 100%;
+    background: #fff;
 }
 
 #arm-translation-debug th,
@@ -70,11 +72,24 @@
     padding: 8px;
     text-align: left;
     border: 1px solid #ddd;
+    vertical-align: top;
 }
 
 #arm-translation-debug th {
     background-color: #f5f5f5;
     font-weight: 600;
+}
+
+#arm-translation-debug code {
+    background: #f7f7f7;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+#arm-translation-debug small {
+    color: #666;
+    font-size: 11px;
 }
 
 /* Rest of your existing CSS... */

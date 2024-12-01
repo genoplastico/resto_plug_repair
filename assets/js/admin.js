@@ -190,7 +190,7 @@ jQuery(document).ready(function($) {
                 action: 'arm_add_note',
                 repair_id: $form.find('input[name="repair_id"]').val(),
                 note: noteText,
-                is_public: $form.find('input[name="is_public"]').is(':checked'),
+                is_public: $form.find('input[name="is_public"]').is(':checked') ? 1 : 0,
                 nonce: $form.find('input[name="note_nonce"]').val()
             },
             success: function(response) {

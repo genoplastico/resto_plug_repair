@@ -26,7 +26,7 @@ msgid "Clients"
 msgstr "Clientes"
 
 msgid "Repairs"
-msgstr "Órdenes de Trabajo"
+msgstr "Reparaciones"
 
 msgid "Repairs Management"
 msgstr "Gestión de Reparaciones"

@@ -54,11 +54,17 @@ class ModalManager {
     openModal(modalId) {
         const modal = document.getElementById(modalId);
         if (modal) {
+            // Force a reflow before changing styles
+            modal.style.opacity = '0';
+            modal.style.display = 'block';
+            // Use requestAnimationFrame to batch style changes
+            requestAnimationFrame(() => {
+                modal.style.opacity = '1';
+            });
             this.log('Opening modal', {
                 modalId: modalId,
                 modal: modal
             });
-            modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         } else {
             console.error('Modal not found:', modalId);
@@ -72,8 +78,12 @@ class ModalManager {
             });
         } else {
             console.error('Invalid modal element:', modal);
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
+            modal.style.opacity = '0';
+            // Wait for fade out animation
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 150);
         }
     }
 }

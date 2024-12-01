@@ -138,6 +138,186 @@ msgid "Delivered"
 msgstr ""
 
 #: includes/Core/Status/RepairStatus.php:15
+msgid "Reparaciones"
+msgstr ""
+
+msgid "Clients"
+msgstr ""
+
+msgid "Appliances"
+msgstr ""
+
+msgid "Technicians"
+msgstr ""
+
+msgid "Error loading repair details."
+msgstr ""
+
+msgid "Error loading appliances."
+msgstr ""
+
+msgid "Select Appliance"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "View Details"
+msgstr ""
+
+msgid "View History"
+msgstr ""
+
+msgid "Copy Public URL"
+msgstr ""
+
+msgid "Public URL has been copied to clipboard."
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "No repair records found."
+msgstr ""
+
+msgid "Select Client"
+msgstr ""
+
+msgid "Select Technician"
+msgstr ""
+
+msgid "Please fill in all required fields."
+msgstr ""
+
+msgid "Are you sure you want to change the status?"
+msgstr ""
+
+msgid "Public"
+msgstr ""
+
+msgid "Make this note visible to client"
+msgstr ""
+
+msgid "No notes available."
+msgstr ""
+
+msgid "Add a note..."
+msgstr ""
+
+msgid "Delete Note"
+msgstr ""
+
+msgid "Are you sure you want to delete this note?"
+msgstr ""
+
+msgid "Repair Details"
+msgstr ""
+
+msgid "Repair Information"
+msgstr ""
+
+msgid "Public Notes"
+msgstr ""
+
+msgid "Repair details not found."
+msgstr ""
+
+msgid "Repairs Assigned to %s"
+msgstr ""
+
+msgid "Select Client First"
+msgstr ""
+
+msgid "Add Repair Record"
+msgstr ""
+
+msgid "Repair record added successfully."
+msgstr ""
+
+msgid "Repair status updated successfully."
+msgstr ""
+
+msgid "Technician assigned successfully."
+msgstr ""
+
+msgid "Note added successfully."
+msgstr ""
+
+msgid "Note deleted successfully."
+msgstr ""
+
+msgid "Error deleting note."
+msgstr ""
+
+msgid "Private note"
+msgstr ""
+
+msgid "Added by"
+msgstr ""
+
+msgid "on"
+msgstr ""
+
+msgid "Edit note"
+msgstr ""
+
+msgid "Save note"
+msgstr ""
+
+msgid "Cancel editing"
+msgstr ""
+
+msgid "Notes History"
+msgstr ""
+
+msgid "Internal Notes"
+msgstr ""
+
+msgid "Customer Notes"
+msgstr ""
+
+msgid "System Status"
+msgstr ""
+
+msgid "Permission Check Results"
+msgstr ""
+
+msgid "File System Check"
+msgstr ""
+
+msgid "Directory Permissions"
+msgstr ""
+
+msgid "File Access"
+msgstr ""
+
+msgid "System Requirements"
+msgstr ""
+
+msgid "PHP Version"
+msgstr ""
+
+msgid "WordPress Version"
+msgstr ""
+
+msgid "Database Version"
+msgstr ""
+
+msgid "Memory Limit"
+msgstr ""
+
+msgid "Max Upload Size"
+msgstr ""
+
+msgid "Post Max Size"
+msgstr ""
+
 msgctxt "repair status"
 msgid "Pending Review"
 msgstr ""

@@ -11,55 +11,71 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
 #: includes/Core/Plugin.php:56
+#: includes/Core/Plugin.php:56
 msgid "Repair Manager"
 msgstr ""
 
+#: includes/Admin/Dashboard.php:15
 msgid "Dashboard"
 msgstr ""
 
+#: includes/Admin/ApplianceManager.php:12
 msgid "Appliances Management"
 msgstr ""
 
+#: includes/Admin/ClientManager.php:12
 msgid "Clients Management"
 msgstr ""
 
+#: includes/Admin/RepairManager.php:12
 msgid "Repairs Management"
 msgstr ""
 
+#: includes/Admin/SettingsManager.php:12
 msgid "Settings"
 msgstr ""
 
+#: includes/Admin/UserManager.php:12
 msgid "Technicians Management"
 msgstr ""
 
+#: templates/admin/dashboard.php:15
 msgid "Pending Repairs"
 msgstr ""
 
+#: templates/admin/dashboard.php:21
 msgid "In Progress"
 msgstr ""
 
+#: templates/admin/dashboard.php:27
 msgid "Completed"
 msgstr ""
 
+#: templates/admin/dashboard.php:33
 msgid "Delivered"
 msgstr ""
 
+#: includes/Core/Status/RepairStatus.php:15
 msgctxt "repair status"
 msgid "Pending Review"
 msgstr ""
 
+#: includes/Core/Status/RepairStatus.php:16
 msgctxt "repair status"
 msgid "In Repair"
 msgstr ""
 
+#: includes/Core/Status/RepairStatus.php:17
 msgctxt "repair status"
 msgid "Repaired"
 msgstr ""
 
+#: includes/Core/Status/RepairStatus.php:18
 msgctxt "repair status"
 msgid "Delivered"
 msgstr ""
 
+#: templates/admin/repairs.php:89
 msgid "Client Details"
 msgstr ""
 
@@ -349,45 +365,56 @@ msgid "Status"
 msgstr ""
 
 #: templates/admin/repairs.php:90
+#: templates/admin/repairs.php:90
 msgid "Technician"
 msgstr ""
 
+#: templates/admin/repairs.php:91
 #: templates/admin/repairs.php:91
 msgid "Date"
 msgstr ""
 
 #: templates/admin/repairs.php:15
+#: templates/admin/repairs.php:15
 msgid "Add New Repair Record"
 msgstr ""
 
+#: templates/admin/repairs.php:45
 #: templates/admin/repairs.php:45
 msgid "Client"
 msgstr ""
 
 #: templates/admin/repairs.php:60
+#: templates/admin/repairs.php:60
 msgid "Appliance"
 msgstr ""
 
+#: templates/admin/repairs.php:75
 #: templates/admin/repairs.php:75
 msgid "Assign Technician"
 msgstr ""
 
 #: templates/admin/repairs.php:90
+#: templates/admin/repairs.php:90
 msgid "Diagnosis"
 msgstr ""
 
+#: templates/admin/repairs.php:98
 #: templates/admin/repairs.php:98
 msgid "Parts Used"
 msgstr ""
 
 #: templates/admin/repairs.php:106
+#: templates/admin/repairs.php:106
 msgid "Cost"
 msgstr ""
 
 #: templates/admin/repairs.php:116
+#: templates/admin/repairs.php:116
 msgid "Add Repair"
 msgstr ""
 
+#: templates/admin/repairs.php:124
 #: templates/admin/repairs.php:124
 msgid "Repair History"
 msgstr ""

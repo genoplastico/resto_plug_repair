@@ -193,9 +193,6 @@ msgstr "Acciones"
 msgid "View Details"
 msgstr "Ver Detalles"
 
-msgid "View repair details"
-msgstr "Ver detalles de la reparación"
-
 msgid "View History"
 msgstr "Ver Historial"
 
@@ -207,36 +204,6 @@ msgstr "Error al cargar detalles de la reparación"
 
 msgid "Error loading appliances"
 msgstr "Error al cargar electrodomésticos"
-
-msgid "Please enter a note"
-msgstr "Por favor ingrese una nota"
-
-msgid "Make this note visible to client"
-msgstr "Hacer esta nota visible para el cliente"
-
-msgid "Note visibility"
-msgstr "Visibilidad de la nota"
-
-msgid "Public"
-msgstr "Pública"
-
-msgid "Private"
-msgstr "Privada"
-
-msgid "Note Details"
-msgstr "Detalles de la Nota"
-
-msgid "Author"
-msgstr "Autor"
-
-msgid "Date Added"
-msgstr "Fecha de Creación"
-
-msgid "Last Modified"
-msgstr "Última Modificación"
-
-msgid "Note Content"
-msgstr "Contenido de la Nota"
 
 msgid "Pending"
 msgstr "Pendiente"
@@ -256,9 +223,6 @@ msgstr "Ver detalles de la reparación"
 msgid "View repair history"
 msgstr "Ver historial de reparación"
 
-msgid "Add Note"
-msgstr "Agregar Nota"
-
 msgid "Notes"
 msgstr "Notas"
 
@@ -272,50 +236,6 @@ msgid "Are you sure you want to delete this note?"
 msgstr "¿Está seguro que desea eliminar esta nota?"
 
 msgid "Make this note visible to client"
-msgstr "Hacer esta nota visible para el cliente"
-
-msgid "Add a note..."
-msgstr "Agregar una nota..."
-
-msgid "No notes available."
-msgstr "No hay notas disponibles."
-
-msgid "Public Notes"
-msgstr "Notas Públicas"
-
-msgid "Private Notes"
-msgstr "Notas Privadas"
-
-msgid "Note visibility"
-msgstr "Visibilidad de la nota"
-
-msgid "Public"
-msgstr "Pública"
-
-msgid "Private"
-msgstr "Privada"
-
-msgid "Note Details"
-msgstr "Detalles de la Nota"
-
-msgid "Author"
-msgstr "Autor"
-
-msgid "Date Added"
-msgstr "Fecha de Creación"
-
-msgid "Last Modified"
-msgstr "Última Modificación"
-
-msgid "Note Content"
-msgstr "Contenido de la Nota"
-
-msgid "Error adding note"
-msgstr "Error al agregar la nota"
-
-msgid "Please enter a note"
-msgstr "Por favor ingrese una nota"
-
 msgid "Created"
 msgstr "Creado"
 

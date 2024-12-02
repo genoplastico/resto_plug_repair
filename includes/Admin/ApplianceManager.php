@@ -31,46 +31,49 @@ class ApplianceManager {
         }
 
         check_admin_referer('arm_add_appliance', '_wpnonce');
-
+        
+        // Basic appliance data
         $appliance_data = [
             'client_id' => intval($_POST['client_id']),
             'type' => sanitize_text_field($_POST['appliance_type']),
             'brand' => sanitize_text_field($_POST['appliance_brand']),
             'model' => sanitize_text_field($_POST['appliance_model']),
             'serial_number' => sanitize_text_field($_POST['serial_number']),
-            'status' => 'pending',
-            'image_url' => null,
-            'image_path' => null
+            'status' => 'pending'
         ];
+
+        global $wpdb;
 
         // Handle image upload
         if (!empty($_FILES['appliance_image']['name'])) {
-            if (!function_exists('wp_handle_upload')) {
-                require_once(ABSPATH . 'wp-admin/includes/file.php');
-            }
-
-            $upload_overrides = ['test_form' => false];
-            $uploaded_file = wp_handle_upload($_FILES['appliance_image'], $upload_overrides);
-
-            if (!isset($uploaded_file['error'])) {
-                $appliance_data['image_url'] = $uploaded_file['url'];
-                $appliance_data['image_path'] = $uploaded_file['file'];
-            } else {
+            require_once(ABSPATH . 'wp-admin/includes/image.php');
+            require_once(ABSPATH . 'wp-admin/includes/file.php');
+            require_once(ABSPATH . 'wp-admin/includes/media.php');
+            
+            // Use WordPress media handling
+            $image_id = media_handle_upload('appliance_image', 0);
+            
+            if (is_wp_error($image_id)) {
                 wp_die(sprintf(
                     __('Error uploading image: %s', 'appliance-repair-manager'),
-                    $uploaded_file['error']
+                    $image_id->get_error_message()
                 ));
             }
+            
+            $appliance_data['image_id'] = $image_id;
         }
 
-        global $wpdb;
         $result = $wpdb->insert(
             $wpdb->prefix . 'arm_appliances',
             $appliance_data, 
-            ['%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
+            ['%d', '%s', '%s', '%s', '%s', '%s', '%d']
         );
 
         if ($result === false) {
+            // Clean up uploaded image if insert failed
+            if (!empty($image_id)) {
+                wp_delete_attachment($image_id, true);
+            }
             wp_die(__('Error saving appliance data.', 'appliance-repair-manager'));
         }
 

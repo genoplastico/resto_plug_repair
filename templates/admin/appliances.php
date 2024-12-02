@@ -156,7 +156,12 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                     ?>
                         <tr>
                             <td><?php echo esc_html($appliance->client_name); ?></td>
-                            <td><?php echo esc_html($appliance->type); ?></td>
+                            <td>
+                                <?php if (!empty($appliance->image_id)): ?>
+                                    <?php echo wp_get_attachment_image($appliance->image_id, 'thumbnail', false, ['class' => 'arm-appliance-thumbnail']); ?>
+                                <?php endif; ?>
+                                <?php echo esc_html($appliance->type); ?>
+                            </td>
                             <td><?php echo esc_html($appliance->brand); ?></td>
                             <td><?php echo esc_html($appliance->model); ?></td>
                             <td><?php echo esc_html($appliance->serial_number); ?></td>
@@ -209,3 +214,12 @@ jQuery(document).ready(function($) {
     });
 });
 </script>
+<style>
+.arm-appliance-thumbnail {
+    max-width: 50px;
+    height: auto;
+    margin-right: 10px;
+    vertical-align: middle;
+    border-radius: 4px;
+}
+</style>

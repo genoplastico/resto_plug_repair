@@ -1,0 +1,102 @@
+/* Light Theme (Default) */
+.arm-modal-theme-light {
+    --arm-modal-bg: #ffffff;
+    --arm-modal-text: #333333;
+    --arm-modal-border: #dddddd;
+    --arm-modal-header-bg: #f8f9fa;
+    --arm-modal-footer-bg: #f8f9fa;
+    --arm-modal-close-color: #666666;
+    --arm-modal-close-hover: #000000;
+    --arm-modal-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark Theme */
+.arm-modal-theme-dark {
+    --arm-modal-bg: #2d2d2d;
+    --arm-modal-text: #ffffff;
+    --arm-modal-border: #404040;
+    --arm-modal-header-bg: #363636;
+    --arm-modal-footer-bg: #363636;
+    --arm-modal-close-color: #999999;
+    --arm-modal-close-hover: #ffffff;
+    --arm-modal-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Compact Theme */
+.arm-modal-theme-compact {
+    --arm-modal-padding: 10px;
+    --arm-modal-header-padding: 10px 15px;
+    --arm-modal-body-padding: 15px;
+    --arm-modal-footer-padding: 10px 15px;
+}
+
+/* Borderless Theme */
+.arm-modal-theme-borderless {
+    --arm-modal-border-radius: 0;
+    --arm-modal-border: none;
+    --arm-modal-shadow: none;
+}
+
+/* Rounded Theme */
+.arm-modal-theme-rounded {
+    --arm-modal-border-radius: 12px;
+    --arm-modal-button-radius: 20px;
+}
+
+/* Apply Theme Variables */
+.arm-modal-content {
+    background-color: var(--arm-modal-bg, #ffffff);
+    color: var(--arm-modal-text, #333333);
+    border: 1px solid var(--arm-modal-border, #dddddd);
+    border-radius: var(--arm-modal-border-radius, 4px);
+    box-shadow: var(--arm-modal-shadow, 0 2px 8px rgba(0, 0, 0, 0.2));
+}
+
+.arm-modal-header {
+    background-color: var(--arm-modal-header-bg, #f8f9fa);
+    padding: var(--arm-modal-header-padding, 15px 20px);
+}
+
+.arm-modal-body {
+    padding: var(--arm-modal-body-padding, 20px);
+}
+
+.arm-modal-footer {
+    background-color: var(--arm-modal-footer-bg, #f8f9fa);
+    padding: var(--arm-modal-footer-padding, 15px 20px);
+}
+
+.arm-modal-close {
+    color: var(--arm-modal-close-color, #666666);
+}
+
+.arm-modal-close:hover {
+    color: var(--arm-modal-close-hover, #000000);
+}
+
+/* Theme-specific Button Styles */
+.arm-modal-theme-rounded .button {
+    border-radius: var(--arm-modal-button-radius, 20px);
+}
+
+/* Theme-specific Loading Spinner */
+.arm-modal-theme-dark .arm-modal-loading-spinner {
+    border-color: #404040;
+    border-top-color: #ffffff;
+}
+
+/* Theme-specific Error States */
+.arm-modal-theme-dark .arm-modal-error {
+    background-color: rgba(220, 50, 50, 0.2);
+    color: #ff6b6b;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 782px) {
+    .arm-modal-theme-compact {
+        --arm-modal-padding: 5px;
+        --arm-modal-header-padding: 8px 12px;
+        --arm-modal-body-padding: 12px;
+        --arm-modal-footer-padding: 8px 12px;
+    }
+}

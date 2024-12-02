@@ -1,0 +1,97 @@
+/* Modal Animation States */
+.arm-modal {
+    transition: opacity 0.2s ease-out;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.arm-modal.arm-modal-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.arm-modal-content {
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+.arm-modal.arm-modal-visible .arm-modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Fade Animation */
+.arm-modal-fade {
+    animation: armModalFade 0.2s ease-out;
+}
+
+@keyframes armModalFade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Slide Animation */
+.arm-modal-slide {
+    animation: armModalSlide 0.2s ease-out;
+}
+
+@keyframes armModalSlide {
+    from {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Scale Animation */
+.arm-modal-scale {
+    animation: armModalScale 0.2s ease-out;
+}
+
+@keyframes armModalScale {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Loading Animation */
+.arm-modal-loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: armModalSpin 1s linear infinite;
+}
+
+@keyframes armModalSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Close Button Animation */
+.arm-modal-close {
+    transition: transform 0.2s ease;
+}
+
+.arm-modal-close:hover {
+    transform: translateY(-50%) scale(1.1);
+}

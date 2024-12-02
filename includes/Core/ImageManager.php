@@ -1,9 +1,12 @@
 <?php
 namespace ApplianceRepairManager\Core;
 
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
+
 class ImageManager {
     private static $instance = null;
-    private $cloudinary;
+    private $upload_api;
     
     private function __construct() {
         $this->init_cloudinary();
@@ -17,17 +20,23 @@ class ImageManager {
     }
 
     private function init_cloudinary() {
-        \Cloudinary::config([
-            "cloud_name" => get_option('arm_cloudinary_cloud_name'),
-            "api_key" => get_option('arm_cloudinary_api_key'),
-            "api_secret" => get_option('arm_cloudinary_api_secret'),
-            "secure" => true
+        $configuration = new Configuration([
+            'cloud' => [
+                'cloud_name' => get_option('arm_cloudinary_cloud_name'),
+                'api_key' => get_option('arm_cloudinary_api_key'),
+                'api_secret' => get_option('arm_cloudinary_api_secret'),
+            ],
+            'url' => [
+                'secure' => true
+            ]
         ]);
+        
+        $this->upload_api = new UploadApi($configuration);
     }
 
     public function upload_image($file, $type, $id) {
         try {
-            $upload = \Cloudinary\Uploader::upload($file['tmp_name'], [
+            $upload = $this->upload_api->upload($file['tmp_name'], [
                 'folder' => "appliance-repair/{$type}",
                 'public_id' => "{$type}_{$id}_" . time(),
                 'transformation' => [
@@ -53,7 +62,7 @@ class ImageManager {
 
     public function delete_image($public_id) {
         try {
-            \Cloudinary\Uploader::destroy($public_id);
+            $this->upload_api->destroy($public_id);
             return true;
         } catch (\Exception $e) {
             error_log('Cloudinary delete error: ' . $e->getMessage());

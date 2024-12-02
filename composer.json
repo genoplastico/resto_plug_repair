@@ -1,0 +1,14 @@
+{
+    "name": "appliance-repair-manager",
+    "description": "Sistema de gestión de reparaciones de aparatos",
+    "type": "wordpress-plugin",
+    "require": {
+        "php": ">=7.4",
+        "cloudinary/cloudinary_php": "^2.12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ApplianceRepairManager\\": "includes/"
+        }
+    }
+}

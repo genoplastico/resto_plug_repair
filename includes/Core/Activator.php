@@ -14,37 +14,6 @@ class Activator {
     private static function create_tables() {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
-        $debug = Debug\ErrorLogger::getInstance();
-
-        $debug->logError('Starting table creation', [
-            'prefix' => $wpdb->prefix,
-            'existing_tables' => $wpdb->get_col('SHOW TABLES')
-        ]);
-        
-        // Appliance Images table - Moved to top for dependency order
-        $sql_appliance_images = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_appliance_images (
-            id bigint(20) NOT NULL AUTO_INCREMENT,
-            appliance_id bigint(20) NOT NULL,
-            attachment_id bigint(20) NOT NULL,
-            created_at datetime DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY  (id),
-            KEY appliance_id (appliance_id),
-            KEY attachment_id (attachment_id)
-        ) $charset_collate;";
-        
-        $debug->logError('Creating appliance_images table', [
-            'sql' => $sql_appliance_images,
-            'table_name' => $wpdb->prefix . 'arm_appliance_images'
-        ]);
-        
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        $results = dbDelta($sql_appliance_images);
-        
-        $debug->logError('Appliance images table creation result', [
-            'results' => $results,
-            'table_exists' => $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}arm_appliance_images'"),
-            'last_error' => $wpdb->last_error
-        ]);
 
         // Clients table
         $sql_clients = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_clients (
@@ -67,6 +36,8 @@ class Activator {
             brand varchar(50) NOT NULL,
             model varchar(50) NOT NULL,
             serial_number varchar(50),
+            image_url varchar(255),
+            image_path varchar(255),
             status varchar(20) NOT NULL DEFAULT 'pending',
             created_at datetime DEFAULT CURRENT_TIMESTAMP,
             updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -108,29 +79,11 @@ class Activator {
             KEY is_public (is_public)
         ) $charset_collate;";
 
-        $debug->logError('Creating tables', [
-            'sql_appliance_images' => $sql_appliance_images
-        ]);
-
-
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        
-        $results = dbDelta($sql_appliance_images);
-        $results_clients = dbDelta($sql_clients);
-        $results_appliances = dbDelta($sql_appliances);
-        $results_repairs = dbDelta($sql_repairs);
-        $results_repair_notes = dbDelta($sql_repair_notes);
-        
-        $debug->logError('Table creation results', [
-            'images_results' => $results,
-            'clients_results' => $results_clients,
-            'appliances_results' => $results_appliances,
-            'repairs_results' => $results_repairs,
-            'notes_results' => $results_repair_notes,
-            'last_error' => $wpdb->last_error,
-            'tables_after' => $wpdb->get_col('SHOW TABLES'),
-            'images_table_exists' => $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}arm_appliance_images'")
-        ]);
+        dbDelta($sql_clients);
+        dbDelta($sql_appliances);
+        dbDelta($sql_repairs);
+        dbDelta($sql_repair_notes);
     }
 
     private static function setup_roles() {

@@ -23,7 +23,7 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
 
     <div class="arm-appliance-form-container">
         <h2><?php _e('Add New Appliance', 'appliance-repair-manager'); ?></h2>
-        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" enctype="multipart/form-data">
+        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
             <?php wp_nonce_field('arm_add_appliance'); ?>
             <input type="hidden" name="action" value="arm_add_appliance">
             
@@ -78,11 +78,17 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                 </tr>
                 <tr>
                     <th scope="row">
-                        <label for="appliance_photos"><?php _e('Photos', 'appliance-repair-manager'); ?></label>
+                        <label for="appliance_image"><?php _e('Image', 'appliance-repair-manager'); ?></label>
                     </th>
                     <td>
-                        <input type="file" name="appliance_photos[]" id="appliance_photos" multiple accept="image/*" class="regular-text">
-                        <p class="description"><?php _e('Select multiple photos to upload', 'appliance-repair-manager'); ?></p>
+                        <input type="file" 
+                               name="appliance_image" 
+                               id="appliance_image" 
+                               class="regular-text"
+                               accept="image/*">
+                        <p class="description">
+                            <?php _e('Upload an image of the appliance. Maximum size: 5MB', 'appliance-repair-manager'); ?>
+                        </p>
                     </td>
                 </tr>
             </table>
@@ -160,13 +166,6 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                                 </span>
                             </td>
                             <td>
-                                <?php 
-                                // Get images count
-                                $images_count = $wpdb->get_var($wpdb->prepare(
-                                    "SELECT COUNT(*) FROM {$wpdb->prefix}arm_appliance_images WHERE appliance_id = %d",
-                                    $appliance->id
-                                ));
-                                ?>
                                 <button type="button" class="button button-small view-appliance-history" 
                                         data-appliance-id="<?php echo esc_attr($appliance->id); ?>">
                                     <?php _e('View History', 'appliance-repair-manager'); ?>
@@ -174,15 +173,6 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                                 <button type="button" class="button button-small copy-public-url" 
                                         data-url="<?php echo esc_url($public_url); ?>">
                                     <?php _e('Copy Public URL', 'appliance-repair-manager'); ?>
-                                </button>
-                                <button type="button" class="button button-small manage-images"
-                                        data-appliance-id="<?php echo esc_attr($appliance->id); ?>">
-                                    <?php 
-                                    printf(
-                                        __('Photos (%d)', 'appliance-repair-manager'),
-                                        intval($images_count)
-                                    ); 
-                                    ?>
                                 </button>
                             </td>
                         </tr>
@@ -198,19 +188,6 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
 <!-- Modal para historial de aparato -->
 <div id="appliance-history-modal" class="arm-modal">
     <div id="appliance-history-content" class="arm-modal-dialog"></div>
-</div>
-
-<!-- Modal para imágenes -->
-<div id="appliance-images-modal" class="arm-modal">
-    <div class="arm-modal-dialog">
-        <div class="arm-modal-header">
-            <h2 class="arm-modal-title"><?php _e('Appliance Photos', 'appliance-repair-manager'); ?></h2>
-            <button type="button" class="arm-modal-close" aria-label="<?php esc_attr_e('Close', 'appliance-repair-manager'); ?>">&times;</button>
-        </div>
-        <div class="arm-modal-body">
-            <div id="appliance-images-content"></div>
-        </div>
-    </div>
 </div>
 
 <script>
@@ -230,42 +207,5 @@ jQuery(document).ready(function($) {
             alert(armL10n.publicUrlCopied);
         });
     });
-    // Manage images button handler
-    $('.manage-images').click(function() {
-        const applianceId = $(this).data('appliance-id');
-        const $modal = $('#appliance-images-modal');
-        const $content = $('#appliance-images-content');
-
-        $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
-        $modal.show();
-
-        // Load images section via AJAX
-        $.post(ajaxurl, {
-            action: 'arm_get_appliance_images',
-            nonce: $('#arm_ajax_nonce').val(),
-            appliance_id: applianceId
-        }, function(response) {
-            if (response.success) {
-                $content.html(response.data.html);
-            } else {
-                $content.html('<div class="arm-error">' + response.data.message + '</div>');
-            }
-        }).fail(function() {
-            $content.html('<div class="arm-error">' + armL10n.errorLoadingImages + '</div>');
-        });
-    });
-
-    // Close modal handler
-    $('.arm-modal-close').click(function() {
-        $(this).closest('.arm-modal').hide();
-    });
-
-    // Close modal on outside click
-    $('.arm-modal').click(function(e) {
-        if ($(e.target).hasClass('arm-modal')) {
-            $(this).hide();
-        }
-    });
-
 });
 </script>

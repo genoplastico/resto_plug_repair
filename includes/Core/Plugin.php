@@ -17,7 +17,6 @@ class Plugin {
     private $notes_handler;
     private $ajax_handler;
     private $translation_debugger;
-    private $appliance_images;
 
     private function __construct() {
         $this->debug = Debug\ErrorLogger::getInstance();
@@ -47,7 +46,6 @@ class Plugin {
         $this->system_check = new \ApplianceRepairManager\Admin\SystemCheck();
         $this->notes_handler = new Ajax\NotesHandler();
         $this->ajax_handler = new Ajax\ApplianceHandler();
-        $this->appliance_images = ApplianceImages::getInstance();
     }
 
     private function register_hooks() {

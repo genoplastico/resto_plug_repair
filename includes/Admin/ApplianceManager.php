@@ -30,8 +30,9 @@ class ApplianceManager {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
-        check_admin_referer('arm_add_appliance');
+        check_admin_referer('arm_add_appliance', '_wpnonce');
 
+        // Validate and sanitize basic input
         $appliance_data = [
             'client_id' => intval($_POST['client_id']),
             'type' => sanitize_text_field($_POST['appliance_type']),
@@ -41,12 +42,38 @@ class ApplianceManager {
             'status' => 'pending'
         ];
 
-        global $wpdb;
-        $wpdb->insert(
-            $wpdb->prefix . 'arm_appliances',
+        // Handle image upload
+        if (!empty($_FILES['appliance_image']['name'])) {
+            if (!function_exists('wp_handle_upload')) {
+                require_once(ABSPATH . 'wp-admin/includes/file.php');
+            }
+
+            $upload_overrides = array('test_form' => false);
+            $uploaded_file = wp_handle_upload($_FILES['appliance_image'], $upload_overrides);
+
+            if (!isset($uploaded_file['error'])) {
+                $appliance_data['image_url'] = $uploaded_file['url'];
+                $appliance_data['image_path'] = $uploaded_file['file'];
+            } else {
+                wp_die(sprintf(
+                    __('Error uploading image: %s', 'appliance-repair-manager'),
+                    $uploaded_file['error']
+                ));
+            }
+        }
+
+        $appliance_data = [
+            'client_id' => intval($_POST['client_id']),
+            'type' => sanitize_text_field($_POST['appliance_type']),
+            'brand' => sanitize_text_field($_POST['appliance_brand']),
+            'model' => sanitize_text_field($_POST['appliance_model']),
             $appliance_data,
-            ['%d', '%s', '%s', '%s', '%s', '%s']
+            array_fill(0, count($appliance_data), '%s')
         );
+
+        if ($result === false) {
+            wp_die(__('Error saving appliance data.', 'appliance-repair-manager'));
+        }
 
         wp_redirect(add_query_arg([
             'page' => 'arm-appliances',

@@ -78,6 +78,13 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                 </tr>
             </table>
             
+            <div class="arm-appliance-images-section">
+                <?php
+                $images = \ApplianceRepairManager\Core\ApplianceImages::getInstance()->getApplianceImages($appliance->id);
+                include ARM_PLUGIN_DIR . 'templates/admin/partials/appliance-images.php';
+                ?>
+            </div>
+            
             <?php submit_button(__('Add Appliance', 'appliance-repair-manager')); ?>
         </form>
     </div>

@@ -62,7 +62,7 @@ class Assets {
         wp_enqueue_script(
             'arm-admin-scripts',
             ARM_PLUGIN_URL . 'assets/js/admin.js',
-            ['jquery', 'arm-modal-system'],
+            ['jquery', 'arm-modal-system', 'wp-i18n'],
             ARM_VERSION,
             true
         );
@@ -92,7 +92,7 @@ class Assets {
         wp_enqueue_script(
             'arm-public-scripts',
             ARM_PLUGIN_URL . 'assets/js/public.js',
-            ['jquery', 'arm-modal-manager'],
+            ['jquery', 'arm-modal-system'],
             ARM_VERSION,
             true
         );

@@ -316,5 +316,5 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
 
 <!-- Modal para detalles de reparación -->
 <div id="repair-details-modal" class="arm-modal">
-    <div id="repair-details-content"></div>
+    <div id="repair-details-content" class="arm-modal-dialog"></div>
 </div>

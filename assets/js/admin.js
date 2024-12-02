@@ -45,7 +45,7 @@ jQuery(document).ready(function($) {
         });
         
         $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
-        window.armModalManager.openModal('appliance-history-modal');
+        window.armModalSystem.openModal('appliance-history-modal');
 
         $.ajax({
             url: armL10n.ajaxurl,
@@ -115,7 +115,7 @@ jQuery(document).ready(function($) {
         });
         
         $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
-        window.armModalManager.openModal('repair-details-modal');
+        window.armModalSystem.openModal('repair-details-modal');
 
         $.ajax({
             url: armL10n.ajaxurl,

@@ -172,7 +172,7 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
 
 <!-- Modal para historial de aparato -->
 <div id="appliance-history-modal" class="arm-modal">
-    <div id="appliance-history-content" class="arm-modal-content"></div>
+    <div id="appliance-history-content" class="arm-modal-dialog"></div>
 </div>
 
 <script>

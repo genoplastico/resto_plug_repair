@@ -144,6 +144,12 @@ class ApplianceImages {
     public function getApplianceImages($appliance_id) {
         global $wpdb;
         
+        // Check if table exists
+        $table_name = $wpdb->prefix . 'arm_appliance_images';
+        if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+            return [];
+        }
+
         $results = $wpdb->get_results($wpdb->prepare(
             "SELECT attachment_id FROM {$wpdb->prefix}arm_appliance_images 
             WHERE appliance_id = %d ORDER BY created_at DESC",

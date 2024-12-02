@@ -94,6 +94,7 @@ class Activator {
         dbDelta($sql_repairs);
         dbDelta($sql_repair_notes);
         dbDelta($sql_appliance_images);
+        dbDelta($sql_appliance_images);
     }
 
     private static function setup_roles() {

@@ -5,6 +5,10 @@ class ModalSystem {
     constructor() {
         this.activeModals = new Map();
         this.debug = window.armDebug || false;
+        this.translations = window.armL10n || window.armPublicL10n || {
+            loading: 'Loading...',
+            close: 'Close'
+        };
         this.init();
     }
 
@@ -154,7 +158,7 @@ class ModalSystem {
         const loadingHtml = `
             <div class="arm-modal-loading">
                 <div class="arm-loading-spinner"></div>
-                <p>${(window.armL10n || window.armPublicL10n || {}).loading || 'Loading...'}</p>
+                <p>${this.translations.loading}</p>
             </div>
         `;
         this.setContent(modalId, loadingHtml);
@@ -165,7 +169,7 @@ class ModalSystem {
             <div class="arm-modal-error">
                 <p>${message}</p>
                 <button type="button" class="button" onclick="armModalSystem.closeModal('${modalId}')">
-                    ${(window.armL10n || window.armPublicL10n || {}).close || 'Close'}
+                    ${this.translations.close}
                 </button>
             </div>
         `;

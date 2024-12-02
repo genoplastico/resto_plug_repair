@@ -31,15 +31,14 @@ class Assets {
     private function enqueue_common_assets() {
         wp_enqueue_script('jquery');
 
-        // Modal System CSS
+        // Modal System
         wp_enqueue_style(
             'arm-modal-system',
             ARM_PLUGIN_URL . 'assets/css/modal-system.css',
             [],
             ARM_VERSION
         );
-
-        // Modal System JS
+        
         wp_enqueue_script(
             'arm-modal-system',
             ARM_PLUGIN_URL . 'assets/js/modal-system.js',

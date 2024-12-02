@@ -20,8 +20,13 @@ jQuery(document).ready(function($) {
             hasToken: !!token
         });
 
-        window.armModalSystem.openModal('repair-details-modal');
-        window.armModalSystem.showLoading('repair-details-modal');
+        if (window.armModalSystem) {
+            window.armModalSystem.openModal('repair-details-modal');
+            window.armModalSystem.showLoading('repair-details-modal');
+        } else {
+            console.error('Modal system not initialized');
+            return;
+        }
 
         $.ajax({
             url: armPublicL10n.ajaxurl,

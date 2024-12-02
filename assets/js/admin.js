@@ -45,7 +45,12 @@ jQuery(document).ready(function($) {
         });
         
         $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
-        window.armModalSystem.openModal('appliance-history-modal');
+        if (window.armModalSystem) {
+            window.armModalSystem.openModal('appliance-history-modal');
+        } else {
+            console.error('Modal system not initialized');
+            return;
+        }
 
         $.ajax({
             url: armL10n.ajaxurl,
@@ -115,7 +120,12 @@ jQuery(document).ready(function($) {
         });
         
         $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
-        window.armModalSystem.openModal('repair-details-modal');
+        if (window.armModalSystem) {
+            window.armModalSystem.openModal('repair-details-modal');
+        } else {
+            console.error('Modal system not initialized');
+            return;
+        }
 
         $.ajax({
             url: armL10n.ajaxurl,

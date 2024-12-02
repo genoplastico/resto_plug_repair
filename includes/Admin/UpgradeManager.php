@@ -4,20 +4,20 @@ namespace ApplianceRepairManager\Admin;
 class UpgradeManager {
     private $logger;
     private $menu_slug = 'arm-upgrade';
-    private $capability = 'manage_arm_system';  // Use custom capability
+    private $capability = 'manage_options';  // Change to standard WordPress admin capability
     private $parent_slug = 'appliance-repair-manager';
 
     public function __construct() {
         $this->logger = \ApplianceRepairManager\Core\Debug\ErrorLogger::getInstance();
         
         // Add menu with normal priority
-        add_action('admin_menu', [$this, 'addUpgradeMenu']);
+        add_action('admin_menu', [$this, 'addUpgradeMenu'], 20);
         
         // Handle form submission
         add_action('admin_post_arm_upgrade_modals', [$this, 'handleUpgrade']);
         
         // Add settings link in plugins page
-        add_filter('plugin_action_links_' . ARM_PLUGIN_BASENAME, [$this, 'addPluginLinks']);
+        add_filter('plugin_action_links_' . plugin_basename(ARM_PLUGIN_FILE), [$this, 'addPluginLinks']);
     }
 
     public function addUpgradeMenu() {

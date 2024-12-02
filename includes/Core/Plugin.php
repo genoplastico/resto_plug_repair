@@ -43,7 +43,6 @@ class Plugin {
         try {
             $this->debug->log('Initializing managers');
 
-            // Initialize all managers
             $this->client_manager = new \ApplianceRepairManager\Admin\ClientManager();
             $this->appliance_manager = new \ApplianceRepairManager\Admin\ApplianceManager();
             $this->repair_manager = new \ApplianceRepairManager\Admin\RepairManager();
@@ -79,7 +78,6 @@ class Plugin {
             add_action('init', [$this, 'add_rewrite_rules']);
             add_filter('query_vars', [$this, 'add_query_vars']);
 
-            // AJAX handlers
             add_action('wp_ajax_arm_get_client_appliances', [$this->repair_manager, 'getClientAppliances']);
             add_action('wp_ajax_arm_get_repair_details', [$this->repair_manager, 'getRepairDetails']);
             add_action('wp_ajax_nopriv_arm_get_repair_details', [$this->ajax_handler, 'getRepairDetails']);

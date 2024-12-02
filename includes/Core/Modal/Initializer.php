@@ -52,13 +52,13 @@ class Initializer {
     private function registerDefaultModals() {
         // Register common modals
         $this->manager->registerModal('confirm', [
-            'title' => __('Confirm Action', 'appliance-repair-manager'),
+            'title' => 'Confirm Action',
             'template' => 'base',
             'class' => 'arm-modal-confirm'
         ]);
 
         $this->manager->registerModal('alert', [
-            'title' => __('Notice', 'appliance-repair-manager'),
+            'title' => 'Notice',
             'template' => 'base',
             'class' => 'arm-modal-alert'
         ]);

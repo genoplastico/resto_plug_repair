@@ -8,6 +8,7 @@ class Manager {
     private $state;
     private $templates;
     private $logger;
+    private $registered_modals = [];
 
     private function __construct() {
         $this->config = Config::getInstance();
@@ -110,6 +111,38 @@ class Manager {
 
     public function getActiveModals() {
         return $this->state->getActiveModals();
+    }
+
+    public function registerModal($id, $config = []) {
+        try {
+            if (empty($id)) {
+                throw new \Exception('Modal ID is required');
+            }
+
+            $this->registered_modals[$id] = array_merge([
+                'title' => '',
+                'template' => 'base',
+                'class' => ''
+            ], $config);
+
+            $this->logger->log('Modal registered', [
+                'id' => $id,
+                'config' => $config
+            ]);
+
+            return true;
+
+        } catch (\Exception $e) {
+            $this->logger->logError('Error registering modal', [
+                'id' => $id,
+                'error' => $e->getMessage()
+            ]);
+            return false;
+        }
+    }
+
+    public function getRegisteredModal($id) {
+        return $this->registered_modals[$id] ?? null;
     }
 
     private function __clone() {}

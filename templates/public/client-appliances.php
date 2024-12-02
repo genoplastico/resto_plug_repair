@@ -97,7 +97,9 @@ get_header();
 
 <!-- Modal for repair details -->
 <div id="repair-details-modal" class="arm-modal">
-    <div id="repair-details-content" class="arm-modal-dialog"></div>
+    <div class="arm-modal-dialog">
+        <div id="repair-details-content" class="arm-modal-content"></div>
+    </div>
 </div>
 
 <?php wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce'); ?>

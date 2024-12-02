@@ -154,7 +154,7 @@ class ModalSystem {
         const loadingHtml = `
             <div class="arm-modal-loading">
                 <div class="arm-loading-spinner"></div>
-                <p>${armL10n.loading || 'Loading...'}</p>
+                <p>${(window.armL10n || window.armPublicL10n || {}).loading || 'Loading...'}</p>
             </div>
         `;
         this.setContent(modalId, loadingHtml);
@@ -165,7 +165,7 @@ class ModalSystem {
             <div class="arm-modal-error">
                 <p>${message}</p>
                 <button type="button" class="button" onclick="armModalSystem.closeModal('${modalId}')">
-                    ${armL10n.close || 'Close'}
+                    ${(window.armL10n || window.armPublicL10n || {}).close || 'Close'}
                 </button>
             </div>
         `;

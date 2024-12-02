@@ -110,10 +110,21 @@ class Assets {
         return [
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('arm_ajax_nonce'),
+            'close' => __('Close', 'appliance-repair-manager'),
             'loading' => __('Loading...', 'appliance-repair-manager'),
             'errorLoadingRepairDetails' => __('Error loading repair details.', 'appliance-repair-manager'),
             'errorLoadingAppliances' => __('Error loading appliances.', 'appliance-repair-manager'),
             'errorLoadingHistory' => __('Error loading appliance history.', 'appliance-repair-manager')
         ];
+    }
+
+    private function get_public_translations() {
+        return array_merge(
+            $this->get_common_translations(),
+            [
+                'viewDetails' => __('View Details', 'appliance-repair-manager'),
+                'publicUrlCopied' => __('Public URL has been copied to clipboard.', 'appliance-repair-manager')
+            ]
+        );
     }
 }

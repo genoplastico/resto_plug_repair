@@ -23,7 +23,7 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
 
     <div class="arm-appliance-form-container">
         <h2><?php _e('Add New Appliance', 'appliance-repair-manager'); ?></h2>
-        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" enctype="multipart/form-data">
             <?php wp_nonce_field('arm_add_appliance'); ?>
             <input type="hidden" name="action" value="arm_add_appliance">
             
@@ -74,6 +74,15 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                     </th>
                     <td>
                         <input type="text" name="serial_number" id="serial_number" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="appliance_photos"><?php _e('Photos', 'appliance-repair-manager'); ?></label>
+                    </th>
+                    <td>
+                        <input type="file" name="appliance_photos[]" id="appliance_photos" multiple accept="image/*" class="regular-text">
+                        <p class="description"><?php _e('Select multiple photos to upload', 'appliance-repair-manager'); ?></p>
                     </td>
                 </tr>
             </table>

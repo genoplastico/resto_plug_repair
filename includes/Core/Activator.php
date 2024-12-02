@@ -20,6 +20,31 @@ class Activator {
             'prefix' => $wpdb->prefix,
             'existing_tables' => $wpdb->get_col('SHOW TABLES')
         ]);
+        
+        // Appliance Images table - Moved to top for dependency order
+        $sql_appliance_images = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_appliance_images (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            appliance_id bigint(20) NOT NULL,
+            attachment_id bigint(20) NOT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY  (id),
+            KEY appliance_id (appliance_id),
+            KEY attachment_id (attachment_id)
+        ) $charset_collate;";
+        
+        $debug->logError('Creating appliance_images table', [
+            'sql' => $sql_appliance_images,
+            'table_name' => $wpdb->prefix . 'arm_appliance_images'
+        ]);
+        
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        $results = dbDelta($sql_appliance_images);
+        
+        $debug->logError('Appliance images table creation result', [
+            'results' => $results,
+            'table_exists' => $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}arm_appliance_images'"),
+            'last_error' => $wpdb->last_error
+        ]);
 
         // Appliance Images table
         $sql_appliance_images = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_appliance_images (

@@ -22,12 +22,25 @@ class ApplianceImages {
     public function handleGetImages() {
         try {
             global $wpdb;
+            
+            // Verify table existence first
+            $table_name = $wpdb->prefix . 'arm_appliance_images';
+            $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name;
+            
             $this->debug->logError('Starting handleGetImages', [
                 'POST' => $_POST,
                 'user_can_upload' => current_user_can('upload_files'),
                 'wpdb_prefix' => $wpdb->prefix,
-                'tables' => $wpdb->get_col('SHOW TABLES')
+                'table_exists' => $table_exists,
+                'table_name' => $table_name
             ]);
+            
+            if (!$table_exists) {
+                throw new \Exception(sprintf(
+                    'Table %s does not exist. Please deactivate and reactivate the plugin.',
+                    $table_name
+                ));
+            }
 
             check_ajax_referer('arm_ajax_nonce', 'nonce');
 
@@ -156,6 +169,12 @@ class ApplianceImages {
     private function addImageToAppliance($appliance_id, $attachment_id) {
         global $wpdb;
         
+        $this->debug->logError('Adding image to appliance', [
+            'appliance_id' => $appliance_id,
+            'attachment_id' => $attachment_id,
+            'table' => $wpdb->prefix . 'arm_appliance_images'
+        ]);
+        
         $result = $wpdb->insert(
             $wpdb->prefix . 'arm_appliance_images',
             [
@@ -165,6 +184,12 @@ class ApplianceImages {
             ],
             ['%d', '%d', '%s']
         );
+        
+        $this->debug->logError('Insert result', [
+            'result' => $result,
+            'last_error' => $wpdb->last_error,
+            'last_query' => $wpdb->last_query
+        ]);
 
         if ($result === false) {
             throw new \Exception($wpdb->last_error);

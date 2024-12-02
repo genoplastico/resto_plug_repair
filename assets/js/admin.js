@@ -31,24 +31,18 @@ jQuery(document).ready(function($) {
         console.groupEnd();
     }
 
-    // View appliance history handler
     $(document).on('click', '.view-appliance-history', function(e) {
         e.preventDefault();
-        e.stopPropagation();
         
         const $button = $(this);
         const applianceId = $button.data('appliance-id');
-        const $modal = $('#appliance-history-modal');
-        const $content = $('#appliance-history-content');
         
         logDebug('Opening appliance history modal', { 
-            applianceId: applianceId,
-            button: $button[0],
-            modal: $modal[0]
+            applianceId: applianceId
         });
         
-        $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
-        window.armModalManager.openModal('appliance-history-modal');
+        armModalSystem.openModal('appliance-history-modal');
+        armModalSystem.showLoading('appliance-history-modal');
 
         $.ajax({
             url: armL10n.ajaxurl,
@@ -62,10 +56,10 @@ jQuery(document).ready(function($) {
                 logDebug('Appliance history response received', { response: response });
                 
                 if (response.success && response.data.html) {
-                    $content.html(response.data.html);
+                    armModalSystem.setContent('appliance-history-modal', response.data.html);
                 } else {
-                    $content.html('<div class="arm-error">' + armL10n.errorLoadingHistory + '</div>');
-                    console.error('ARM Error:', response);
+                    armModalSystem.showError('appliance-history-modal', 
+                        armL10n.errorLoadingHistory);
                 }
             },
             error: function(xhr, status, error) {
@@ -74,34 +68,10 @@ jQuery(document).ready(function($) {
                     error: error,
                     response: xhr.responseText
                 });
-                
-                $content.html('<div class="arm-error">' + armL10n.errorLoadingHistory + '</div>');
+                armModalSystem.showError('appliance-history-modal', 
+                    armL10n.errorLoadingHistory);
             }
         });
-    });
-
-    // Modal close handlers
-    $(document).on('click', '.arm-modal-close', function() {
-        logDebug('Modal close button clicked');
-        const modal = $(this).closest('.arm-modal')[0];
-        window.armModalManager.closeModal(modal);
-    });
-
-    $(document).on('click', '.arm-modal', function(e) {
-        if ($(e.target).hasClass('arm-modal')) {
-            logDebug('Modal background clicked');
-            window.armModalManager.closeModal(this);
-        }
-    });
-
-    $(document).keyup(function(e) {
-        if (e.key === 'Escape') {
-            logDebug('Escape key pressed');
-            const openModal = document.querySelector('.arm-modal[style*="display: block"]');
-            if (openModal) {
-                window.armModalManager.closeModal(openModal);
-            }
-        }
     });
 
     // AJAX error handler

@@ -1,11 +1,12 @@
 <?php if (!defined('ABSPATH')) exit; ?>
 
-<div class="arm-modal-header">
-    <h2><?php _e('Appliance Repair History', 'appliance-repair-manager'); ?></h2>
-    <button type="button" class="arm-modal-close" aria-label="<?php esc_attr_e('Close', 'appliance-repair-manager'); ?>">&times;</button>
-</div>
+<div class="arm-modal-dialog">
+    <div class="arm-modal-header">
+        <h2 class="arm-modal-title"><?php _e('Appliance Repair History', 'appliance-repair-manager'); ?></h2>
+        <button type="button" class="arm-modal-close" aria-label="<?php esc_attr_e('Close', 'appliance-repair-manager'); ?>">&times;</button>
+    </div>
 
-<div class="arm-modal-body">
+    <div class="arm-modal-body">
     <div class="arm-appliance-details">
         <div class="arm-detail-section">
             <h3><?php _e('Appliance Information', 'appliance-repair-manager'); ?></h3>
@@ -55,5 +56,6 @@
                 <p><?php _e('No repair history available.', 'appliance-repair-manager'); ?></p>
             <?php endif; ?>
         </div>
+    </div>
     </div>
 </div>

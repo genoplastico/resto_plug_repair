@@ -4,23 +4,80 @@ namespace ApplianceRepairManager\Admin;
 class UpgradeManager {
     private $upgrade;
     private $logger;
+    private $menu_added = false;
 
     public function __construct() {
         $this->upgrade = new \ApplianceRepairManager\Core\Modal\Upgrade();
         $this->logger = \ApplianceRepairManager\Core\Debug\ErrorLogger::getInstance();
         
-        // Add debug log for initialization
-        $this->logger->log('UpgradeManager initialized');
+        // Log initialization with backtrace
+        $this->logger->log('UpgradeManager initialization started', [
+            'class' => __CLASS__,
+            'time' => current_time('mysql'),
+            'backtrace' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)
+        ]);
         
-        add_action('admin_menu', [$this, 'addUpgradeMenu'], 99); // Higher priority to ensure main menu exists
+        // Add menu with normal and late priority to ensure it's added
+        add_action('admin_menu', [$this, 'addUpgradeMenu']);
+        add_action('admin_menu', [$this, 'addUpgradeMenu'], 99);
+        add_action('admin_notices', [$this, 'debugNotice']);
         add_action('admin_post_arm_upgrade_modals', [$this, 'handleUpgrade']);
+
+        $this->logger->log('UpgradeManager initialization completed');
+    }
+
+    public function debugNotice() {
+        if (!current_user_can('manage_options')) {
+            return;
+        }
+
+        global $menu, $submenu;
+        
+        // Log menu structure
+        $this->logger->log('Admin menu structure', [
+            'menu' => $menu,
+            'submenu' => $submenu,
+            'menu_added' => $this->menu_added
+        ]);
+
+        // Only show debug notice if WP_DEBUG is true
+        if (!defined('WP_DEBUG') || !WP_DEBUG) {
+            return;
+        }
+
+        $parent_slug = 'appliance-repair-manager';
+        $parent_exists = false;
+        foreach ($menu as $item) {
+            if (isset($item[2]) && $item[2] === $parent_slug) {
+                $parent_exists = true;
+                break;
+            }
+        }
+
+        echo '<div class="notice notice-info is-dismissible">';
+        echo '<p><strong>ARM Debug Info:</strong></p>';
+        echo '<ul>';
+        echo '<li>Parent menu exists: ' . ($parent_exists ? 'Yes' : 'No') . '</li>';
+        echo '<li>Menu added: ' . ($this->menu_added ? 'Yes' : 'No') . '</li>';
+        echo '<li>Current user can manage_options: ' . (current_user_can('manage_options') ? 'Yes' : 'No') . '</li>';
+        echo '</ul>';
+        echo '</div>';
     }
 
     public function addUpgradeMenu() {
-        // Debug log before adding menu
-        $this->logger->log('Adding upgrade menu');
-        
-        // Check if parent menu exists
+        // Log attempt to add menu
+        $this->logger->log('Attempting to add upgrade menu', [
+            'current_filter' => current_filter(),
+            'priority' => has_filter(current_filter(), [$this, 'addUpgradeMenu']),
+            'user_id' => get_current_user_id(),
+            'user_caps' => wp_get_current_user()->allcaps
+        ]);
+
+        if ($this->menu_added) {
+            $this->logger->log('Upgrade menu already added, skipping');
+            return;
+        }
+
         global $menu;
         $parent_exists = false;
         foreach ($menu as $item) {
@@ -29,22 +86,38 @@ class UpgradeManager {
                 break;
             }
         }
-        
-        // Log parent menu status
-        $this->logger->log('Parent menu status', ['exists' => $parent_exists]);
+
+        $this->logger->log('Parent menu check', [
+            'exists' => $parent_exists,
+            'menu' => $menu
+        ]);
+
+        if (!$parent_exists) {
+            $this->logger->log('Parent menu does not exist, cannot add upgrade submenu');
+            return;
+        }
 
         // Add submenu page
         $page = add_submenu_page(
-            'appliance-repair-manager', // Parent slug
-            __('System Upgrade', 'appliance-repair-manager'), // Page title
-            __('System Upgrade', 'appliance-repair-manager'), // Menu title
-            'manage_options', // Capability
-            'arm-upgrade', // Menu slug
-            [$this, 'renderUpgradePage'] // Callback
+            'appliance-repair-manager',
+            __('System Upgrade', 'appliance-repair-manager'),
+            __('System Upgrade', 'appliance-repair-manager'),
+            'manage_options',
+            'arm-upgrade',
+            [$this, 'renderUpgradePage']
         );
 
-        // Log result
-        $this->logger->log('Upgrade menu added', ['page' => $page]);
+        if ($page) {
+            $this->menu_added = true;
+            $this->logger->log('Upgrade menu added successfully', [
+                'page' => $page,
+                'hook_suffix' => $page
+            ]);
+        } else {
+            $this->logger->log('Failed to add upgrade menu', [
+                'last_error' => error_get_last()
+            ]);
+        }
     }
 
     public function renderUpgradePage() {
@@ -52,10 +125,11 @@ class UpgradeManager {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
-        // Log page render
-        $this->logger->log('Rendering upgrade page');
+        $this->logger->log('Rendering upgrade page', [
+            'user_id' => get_current_user_id(),
+            'request_uri' => $_SERVER['REQUEST_URI']
+        ]);
 
-        // Get message parameter
         $message = isset($_GET['message']) ? sanitize_text_field($_GET['message']) : '';
         ?>
         <div class="wrap">
@@ -102,7 +176,9 @@ class UpgradeManager {
                             'capability' => 'manage_options',
                             'user_can_access' => current_user_can('manage_options'),
                             'wp_debug' => WP_DEBUG,
-                            'php_version' => PHP_VERSION
+                            'php_version' => PHP_VERSION,
+                            'menu_added' => $this->menu_added,
+                            'plugin_version' => ARM_VERSION
                         ];
                         echo esc_html(print_r($debug_info, true)); 
                     ?></pre>
@@ -120,13 +196,17 @@ class UpgradeManager {
         check_admin_referer('arm_upgrade_modals');
 
         try {
-            // Log upgrade start
-            $this->logger->log('Starting modal upgrade');
+            $this->logger->log('Starting modal upgrade process', [
+                'user_id' => get_current_user_id(),
+                'timestamp' => current_time('mysql')
+            ]);
 
             $result = $this->upgrade->execute();
 
-            // Log upgrade result
-            $this->logger->log('Upgrade completed', ['success' => $result]);
+            $this->logger->log('Upgrade process completed', [
+                'success' => $result,
+                'timestamp' => current_time('mysql')
+            ]);
 
             if ($result) {
                 wp_redirect(add_query_arg([
@@ -142,7 +222,8 @@ class UpgradeManager {
         } catch (\Exception $e) {
             $this->logger->logError('Error during modal upgrade', [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'timestamp' => current_time('mysql')
             ]);
 
             wp_redirect(add_query_arg([

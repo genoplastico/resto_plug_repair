@@ -29,19 +29,22 @@
                     <?php foreach ($repairs as $repair): ?>
                         <div class="arm-timeline-item">
                             <div class="arm-timeline-date">
-                                <?php 
-                                $date = new DateTime($repair->created_at);
-                                echo esc_html($date->format('d/m/y')); 
-                                ?>
+                                <?php $date = new DateTime($repair->created_at); ?>
+                                <strong><?php echo esc_html($date->format('d M Y')); ?></strong>
                                 <span class="arm-timeline-time">
                                     <?php echo esc_html($date->format('H:i')); ?>
                                 </span>
                             </div>
                             <div class="arm-timeline-content">
-                                <span class="arm-status <?php echo esc_attr(arm_get_status_class($repair->status)); ?>">
-                                    <?php echo esc_html(arm_get_status_label($repair->status)); ?>
-                                </span>
-                                <p><strong><?php _e('Technician:', 'appliance-repair-manager'); ?></strong> <?php echo esc_html($repair->technician_name); ?></p>
+                                <div class="arm-timeline-header">
+                                    <span class="arm-status <?php echo esc_attr(arm_get_status_class($repair->status)); ?>">
+                                        <?php echo esc_html(arm_get_status_label($repair->status)); ?>
+                                    </span>
+                                    <div class="arm-timeline-technician">
+                                        <span class="dashicons dashicons-businessman"></span>
+                                        <?php echo esc_html($repair->technician_name); ?>
+                                    </div>
+                                </div>
                                 <p><strong><?php _e('Diagnosis:', 'appliance-repair-manager'); ?></strong></p>
                                 <div class="arm-diagnosis-text"><?php echo nl2br(esc_html($repair->diagnosis)); ?></div>
                                 <?php if ($repair->parts_used): ?>

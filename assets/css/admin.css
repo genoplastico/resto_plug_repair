@@ -228,3 +228,101 @@
 .arm-filter-section select {
     width: 100%;
 }
+
+.arm-repair-timeline {
+    position: relative;
+    margin: 30px 0;
+    padding-left: 30px;
+}
+
+.arm-timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #e2e4e7;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.arm-timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -31px;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: #e2e4e7;
+}
+
+.arm-timeline-item::after {
+    content: '';
+    position: absolute;
+    left: -35px;
+    top: 20px;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #2271b1;
+    z-index: 1;
+}
+
+.arm-timeline-date {
+    position: absolute;
+    left: -140px;
+    top: 15px;
+    font-size: 13px;
+    color: #666;
+    width: 100px;
+    text-align: right;
+}
+
+.arm-timeline-time {
+    display: block;
+    font-size: 12px;
+    color: #82878c;
+    margin-top: 2px;
+}
+
+.arm-timeline-content {
+    position: relative;
+}
+
+.arm-timeline-content .arm-status {
+    margin-bottom: 15px;
+    display: inline-block;
+}
+
+.arm-timeline-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.arm-timeline-technician {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+}
+
+.arm-timeline-technician .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #82878c;
+}
+
+.arm-diagnosis-text,
+.arm-parts-text {
+    background: #f8f9fa;
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin: 8px 0 15px;
+    color: #50575e;
+    line-height: 1.5;
+}

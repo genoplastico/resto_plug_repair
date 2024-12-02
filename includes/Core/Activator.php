@@ -16,7 +16,10 @@ class Activator {
         $charset_collate = $wpdb->get_charset_collate();
         $debug = Debug\ErrorLogger::getInstance();
 
-        $debug->logError('Starting table creation', ['prefix' => $wpdb->prefix]);
+        $debug->logError('Starting table creation', [
+            'prefix' => $wpdb->prefix,
+            'existing_tables' => $wpdb->get_col('SHOW TABLES')
+        ]);
 
         // Appliance Images table
         $sql_appliance_images = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_appliance_images (
@@ -98,11 +101,20 @@ class Activator {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         
         $results = dbDelta($sql_appliance_images);
+        $results_clients = dbDelta($sql_clients);
+        $results_appliances = dbDelta($sql_appliances);
+        $results_repairs = dbDelta($sql_repairs);
+        $results_repair_notes = dbDelta($sql_repair_notes);
         
         $debug->logError('Table creation results', [
-            'results' => $results,
+            'images_results' => $results,
+            'clients_results' => $results_clients,
+            'appliances_results' => $results_appliances,
+            'repairs_results' => $results_repairs,
+            'notes_results' => $results_repair_notes,
             'last_error' => $wpdb->last_error,
-            'tables_after' => $wpdb->get_col('SHOW TABLES')
+            'tables_after' => $wpdb->get_col('SHOW TABLES'),
+            'images_table_exists' => $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}arm_appliance_images'")
         ]);
     }
 

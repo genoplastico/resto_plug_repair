@@ -21,9 +21,12 @@ class ApplianceImages {
 
     public function handleGetImages() {
         try {
+            global $wpdb;
             $this->debug->logError('Starting handleGetImages', [
                 'POST' => $_POST,
-                'user_can_upload' => current_user_can('upload_files')
+                'user_can_upload' => current_user_can('upload_files'),
+                'wpdb_prefix' => $wpdb->prefix,
+                'tables' => $wpdb->get_col('SHOW TABLES')
             ]);
 
             check_ajax_referer('arm_ajax_nonce', 'nonce');
@@ -35,16 +38,32 @@ class ApplianceImages {
             $appliance_id = isset($_POST['appliance_id']) ? intval($_POST['appliance_id']) : 0;
             
             $this->debug->logError('Checking table existence', [
+                'table_exists' => $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}arm_appliance_images'"),
                 'appliance_id' => $appliance_id,
-                'table_name' => $wpdb->prefix . 'arm_appliance_images'
+                'table_name' => $wpdb->prefix . 'arm_appliance_images',
+                'last_error' => $wpdb->last_error
             ]);
 
             if (!$appliance_id) {
                 throw new \Exception(__('Invalid appliance ID', 'appliance-repair-manager'));
             }
 
+            $this->debug->logError('Getting images', [
+                'appliance_id' => $appliance_id,
+                'query' => $wpdb->prepare(
+                    "SELECT attachment_id FROM {$wpdb->prefix}arm_appliance_images 
+                    WHERE appliance_id = %d ORDER BY created_at DESC",
+                    $appliance_id
+                )
+            ]);
+
             $images = $this->getApplianceImages($appliance_id);
             
+            $this->debug->logError('Images retrieved', [
+                'count' => count($images),
+                'images' => $images
+            ]);
+
             ob_start();
             include ARM_PLUGIN_DIR . 'templates/admin/partials/appliance-images.php';
             $html = ob_get_clean();
@@ -172,9 +191,26 @@ class ApplianceImages {
     public function getApplianceImages($appliance_id) {
         global $wpdb;
         
+        $this->debug->logError('getApplianceImages called', [
+            'appliance_id' => $appliance_id,
+            'table_name' => $wpdb->prefix . 'arm_appliance_images'
+        ]);
+
         // Check if table exists
         $table_name = $wpdb->prefix . 'arm_appliance_images';
-        if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+        $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'");
+        
+        $this->debug->logError('Table existence check', [
+            'table_exists' => $table_exists,
+            'table_name' => $table_name,
+            'all_tables' => $wpdb->get_col('SHOW TABLES')
+        ]);
+
+        if ($table_exists != $table_name) {
+            $this->debug->logError('Table does not exist', [
+                'expected' => $table_name,
+                'found' => $table_exists
+            ]);
             return [];
         }
 

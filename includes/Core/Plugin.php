@@ -22,6 +22,7 @@ class Plugin {
         $this->debug = Debug\ErrorLogger::getInstance();
         $this->hook_manager = HookManager::getInstance();
         $this->translation_debugger = Debug\TranslationDebugger::getInstance();
+        $this->check_database_structure();
         $this->init_managers();
         $this->register_hooks();
     }
@@ -150,6 +151,29 @@ class Plugin {
         $vars[] = 'arm_action';
         $vars[] = 'repair_id';
         return $vars;
+    }
+
+    private function check_database_structure() {
+        global $wpdb;
+        
+        // Check if image_id column exists
+        $table_name = $wpdb->prefix . 'arm_appliances';
+        $column = $wpdb->get_results($wpdb->prepare(
+            "SELECT COLUMN_NAME 
+            FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_SCHEMA = %s 
+            AND TABLE_NAME = %s 
+            AND COLUMN_NAME = 'image_id'",
+            DB_NAME,
+            $table_name
+        ));
+        
+        // Add image_id column if it doesn't exist
+        if (empty($column)) {
+            $wpdb->query("ALTER TABLE {$table_name} 
+                         ADD COLUMN image_id bigint(20) DEFAULT NULL,
+                         ADD KEY image_id (image_id)");
+        }
     }
 
     private function __clone() {}

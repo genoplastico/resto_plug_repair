@@ -495,6 +495,12 @@ msgctxt "repair status"
 msgid "Delivered"
 msgstr "Entregado"
 
+msgid "Save Cloudinary Settings"
+msgstr "Guardar Configuración de Cloudinary"
+
+msgid "Cloudinary settings saved successfully."
+msgstr "Configuración de Cloudinary guardada exitosamente."
+
 msgid "Email Configuration"
 msgstr "Configuración de Correo"
 

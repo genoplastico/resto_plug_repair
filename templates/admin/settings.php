@@ -32,6 +32,13 @@ if (!defined('ABSPATH')) {
                     </td>
                 </tr>
             </table>
+            <p class="submit">
+                <input type="submit" 
+                       name="arm_save_cloudinary" 
+                       class="button button-primary" 
+                       value="<?php esc_attr_e('Save Cloudinary Settings', 'appliance-repair-manager'); ?>">
+            </p>
+        </form>
         </div>
 
         <p class="submit">
@@ -44,6 +51,8 @@ if (!defined('ABSPATH')) {
 
     <div class="arm-settings-section">
         <h2><?php _e('Cloudinary Settings', 'appliance-repair-manager'); ?></h2>
+        <form method="post" action="">
+            <?php wp_nonce_field('arm_cloudinary_settings_nonce'); ?>
         <table class="form-table">
             <tr>
                 <th scope="row">

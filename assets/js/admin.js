@@ -308,3 +308,93 @@ jQuery(document).ready(function($) {
         });
     });
 });
+
+// Image upload handling
+jQuery(document).ready(function($) {
+    // Image upload functionality
+    $('.arm-image-upload').each(function() {
+        const $upload = $(this);
+        const $input = $upload.find('.arm-image-input');
+        const repairId = $upload.data('repair-id');
+
+        $upload.on('dragover', function(e) {
+            e.preventDefault();
+            $(this).addClass('is-dragging');
+        }).on('dragleave drop', function(e) {
+            e.preventDefault();
+            $(this).removeClass('is-dragging');
+        });
+
+        $upload.click(function() {
+            $input.click();
+        });
+
+        $input.change(function() {
+            const files = this.files;
+            handleImageUpload(files, repairId);
+        });
+    });
+
+    function handleImageUpload(files, repairId) {
+        Array.from(files).forEach(file => {
+            const formData = new FormData();
+            formData.append('action', 'arm_upload_image');
+            formData.append('nonce', $('#arm_ajax_nonce').val());
+            formData.append('image', file);
+            formData.append('type', 'repair');
+            formData.append('id', repairId);
+
+            $.ajax({
+                url: armL10n.ajaxurl,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        const $imagesContainer = $('.arm-timeline-images');
+                        if (!$imagesContainer.length) {
+                            $imagesContainer = $('<div class="arm-timeline-images"></div>')
+                                .insertBefore($upload);
+                        }
+                        
+                        const $newImage = $(`
+                            <div class="arm-timeline-image">
+                                <img src="${response.data.thumbnail_url}" 
+                                     alt="Repair photo"
+                                     data-full-url="${response.data.url}"
+                                     class="arm-lightbox-image">
+                            </div>
+                        `);
+                        
+                        $imagesContainer.prepend($newImage);
+                    } else {
+                        alert(armL10n.errorUploadingImage);
+                    }
+                },
+                error: function() {
+                    alert(armL10n.errorUploadingImage);
+                }
+            });
+        });
+    }
+
+    // Lightbox functionality for images
+    $(document).on('click', '.arm-lightbox-image', function() {
+        const fullUrl = $(this).data('full-url');
+        const $lightbox = $(`
+            <div class="arm-lightbox">
+                <div class="arm-lightbox-content">
+                    <img src="${fullUrl}" alt="Full size image">
+                    <button class="arm-lightbox-close">&times;</button>
+                </div>
+            </div>
+        `).appendTo('body');
+
+        $lightbox.click(function(e) {
+            if (e.target === this || $(e.target).hasClass('arm-lightbox-close')) {
+                $(this).remove();
+            }
+        });
+    });
+});

@@ -24,13 +24,11 @@ class Plugin {
         $this->hook_manager = HookManager::getInstance();
         $this->translation_debugger = Debug\TranslationDebugger::getInstance();
         
-        // Log plugin initialization
         $this->debug->log('Plugin initialization started');
         
         $this->init_managers();
         $this->register_hooks();
         
-        // Log plugin initialization completion
         $this->debug->log('Plugin initialization completed');
     }
 
@@ -43,7 +41,6 @@ class Plugin {
 
     private function init_managers() {
         try {
-            // Log managers initialization
             $this->debug->log('Initializing managers');
 
             // Initialize all managers
@@ -58,12 +55,7 @@ class Plugin {
             $this->system_check = new \ApplianceRepairManager\Admin\SystemCheck();
             $this->notes_handler = new Ajax\NotesHandler();
             $this->ajax_handler = new Ajax\ApplianceHandler();
-
-            // Initialize upgrade manager if in admin
-            if (is_admin()) {
-                $this->debug->log('Initializing upgrade manager');
-                $this->upgrade_manager = new \ApplianceRepairManager\Admin\UpgradeManager();
-            }
+            $this->upgrade_manager = new \ApplianceRepairManager\Admin\UpgradeManager();
 
             $this->debug->log('Managers initialized successfully');
 
@@ -77,15 +69,11 @@ class Plugin {
 
     private function register_hooks() {
         try {
-            // Log hooks registration
             $this->debug->log('Registering hooks');
 
-            // Core WordPress hooks
             add_action('init', [$this, 'init']);
             add_action('admin_menu', [$this, 'add_admin_menu']);
             add_filter('map_meta_cap', [$this, 'map_meta_cap'], 10, 4);
-            
-            // Template and rewrite hooks
             add_action('template_redirect', [$this, 'handle_public_views']);
             add_filter('template_include', [$this, 'load_plugin_template'], 999);
             add_action('init', [$this, 'add_rewrite_rules']);

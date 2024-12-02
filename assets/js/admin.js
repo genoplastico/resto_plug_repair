@@ -307,4 +307,49 @@ jQuery(document).ready(function($) {
             }
         });
     });
+
+    // Image upload preview
+    $('#appliance_image').on('change', function() {
+        var file = this.files[0];
+        var preview = $('#image-preview');
+        var previewImg = preview.find('img');
+        
+        if (file) {
+            // Validate file size
+            if (file.size > 5 * 1024 * 1024) {
+                alert(armL10n.imageSizeError);
+                this.value = '';
+                return;
+            }
+
+            // Validate file type
+            if (!file.type.match('image.*')) {
+                alert(armL10n.imageTypeError);
+                this.value = '';
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.attr('src', e.target.result);
+                preview.show();
+            }
+            reader.readAsDataURL(file);
+        } else {
+            preview.hide();
+        }
+    });
+
+    // Remove preview image
+    $('.arm-remove-preview').click(function() {
+        $('#appliance_image').val('');
+        $('#image-preview').hide();
+    });
+
+    // Image lightbox
+    $('.arm-appliance-thumbnail').click(function(e) {
+        e.preventDefault();
+        var fullSize = $(this).data('full-size');
+        window.open(fullSize, '_blank');
+    });
 });

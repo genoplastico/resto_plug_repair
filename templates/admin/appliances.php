@@ -84,11 +84,19 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                         <input type="file" 
                                name="appliance_image" 
                                id="appliance_image" 
-                               class="regular-text"
+                               class="arm-image-upload"
                                accept="image/*">
                         <p class="description">
-                            <?php _e('Upload an image of the appliance. Maximum size: 5MB', 'appliance-repair-manager'); ?>
+                            <?php _e('Allowed formats: JPG, PNG, GIF. Maximum size: 5MB', 'appliance-repair-manager'); ?>
+                            <br>
+                            <?php _e('Maximum dimensions: 4096x4096 pixels', 'appliance-repair-manager'); ?>
                         </p>
+                        <div id="image-preview" class="arm-image-preview" style="display:none;">
+                            <img src="" alt="Preview">
+                            <button type="button" class="button button-small arm-remove-preview">
+                                <?php _e('Remove', 'appliance-repair-manager'); ?>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -162,8 +170,19 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                                     <a href="<?php echo esc_url($image[0]); ?>" class="arm-image-preview" target="_blank">
                                         <img src="<?php echo esc_url($image[0]); ?>" 
                                              alt="<?php echo esc_attr($appliance->type); ?>"
-                                             class="arm-appliance-thumbnail">
+                                             class="arm-appliance-thumbnail"
+                                             data-full-size="<?php echo esc_url(wp_get_attachment_url($appliance->image_id)); ?>">
                                     </a>
+                                    <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" 
+                                          class="arm-delete-image-form" style="display:inline;">
+                                        <?php wp_nonce_field('arm_delete_appliance_image'); ?>
+                                        <input type="hidden" name="action" value="arm_delete_appliance_image">
+                                        <input type="hidden" name="appliance_id" value="<?php echo esc_attr($appliance->id); ?>">
+                                        <button type="submit" class="button button-small arm-delete-image" 
+                                                onclick="return confirm('<?php esc_attr_e('Are you sure you want to delete this image?', 'appliance-repair-manager'); ?>')">
+                                            <?php _e('Delete Image', 'appliance-repair-manager'); ?>
+                                        </button>
+                                    </form>
                                 <?php endif; ?>
                                 <?php echo esc_html($appliance->type); ?>
                             </td>
@@ -220,6 +239,26 @@ jQuery(document).ready(function($) {
 });
 </script>
 <style>
+.arm-image-preview {
+    margin-top: 10px;
+    max-width: 200px;
+    position: relative;
+}
+
+.arm-image-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.arm-remove-preview {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255,255,255,0.9) !important;
+}
+
 .arm-appliance-thumbnail {
     max-width: 50px;
     height: auto;
@@ -237,4 +276,3 @@ jQuery(document).ready(function($) {
     transform: scale(1.1);
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-</style>

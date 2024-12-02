@@ -5,6 +5,7 @@ class ApplianceManager {
     public function __construct() {
         add_action('arm_admin_menu', [$this, 'add_appliances_menu']);
         add_action('admin_post_arm_add_appliance', [$this, 'handle_add_appliance']);
+        add_action('admin_post_arm_delete_appliance_image', [$this, 'handle_delete_appliance_image']);
     }
 
     public function add_appliances_menu() {
@@ -35,6 +36,7 @@ class ApplianceManager {
         try {
             global $wpdb;
             $wpdb->query('START TRANSACTION');
+            $image_handler = \ApplianceRepairManager\Core\ImageHandler::getInstance();
         
             // Basic appliance data
             $appliance_data = [
@@ -61,21 +63,7 @@ class ApplianceManager {
 
             // Handle image upload if present
             if (!empty($_FILES['appliance_image']['name'])) {
-                if (!function_exists('wp_handle_upload')) {
-                    require_once(ABSPATH . 'wp-admin/includes/file.php');
-                    require_once(ABSPATH . 'wp-admin/includes/image.php');
-                    require_once(ABSPATH . 'wp-admin/includes/media.php');
-                }
-
-                // Set post ID for media attachment
-                $_POST['post_id'] = $appliance_id;
-
-                // Upload and get attachment ID
-                $image_id = media_handle_upload('appliance_image', 0);
-
-                if (is_wp_error($image_id)) {
-                    throw new \Exception($image_id->get_error_message());
-                }
+                $image_id = $image_handler->handleUpload($_FILES['appliance_image'], $appliance_id);
 
                 // Update appliance with image ID
                 $result = $wpdb->update(
@@ -105,6 +93,37 @@ class ApplianceManager {
                 __('Error saving appliance: %s', 'appliance-repair-manager'),
                 $e->getMessage()
             ));
+        }
+    }
+
+    public function handle_delete_appliance_image() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+
+        check_admin_referer('arm_delete_appliance_image');
+
+        try {
+            global $wpdb;
+            $appliance_id = isset($_POST['appliance_id']) ? intval($_POST['appliance_id']) : 0;
+            
+            $appliance = $wpdb->get_row($wpdb->prepare(
+                "SELECT image_id FROM {$wpdb->prefix}arm_appliances WHERE id = %d",
+                $appliance_id
+            ));
+
+            if ($appliance && $appliance->image_id) {
+                $image_handler = \ApplianceRepairManager\Core\ImageHandler::getInstance();
+                $image_handler->deleteImage($appliance->image_id);
+                
+                $wpdb->update(
+                    $wpdb->prefix . 'arm_appliances',
+                    ['image_id' => null],
+                    ['id' => $appliance_id]
+                );
+            }
+        } catch (\Exception $e) {
+            wp_die($e->getMessage());
         }
     }
 }

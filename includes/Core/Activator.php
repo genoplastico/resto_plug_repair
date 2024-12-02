@@ -46,17 +46,6 @@ class Activator {
             'last_error' => $wpdb->last_error
         ]);
 
-        // Appliance Images table
-        $sql_appliance_images = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_appliance_images (
-            id bigint(20) NOT NULL AUTO_INCREMENT,
-            appliance_id bigint(20) NOT NULL,
-            attachment_id bigint(20) NOT NULL,
-            created_at datetime DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY  (id),
-            KEY appliance_id (appliance_id),
-            KEY attachment_id (attachment_id)
-        ) $charset_collate;";
-
         // Clients table
         $sql_clients = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_clients (
             id bigint(20) NOT NULL AUTO_INCREMENT,

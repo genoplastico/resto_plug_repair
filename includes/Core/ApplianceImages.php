@@ -23,6 +23,12 @@ class ApplianceImages {
         try {
             global $wpdb;
             
+            $this->debug->logError('Starting handleGetImages', [
+                'POST' => $_POST,
+                'tables' => $wpdb->get_col('SHOW TABLES'),
+                'prefix' => $wpdb->prefix
+            ]);
+            
             // Verify table existence first
             $table_name = $wpdb->prefix . 'arm_appliance_images';
             $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name;
@@ -45,10 +51,44 @@ class ApplianceImages {
             check_ajax_referer('arm_ajax_nonce', 'nonce');
 
             if (!current_user_can('upload_files')) {
+                $this->debug->logError('Permission denied', [
+                    'user_id' => get_current_user_id(),
+                    'capabilities' => get_userdata(get_current_user_id())->allcaps
+                ]);
                 throw new \Exception(__('Permission denied', 'appliance-repair-manager'));
             }
 
             $appliance_id = isset($_POST['appliance_id']) ? intval($_POST['appliance_id']) : 0;
+            
+            // Verify table existence
+            $table_exists = $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}arm_appliance_images'");
+            if (!$table_exists) {
+                $this->debug->logError('Table does not exist', [
+                    'table_name' => $wpdb->prefix . 'arm_appliance_images',
+                    'existing_tables' => $wpdb->get_col('SHOW TABLES')
+                ]);
+                
+                // Try to recreate table
+                require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+                $charset_collate = $wpdb->get_charset_collate();
+                $sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_appliance_images (
+                    id bigint(20) NOT NULL AUTO_INCREMENT,
+                    appliance_id bigint(20) NOT NULL,
+                    attachment_id bigint(20) NOT NULL,
+                    created_at datetime DEFAULT CURRENT_TIMESTAMP,
+                    PRIMARY KEY  (id),
+                    KEY appliance_id (appliance_id),
+                    KEY attachment_id (attachment_id)
+                ) $charset_collate;";
+                
+                dbDelta($sql);
+                
+                // Verify again
+                $table_exists = $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}arm_appliance_images'");
+                if (!$table_exists) {
+                    throw new \Exception(__('Could not create images table', 'appliance-repair-manager'));
+                }
+            }
             
             $this->debug->logError('Checking table existence', [
                 'table_exists' => $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}arm_appliance_images'"),

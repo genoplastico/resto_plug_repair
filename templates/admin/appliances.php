@@ -160,6 +160,13 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                                 </span>
                             </td>
                             <td>
+                                <?php 
+                                // Get images count
+                                $images_count = $wpdb->get_var($wpdb->prepare(
+                                    "SELECT COUNT(*) FROM {$wpdb->prefix}arm_appliance_images WHERE appliance_id = %d",
+                                    $appliance->id
+                                ));
+                                ?>
                                 <button type="button" class="button button-small view-appliance-history" 
                                         data-appliance-id="<?php echo esc_attr($appliance->id); ?>">
                                     <?php _e('View History', 'appliance-repair-manager'); ?>
@@ -170,7 +177,12 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                                 </button>
                                 <button type="button" class="button button-small manage-images"
                                         data-appliance-id="<?php echo esc_attr($appliance->id); ?>">
-                                    <?php _e('Manage Photos', 'appliance-repair-manager'); ?>
+                                    <?php 
+                                    printf(
+                                        __('Photos (%d)', 'appliance-repair-manager'),
+                                        intval($images_count)
+                                    ); 
+                                    ?>
                                 </button>
                             </td>
                         </tr>

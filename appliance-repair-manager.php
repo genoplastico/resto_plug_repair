@@ -13,9 +13,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Load Composer autoloader
-require_once __DIR__ . '/vendor/autoload.php';
-
 // Plugin constants
 define('ARM_VERSION', '1.0.0');
 define('ARM_PLUGIN_DIR', plugin_dir_path(__FILE__));
@@ -26,6 +23,13 @@ define('ARM_PLUGIN_BASENAME', plugin_basename(__FILE__));
 // Debug mode
 if (!defined('WP_DEBUG')) {
     define('WP_DEBUG', true);
+}
+
+// Load Cloudinary SDK
+if (!class_exists('Cloudinary')) {
+    require_once ARM_PLUGIN_DIR . 'lib/cloudinary/Cloudinary.php';
+    require_once ARM_PLUGIN_DIR . 'lib/cloudinary/Uploader.php';
+    require_once ARM_PLUGIN_DIR . 'lib/cloudinary/Api.php';
 }
 
 // Load helper functions

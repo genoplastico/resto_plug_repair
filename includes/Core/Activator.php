@@ -29,19 +29,6 @@ class Activator {
             KEY reference_id (reference_id)
         ) $charset_collate;";
 
-        // Images table
-        $sql_images = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_images (
-            id bigint(20) NOT NULL AUTO_INCREMENT,
-            type varchar(20) NOT NULL,
-            reference_id bigint(20) NOT NULL,
-            url varchar(255) NOT NULL,
-            thumbnail_url varchar(255) NOT NULL,
-            public_id varchar(255) NOT NULL,
-            created_at datetime DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY  (id),
-            KEY type (type),
-            KEY reference_id (reference_id)
-        ) $charset_collate;";
 
         // Clients table
         $sql_clients = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_clients (

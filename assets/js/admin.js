@@ -311,38 +311,48 @@ jQuery(document).ready(function($) {
 
 // Image upload handling
 jQuery(document).ready(function($) {
-    // Image upload functionality
-    $('.arm-image-upload').each(function() {
-        const $upload = $(this);
-        const $input = $upload.find('.arm-image-input');
-        const repairId = $upload.data('repair-id');
-
-        $upload.on('dragover', function(e) {
-            e.preventDefault();
-            $(this).addClass('is-dragging');
-        }).on('dragleave drop', function(e) {
-            e.preventDefault();
-            $(this).removeClass('is-dragging');
-        });
-
-        $upload.click(function() {
-            $input.click();
-        });
-
-        $input.change(function() {
-            const files = this.files;
-            handleImageUpload(files, repairId);
-        });
+    // Prevent click propagation on file input
+    $(document).on('click', '.arm-image-input', function(e) {
+        e.stopPropagation();
     });
 
-    function handleImageUpload(files, repairId) {
+    // Handle drag and drop
+    $(document).on('dragover', '.arm-image-upload', function(e) {
+        e.preventDefault();
+        $(this).addClass('is-dragging');
+    });
+
+    $(document).on('dragleave drop', '.arm-image-upload', function(e) {
+        e.preventDefault();
+        $(this).removeClass('is-dragging');
+    });
+
+    // Handle click on upload area
+    $(document).on('click', '.arm-image-upload', function(e) {
+        if (e.target !== this) return;
+        $(this).find('.arm-image-input').click();
+    });
+
+    // Handle file selection
+    $(document).on('change', '.arm-image-input', function() {
+        const $input = $(this);
+        const $upload = $input.closest('.arm-image-upload');
+        const type = $upload.data('type');
+        const id = $upload.data('repair-id') || $upload.data('appliance-id');
+
+        if (this.files && this.files.length > 0) {
+            handleImageUpload(this.files, type, id);
+        }
+    });
+
+    function handleImageUpload(files, type, id) {
         Array.from(files).forEach(file => {
             const formData = new FormData();
             formData.append('action', 'arm_upload_image');
             formData.append('nonce', $('#arm_ajax_nonce').val());
             formData.append('image', file);
-            formData.append('type', 'repair');
-            formData.append('id', repairId);
+            formData.append('type', type);
+            formData.append('id', id);
 
             $.ajax({
                 url: armL10n.ajaxurl,
@@ -352,16 +362,16 @@ jQuery(document).ready(function($) {
                 contentType: false,
                 success: function(response) {
                     if (response.success) {
-                        const $imagesContainer = $('.arm-timeline-images');
+                        let $imagesContainer = $('.arm-timeline-images');
                         if (!$imagesContainer.length) {
                             $imagesContainer = $('<div class="arm-timeline-images"></div>')
-                                .insertBefore($upload);
+                                .insertBefore($('.arm-image-upload'));
                         }
                         
                         const $newImage = $(`
                             <div class="arm-timeline-image">
                                 <img src="${response.data.thumbnail_url}" 
-                                     alt="Repair photo"
+                                     alt="${type === 'repair' ? 'Repair photo' : 'Appliance photo'}"
                                      data-full-url="${response.data.url}"
                                      class="arm-lightbox-image">
                             </div>

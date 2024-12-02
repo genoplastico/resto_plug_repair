@@ -31,18 +31,18 @@ class Assets {
     private function enqueue_common_assets() {
         wp_enqueue_script('jquery');
 
-        // Modal Manager CSS
+        // Modal System CSS
         wp_enqueue_style(
-            'arm-modal-styles',
-            ARM_PLUGIN_URL . 'assets/css/modal-manager.css',
+            'arm-modal-system',
+            ARM_PLUGIN_URL . 'assets/css/modal-system.css',
             [],
             ARM_VERSION
         );
 
-        // Modal Manager JS
+        // Modal System JS
         wp_enqueue_script(
-            'arm-modal-manager',
-            ARM_PLUGIN_URL . 'assets/js/modal-manager.js',
+            'arm-modal-system',
+            ARM_PLUGIN_URL . 'assets/js/modal-system.js',
             ['jquery'],
             ARM_VERSION,
             true
@@ -62,7 +62,7 @@ class Assets {
         wp_enqueue_script(
             'arm-admin-scripts',
             ARM_PLUGIN_URL . 'assets/js/admin.js',
-            ['jquery', 'arm-modal-manager'],
+            ['jquery', 'arm-modal-system'],
             ARM_VERSION,
             true
         );

@@ -36,13 +36,16 @@ jQuery(document).ready(function($) {
         
         const $button = $(this);
         const applianceId = $button.data('appliance-id');
+        const $modal = $('#appliance-history-modal');
+        const $content = $('#appliance-history-content');
         
         logDebug('Opening appliance history modal', { 
-            applianceId: applianceId
+            applianceId: applianceId,
+            modal: $modal[0]
         });
         
-        armModalSystem.openModal('appliance-history-modal');
-        armModalSystem.showLoading('appliance-history-modal');
+        $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
+        window.armModalManager.openModal('appliance-history-modal');
 
         $.ajax({
             url: armL10n.ajaxurl,
@@ -56,10 +59,9 @@ jQuery(document).ready(function($) {
                 logDebug('Appliance history response received', { response: response });
                 
                 if (response.success && response.data.html) {
-                    armModalSystem.setContent('appliance-history-modal', response.data.html);
+                    $content.html(response.data.html);
                 } else {
-                    armModalSystem.showError('appliance-history-modal', 
-                        armL10n.errorLoadingHistory);
+                    $content.html('<div class="arm-error">' + armL10n.errorLoadingHistory + '</div>');
                 }
             },
             error: function(xhr, status, error) {
@@ -68,8 +70,7 @@ jQuery(document).ready(function($) {
                     error: error,
                     response: xhr.responseText
                 });
-                armModalSystem.showError('appliance-history-modal', 
-                    armL10n.errorLoadingHistory);
+                $content.html('<div class="arm-error">' + armL10n.errorLoadingHistory + '</div>');
             }
         });
     });

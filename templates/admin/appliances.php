@@ -23,7 +23,7 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
 
     <div class="arm-appliance-form-container">
         <h2><?php _e('Add New Appliance', 'appliance-repair-manager'); ?></h2>
-        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" enctype="multipart/form-data">
             <?php wp_nonce_field('arm_add_appliance'); ?>
             <input type="hidden" name="action" value="arm_add_appliance">
             

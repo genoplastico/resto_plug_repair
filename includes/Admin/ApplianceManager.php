@@ -48,7 +48,7 @@ class ApplianceManager {
                 require_once(ABSPATH . 'wp-admin/includes/file.php');
             }
 
-            $upload_overrides = array('test_form' => false);
+            $upload_overrides = ['test_form' => false];
             $uploaded_file = wp_handle_upload($_FILES['appliance_image'], $upload_overrides);
 
             if (!isset($uploaded_file['error'])) {
@@ -62,11 +62,9 @@ class ApplianceManager {
             }
         }
 
-        $appliance_data = [
-            'client_id' => intval($_POST['client_id']),
-            'type' => sanitize_text_field($_POST['appliance_type']),
-            'brand' => sanitize_text_field($_POST['appliance_brand']),
-            'model' => sanitize_text_field($_POST['appliance_model']),
+        global $wpdb;
+        $result = $wpdb->insert(
+            $wpdb->prefix . 'arm_appliances',
             $appliance_data,
             array_fill(0, count($appliance_data), '%s')
         );

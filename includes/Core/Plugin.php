@@ -23,8 +23,15 @@ class Plugin {
         $this->debug = Debug\ErrorLogger::getInstance();
         $this->hook_manager = HookManager::getInstance();
         $this->translation_debugger = Debug\TranslationDebugger::getInstance();
+        
+        // Log plugin initialization
+        $this->debug->log('Plugin initialization started');
+        
         $this->init_managers();
         $this->register_hooks();
+        
+        // Log plugin initialization completion
+        $this->debug->log('Plugin initialization completed');
     }
 
     public static function getInstance() {
@@ -35,41 +42,68 @@ class Plugin {
     }
 
     private function init_managers() {
-        // Initialize all managers
-        $this->client_manager = new \ApplianceRepairManager\Admin\ClientManager();
-        $this->appliance_manager = new \ApplianceRepairManager\Admin\ApplianceManager();
-        $this->repair_manager = new \ApplianceRepairManager\Admin\RepairManager();
-        $this->repair_handler = new \ApplianceRepairManager\Core\Handlers\RepairHandler();
-        $this->user_manager = new \ApplianceRepairManager\Admin\UserManager();
-        $this->settings_manager = new \ApplianceRepairManager\Admin\SettingsManager();
-        $this->email_manager = new EmailManager();
-        $this->assets = new Assets();
-        $this->system_check = new \ApplianceRepairManager\Admin\SystemCheck();
-        $this->notes_handler = new Ajax\NotesHandler();
-        $this->ajax_handler = new Ajax\ApplianceHandler();
-        
-        // Initialize upgrade manager
-        if (is_admin()) {
-            $this->upgrade_manager = new \ApplianceRepairManager\Admin\UpgradeManager();
+        try {
+            // Log managers initialization
+            $this->debug->log('Initializing managers');
+
+            // Initialize all managers
+            $this->client_manager = new \ApplianceRepairManager\Admin\ClientManager();
+            $this->appliance_manager = new \ApplianceRepairManager\Admin\ApplianceManager();
+            $this->repair_manager = new \ApplianceRepairManager\Admin\RepairManager();
+            $this->repair_handler = new \ApplianceRepairManager\Core\Handlers\RepairHandler();
+            $this->user_manager = new \ApplianceRepairManager\Admin\UserManager();
+            $this->settings_manager = new \ApplianceRepairManager\Admin\SettingsManager();
+            $this->email_manager = new EmailManager();
+            $this->assets = new Assets();
+            $this->system_check = new \ApplianceRepairManager\Admin\SystemCheck();
+            $this->notes_handler = new Ajax\NotesHandler();
+            $this->ajax_handler = new Ajax\ApplianceHandler();
+
+            // Initialize upgrade manager if in admin
+            if (is_admin()) {
+                $this->debug->log('Initializing upgrade manager');
+                $this->upgrade_manager = new \ApplianceRepairManager\Admin\UpgradeManager();
+            }
+
+            $this->debug->log('Managers initialized successfully');
+
+        } catch (\Exception $e) {
+            $this->debug->logError('Error initializing managers', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
         }
     }
 
     private function register_hooks() {
-        // Core WordPress hooks
-        add_action('init', [$this, 'init']);
-        add_action('admin_menu', [$this, 'add_admin_menu']);
-        add_filter('map_meta_cap', [$this, 'map_meta_cap'], 10, 4);
-        
-        // Template and rewrite hooks
-        add_action('template_redirect', [$this, 'handle_public_views']);
-        add_filter('template_include', [$this, 'load_plugin_template'], 999);
-        add_action('init', [$this, 'add_rewrite_rules']);
-        add_filter('query_vars', [$this, 'add_query_vars']);
+        try {
+            // Log hooks registration
+            $this->debug->log('Registering hooks');
 
-        // AJAX handlers
-        add_action('wp_ajax_arm_get_client_appliances', [$this->repair_manager, 'getClientAppliances']);
-        add_action('wp_ajax_arm_get_repair_details', [$this->repair_manager, 'getRepairDetails']);
-        add_action('wp_ajax_nopriv_arm_get_repair_details', [$this->ajax_handler, 'getRepairDetails']);
+            // Core WordPress hooks
+            add_action('init', [$this, 'init']);
+            add_action('admin_menu', [$this, 'add_admin_menu']);
+            add_filter('map_meta_cap', [$this, 'map_meta_cap'], 10, 4);
+            
+            // Template and rewrite hooks
+            add_action('template_redirect', [$this, 'handle_public_views']);
+            add_filter('template_include', [$this, 'load_plugin_template'], 999);
+            add_action('init', [$this, 'add_rewrite_rules']);
+            add_filter('query_vars', [$this, 'add_query_vars']);
+
+            // AJAX handlers
+            add_action('wp_ajax_arm_get_client_appliances', [$this->repair_manager, 'getClientAppliances']);
+            add_action('wp_ajax_arm_get_repair_details', [$this->repair_manager, 'getRepairDetails']);
+            add_action('wp_ajax_nopriv_arm_get_repair_details', [$this->ajax_handler, 'getRepairDetails']);
+
+            $this->debug->log('Hooks registered successfully');
+
+        } catch (\Exception $e) {
+            $this->debug->logError('Error registering hooks', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
     }
 
     public function init() {
@@ -80,34 +114,46 @@ class Plugin {
     }
 
     public function add_admin_menu() {
-        add_menu_page(
-            __('Panel de Control', 'appliance-repair-manager'),
-            __('Panel de Control', 'appliance-repair-manager'),
-            'manage_options',
-            'appliance-repair-manager',
-            [$this, 'render_dashboard'],
-            'dashicons-admin-tools',
-            30
-        );
+        try {
+            $this->debug->log('Adding admin menu');
 
-        add_submenu_page(
-            'appliance-repair-manager',
-            __('Panel de Control', 'appliance-repair-manager'),
-            __('Panel de Control', 'appliance-repair-manager'),
-            'manage_options',
-            'appliance-repair-manager'
-        );
+            add_menu_page(
+                __('Panel de Control', 'appliance-repair-manager'),
+                __('Panel de Control', 'appliance-repair-manager'),
+                'manage_options',
+                'appliance-repair-manager',
+                [$this, 'render_dashboard'],
+                'dashicons-admin-tools',
+                30
+            );
 
-        add_submenu_page(
-            'appliance-repair-manager',
-            __('Reparaciones', 'appliance-repair-manager'),
-            __('Reparaciones', 'appliance-repair-manager'),
-            'edit_arm_repairs',
-            'arm-repairs',
-            [$this->repair_manager, 'render_repairs_page']
-        );
+            add_submenu_page(
+                'appliance-repair-manager',
+                __('Panel de Control', 'appliance-repair-manager'),
+                __('Panel de Control', 'appliance-repair-manager'),
+                'manage_options',
+                'appliance-repair-manager'
+            );
 
-        do_action('arm_admin_menu');
+            add_submenu_page(
+                'appliance-repair-manager',
+                __('Reparaciones', 'appliance-repair-manager'),
+                __('Reparaciones', 'appliance-repair-manager'),
+                'edit_arm_repairs',
+                'arm-repairs',
+                [$this->repair_manager, 'render_repairs_page']
+            );
+
+            do_action('arm_admin_menu');
+
+            $this->debug->log('Admin menu added successfully');
+
+        } catch (\Exception $e) {
+            $this->debug->logError('Error adding admin menu', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
     }
 
     public function render_dashboard() {

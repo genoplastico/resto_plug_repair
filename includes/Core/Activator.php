@@ -97,6 +97,7 @@ class Activator {
         $admin->add_cap('edit_arm_repairs');
         $admin->add_cap('view_arm_repairs');
         $admin->add_cap('manage_arm_settings');
+        $admin->add_cap('manage_arm_system');  // Add new capability for system management
     }
 
     private static function setup_repair_statuses() {

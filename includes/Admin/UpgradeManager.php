@@ -4,7 +4,7 @@ namespace ApplianceRepairManager\Admin;
 class UpgradeManager {
     private $logger;
     private $menu_slug = 'arm-upgrade';
-    private $capability = 'manage_options';
+    private $capability = 'manage_arm_system';  // Use custom capability
     private $parent_slug = 'appliance-repair-manager';
 
     public function __construct() {

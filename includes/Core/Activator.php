@@ -36,16 +36,13 @@ class Activator {
             brand varchar(50) NOT NULL,
             model varchar(50) NOT NULL,
             serial_number varchar(50),
-            image_id bigint(20),
-            image_url varchar(255),
-            image_path varchar(255),
+            image_id bigint(20) DEFAULT NULL,
             status varchar(20) NOT NULL DEFAULT 'pending',
             created_at datetime DEFAULT CURRENT_TIMESTAMP,
             updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY  (id),
             KEY client_id (client_id),
-            KEY status (status),
-            KEY image_id (image_id)
+            KEY status (status)
         ) $charset_collate;";
 
         // Repairs table

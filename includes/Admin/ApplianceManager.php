@@ -30,57 +30,66 @@ class ApplianceManager {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
-        check_admin_referer('arm_add_appliance', '_wpnonce');
+        check_admin_referer('arm_add_appliance');
         
-        // Basic appliance data
-        $appliance_data = [
-            'client_id' => intval($_POST['client_id']),
-            'type' => sanitize_text_field($_POST['appliance_type']),
-            'brand' => sanitize_text_field($_POST['appliance_brand']),
-            'model' => sanitize_text_field($_POST['appliance_model']),
-            'serial_number' => sanitize_text_field($_POST['serial_number']),
-            'status' => 'pending'
-        ];
+        try {
+            global $wpdb;
+            $wpdb->query('START TRANSACTION');
+        
+            // Basic appliance data
+            $appliance_data = [
+                'client_id' => intval($_POST['client_id']),
+                'type' => sanitize_text_field($_POST['appliance_type']),
+                'brand' => sanitize_text_field($_POST['appliance_brand']),
+                'model' => sanitize_text_field($_POST['appliance_model']),
+                'serial_number' => sanitize_text_field($_POST['serial_number']),
+                'status' => 'pending'
+            ];
 
-        global $wpdb;
+            // Insert appliance first
+            $result = $wpdb->insert(
+                $wpdb->prefix . 'arm_appliances',
+                $appliance_data,
+                ['%d', '%s', '%s', '%s', '%s', '%s']
+            );
 
-        // Handle image upload
-        if (!empty($_FILES['appliance_image']['name'])) {
-            require_once(ABSPATH . 'wp-admin/includes/image.php');
-            require_once(ABSPATH . 'wp-admin/includes/file.php');
-            require_once(ABSPATH . 'wp-admin/includes/media.php');
-            
-            // Use WordPress media handling
-            $image_id = media_handle_upload('appliance_image', 0);
-            
-            if (is_wp_error($image_id)) {
-                wp_die(sprintf(
-                    __('Error uploading image: %s', 'appliance-repair-manager'),
-                    $image_id->get_error_message()
-                ));
+            if ($result === false) {
+                throw new \Exception($wpdb->last_error);
             }
-            
-            $appliance_data['image_id'] = $image_id;
-        }
 
-        $result = $wpdb->insert(
-            $wpdb->prefix . 'arm_appliances',
-            $appliance_data, 
-            ['%d', '%s', '%s', '%s', '%s', '%s', '%d']
-        );
+            $appliance_id = $wpdb->insert_id;
 
-        if ($result === false) {
-            // Clean up uploaded image if insert failed
-            if (!empty($image_id)) {
-                wp_delete_attachment($image_id, true);
+            // Handle image upload if present
+            if (!empty($_FILES['appliance_image']['name'])) {
+                if (!function_exists('wp_handle_upload')) {
+                    require_once(ABSPATH . 'wp-admin/includes/file.php');
+                    require_once(ABSPATH . 'wp-admin/includes/image.php');
+                    require_once(ABSPATH . 'wp-admin/includes/media.php');
+                }
+
+                // Set post ID for media attachment
+                $_POST['post_id'] = $appliance_id;
+
+                // Upload and get attachment ID
+                $image_id = media_handle_upload('appliance_image', 0);
+
+                if (is_wp_error($image_id)) {
+                    throw new \Exception($image_id->get_error_message());
+                }
+
+                // Update appliance with image ID
+                $result = $wpdb->update(
+                    $wpdb->prefix . 'arm_appliances',
+                    ['image_id' => $image_id],
+                    ['id' => $appliance_id],
+                    ['%d'],
+                    ['%d']
+                );
+
+                if ($result === false) {
+                    throw new \Exception($wpdb->last_error);
+                }
             }
-            wp_die(__('Error saving appliance data.', 'appliance-repair-manager'));
-        }
 
-        wp_redirect(add_query_arg([
-            'page' => 'arm-appliances',
-            'message' => 'appliance_added'
-        ], admin_url('admin.php')));
-        exit;
     }
 }

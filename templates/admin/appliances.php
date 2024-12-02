@@ -157,8 +157,13 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                         <tr>
                             <td><?php echo esc_html($appliance->client_name); ?></td>
                             <td>
-                                <?php if (!empty($appliance->image_id)): ?>
-                                    <?php echo wp_get_attachment_image($appliance->image_id, 'thumbnail', false, ['class' => 'arm-appliance-thumbnail']); ?>
+                                <?php 
+                                if (!empty($appliance->image_id) && $image = wp_get_attachment_image_src($appliance->image_id, 'thumbnail')): ?>
+                                    <a href="<?php echo esc_url($image[0]); ?>" class="arm-image-preview" target="_blank">
+                                        <img src="<?php echo esc_url($image[0]); ?>" 
+                                             alt="<?php echo esc_attr($appliance->type); ?>"
+                                             class="arm-appliance-thumbnail">
+                                    </a>
                                 <?php endif; ?>
                                 <?php echo esc_html($appliance->type); ?>
                             </td>
@@ -218,8 +223,18 @@ jQuery(document).ready(function($) {
 .arm-appliance-thumbnail {
     max-width: 50px;
     height: auto;
-    margin-right: 10px;
+    margin-right: 8px;
     vertical-align: middle;
     border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 2px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+.arm-image-preview:hover .arm-appliance-thumbnail {
+    transform: scale(1.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 </style>

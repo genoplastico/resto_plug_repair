@@ -50,40 +50,6 @@ class ErrorLogger {
         chmod($index, 0644);
     }
 
-    public function log($message, $context = []) {
-        if (!$this->debug_mode) {
-            return;
-        }
-
-        $timestamp = current_time('mysql');
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-        
-        $log_entry = [
-            'timestamp' => $timestamp,
-            'message' => $message,
-            'context' => $context,
-            'file' => $backtrace[0]['file'] ?? 'unknown',
-            'line' => $backtrace[0]['line'] ?? 'unknown',
-            'function' => $backtrace[1]['function'] ?? 'unknown',
-            'class' => $backtrace[1]['class'] ?? 'unknown'
-        ];
-
-        $log_message = sprintf(
-            "[%s] %s\nLocation: %s:%s\nFunction: %s::%s\nContext: %s\n\n",
-            $log_entry['timestamp'],
-            $log_entry['message'],
-            $log_entry['file'],
-            $log_entry['line'],
-            $log_entry['class'],
-            $log_entry['function'],
-            json_encode($context, JSON_PRETTY_PRINT)
-        );
-
-        if (!@error_log($log_message, 3, $this->log_file)) {
-            error_log('Failed to write to ARM error log: ' . $this->log_file);
-        }
-    }
-
     public function log($message, $context = [], $type = 'info') {
         if (!$this->debug_mode) {
             return;
@@ -115,7 +81,9 @@ class ErrorLogger {
             $log_entry['line']
         );
 
-        error_log($log_message, 3, $this->log_file);
+        if (!@error_log($log_message, 3, $this->log_file)) {
+            error_log('Failed to write to ARM error log: ' . $this->log_file);
+        }
     }
 
     public function logError($message, $context = [], $severity = 'ERROR') {

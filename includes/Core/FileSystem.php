@@ -45,9 +45,9 @@ class FileSystem {
             // Verificar archivos críticos
             $critical_files = [
                 'assets/js/admin.js',
-                'assets/js/modal-manager.js',
+                'assets/js/modal-system.js',
                 'assets/css/admin.css',
-                'assets/css/modal-manager.css'
+                'assets/css/modal-system.css'
             ];
 
             foreach ($critical_files as $file) {
@@ -116,12 +116,58 @@ class FileSystem {
         return !is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200;
     }
 
+    private function hasPermissionIssues($permissions) {
+        // Check plugin directory
+        if (!$permissions['plugin_dir']['readable'] || !$permissions['plugin_dir']['writable']) {
+            return true;
+        }
+
+        // Check assets directory
+        if (!$permissions['assets_dir']['readable'] || !$permissions['assets_dir']['writable']) {
+            return true;
+        }
+
+        // Check critical files
+        foreach ($permissions['files'] as $file) {
+            if (!$file['exists']) {
+                $this->createMissingFile($file['path']);
+                return true;
+            }
+            if (!$file['readable'] || !$file['writable']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function createMissingFile($path) {
+        $file_content = '';
+        $file_name = basename($path);
+        
+        // Get appropriate content based on file
+        switch ($file_name) {
+            case 'modal-system.js':
+                $file_content = file_get_contents(ARM_PLUGIN_DIR . 'assets/js/modal-system.js');
+                break;
+            case 'modal-system.css':
+                $file_content = file_get_contents(ARM_PLUGIN_DIR . 'assets/css/modal-system.css');
+                break;
+        }
+        
+        if (!empty($file_content)) {
+            wp_mkdir_p(dirname($path));
+            file_put_contents($path, $file_content);
+            chmod($path, 0644);
+        }
+    }
+
     public function fixPermissions() {
         $base_path = ARM_PLUGIN_DIR;
         $success = true;
 
         try {
-            // Establecer permisos para directorios (755)
+            // Set directory permissions (755)
             $directories = [
                 $base_path,
                 $base_path . 'assets',
@@ -130,21 +176,27 @@ class FileSystem {
             ];
 
             foreach ($directories as $dir) {
+                if (!file_exists($dir)) {
+                    wp_mkdir_p($dir);
+                }
                 if (is_dir($dir) && !chmod($dir, 0755)) {
                     $success = false;
                     $this->debug->log('Failed to set directory permissions', ['path' => $dir]);
                 }
             }
 
-            // Establecer permisos para archivos (644)
+            // Set file permissions (644)
             $files = [
                 $base_path . 'assets/js/admin.js',
-                $base_path . 'assets/js/modal-manager.js',
+                $base_path . 'assets/js/modal-system.js',
                 $base_path . 'assets/css/admin.css',
-                $base_path . 'assets/css/modal-manager.css'
+                $base_path . 'assets/css/modal-system.css'
             ];
 
             foreach ($files as $file) {
+                if (!file_exists($file)) {
+                    $this->createMissingFile($file);
+                }
                 if (file_exists($file) && !chmod($file, 0644)) {
                     $success = false;
                     $this->debug->log('Failed to set file permissions', ['path' => $file]);

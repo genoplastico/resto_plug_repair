@@ -91,5 +91,20 @@ class ApplianceManager {
                 }
             }
 
+            $wpdb->query('COMMIT');
+
+            wp_redirect(add_query_arg([
+                'page' => 'arm-appliances',
+                'message' => 'appliance_added'
+            ], admin_url('admin.php')));
+            exit;
+
+        } catch (\Exception $e) {
+            $wpdb->query('ROLLBACK');
+            wp_die(sprintf(
+                __('Error saving appliance: %s', 'appliance-repair-manager'),
+                $e->getMessage()
+            ));
+        }
     }
 }

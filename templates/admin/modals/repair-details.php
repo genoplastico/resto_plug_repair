@@ -37,6 +37,35 @@ if (!defined('ABSPATH')) {
                 <?php if ($repair->parts_used): ?>
                     <p><strong><?php _e('Parts Used:', 'appliance-repair-manager'); ?></strong></p>
                     <div class="arm-parts-text"><?php echo nl2br(esc_html($repair->parts_used)); ?></div>
+                <?php endif;
+                
+                // Get repair images
+                $repair_images = $wpdb->get_results($wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}arm_images 
+                     WHERE type = 'repair' AND reference_id = %d 
+                     ORDER BY created_at DESC",
+                    $repair->id
+                ));
+                
+                if ($repair_images): ?>
+                    <div class="arm-timeline-images">
+                        <?php foreach ($repair_images as $image): ?>
+                            <div class="arm-timeline-image">
+                                <img src="<?php echo esc_url($image->thumbnail_url); ?>" 
+                                     alt="<?php esc_attr_e('Repair photo', 'appliance-repair-manager'); ?>"
+                                     data-full-url="<?php echo esc_url($image->url); ?>"
+                                     class="arm-lightbox-image">
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+                
+                <?php if (current_user_can('edit_arm_repairs')): ?>
+                    <div class="arm-image-upload" data-repair-id="<?php echo esc_attr($repair->id); ?>">
+                        <span class="dashicons dashicons-camera"></span>
+                        <?php _e('Add Photos', 'appliance-repair-manager'); ?>
+                        <input type="file" class="arm-image-input" accept="image/*" multiple style="display: none;">
+                    </div>
                 <?php endif; ?>
                 <p><strong><?php _e('Cost:', 'appliance-repair-manager'); ?></strong> <?php echo esc_html(number_format($repair->cost, 2)); ?></p>
             </div>

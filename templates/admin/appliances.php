@@ -76,6 +76,19 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                         <input type="text" name="serial_number" id="serial_number" class="regular-text">
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="appliance_images"><?php _e('Photos', 'appliance-repair-manager'); ?></label>
+                    </th>
+                    <td>
+                        <div class="arm-image-upload" data-type="appliance">
+                            <span class="dashicons dashicons-camera"></span>
+                            <?php _e('Add Photos', 'appliance-repair-manager'); ?>
+                            <input type="file" class="arm-image-input" accept="image/*" multiple>
+                        </div>
+                        <div class="arm-image-gallery"></div>
+                    </td>
+                </tr>
             </table>
             
             <?php submit_button(__('Add Appliance', 'appliance-repair-manager')); ?>
@@ -145,6 +158,28 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                             <td><?php echo esc_html($appliance->brand); ?></td>
                             <td><?php echo esc_html($appliance->model); ?></td>
                             <td><?php echo esc_html($appliance->serial_number); ?></td>
+                            <td>
+                                <?php
+                                $images = $wpdb->get_results($wpdb->prepare(
+                                    "SELECT * FROM {$wpdb->prefix}arm_images 
+                                     WHERE type = 'appliance' AND reference_id = %d 
+                                     ORDER BY created_at DESC",
+                                    $appliance->id
+                                ));
+                                
+                                if ($images): ?>
+                                    <div class="arm-image-gallery">
+                                        <?php foreach ($images as $image): ?>
+                                            <div class="arm-image-item">
+                                                <img src="<?php echo esc_url($image->thumbnail_url); ?>" 
+                                                     alt="<?php esc_attr_e('Appliance photo', 'appliance-repair-manager'); ?>"
+                                                     data-full-url="<?php echo esc_url($image->url); ?>"
+                                                     class="arm-lightbox-image">
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <span class="arm-status <?php echo esc_attr(arm_get_status_class($appliance->status)); ?>">
                                     <?php echo esc_html(arm_get_status_label($appliance->status)); ?>

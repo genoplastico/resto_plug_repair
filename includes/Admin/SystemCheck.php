@@ -29,24 +29,24 @@ class SystemCheck {
     }
 
     private function hasPermissionIssues($permissions) {
-        // Verificar directorio del plugin
+        // Check plugin directory
         if (!$permissions['plugin_dir']['readable'] || !$permissions['plugin_dir']['writable']) {
             return true;
         }
 
-        // Verificar directorio de assets
+        // Check assets directory
         if (!$permissions['assets_dir']['readable']) {
             return true;
         }
 
-        // Verificar archivos críticos
+        // Check critical files
         foreach ($permissions['files'] as $file) {
-            if (!$file['readable']) {
+            if (!$file['exists'] || !$file['readable']) {
                 return true;
             }
         }
 
-        // Verificar acceso a URLs
+        // Check URL access
         foreach ($permissions['urls'] as $url) {
             if (!$url['accessible']) {
                 return true;

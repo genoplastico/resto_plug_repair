@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Appliance Repair Manager
  * Plugin URI: https://your-domain.com/plugins/appliance-repair-manager
- * Description: Sistema de gestión de reparaciones de electrodomésticos
+ * Description: Sistema de gestión de reparaciones de aparatos
  * Version: 1.0.0
  * Author: Your Name
  * Text Domain: appliance-repair-manager

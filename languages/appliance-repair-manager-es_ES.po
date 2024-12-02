@@ -20,7 +20,7 @@ msgid "Dashboard"
 msgstr "Panel de Control"
 
 msgid "Appliances"
-msgstr "Electrodomésticos"
+msgstr "Aparatos"
 
 msgid "Clients"
 msgstr "Clientes"
@@ -68,10 +68,10 @@ msgid "Public URL has been copied to clipboard."
 msgstr "La URL pública ha sido copiada al portapapeles."
 
 msgid "Select Appliance"
-msgstr "Seleccionar Electrodoméstico"
+msgstr "Seleccionar Aparato"
 
 msgid "Error loading appliances"
-msgstr "Error al cargar electrodomésticos"
+msgstr "Error al cargar aparatos"
 
 msgid "View Details"
 msgstr "Ver Detalles"
@@ -98,7 +98,7 @@ msgid "Existing Clients"
 msgstr "Clientes Existentes"
 
 msgid "Appliances"
-msgstr "Electrodomésticos"
+msgstr "Aparatos"
 
 msgid "Created"
 msgstr "Creado"
@@ -239,7 +239,7 @@ msgid "Client"
 msgstr "Cliente"
 
 msgid "Appliance"
-msgstr "Electrodoméstico"
+msgstr "Aparato"
 
 msgid "Assign Technician"
 msgstr "Asignar Técnico"
@@ -278,7 +278,7 @@ msgid "Error loading repair details"
 msgstr "Error al cargar detalles de la reparación"
 
 msgid "Error loading appliances"
-msgstr "Error al cargar electrodomésticos"
+msgstr "Error al cargar aparatos"
 
 msgid "Pending"
 msgstr "Pendiente"
@@ -318,7 +318,7 @@ msgid "Client Details"
 msgstr "Detalles del Cliente"
 
 msgid "Appliance Information"
-msgstr "Información del Electrodoméstico"
+msgstr "Información del Aparato"
 
 msgid "Serial Number"
 msgstr "Número de Serie"

@@ -21,6 +21,11 @@ class ApplianceImages {
 
     public function handleGetImages() {
         try {
+            $this->debug->logError('Starting handleGetImages', [
+                'POST' => $_POST,
+                'user_can_upload' => current_user_can('upload_files')
+            ]);
+
             check_ajax_referer('arm_ajax_nonce', 'nonce');
 
             if (!current_user_can('upload_files')) {
@@ -28,6 +33,12 @@ class ApplianceImages {
             }
 
             $appliance_id = isset($_POST['appliance_id']) ? intval($_POST['appliance_id']) : 0;
+            
+            $this->debug->logError('Checking table existence', [
+                'appliance_id' => $appliance_id,
+                'table_name' => $wpdb->prefix . 'arm_appliance_images'
+            ]);
+
             if (!$appliance_id) {
                 throw new \Exception(__('Invalid appliance ID', 'appliance-repair-manager'));
             }

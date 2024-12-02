@@ -14,17 +14,9 @@ class Activator {
     private static function create_tables() {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
+        $debug = Debug\ErrorLogger::getInstance();
 
-        // Appliance Images table
-        $sql_appliance_images = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_appliance_images (
-            id bigint(20) NOT NULL AUTO_INCREMENT,
-            appliance_id bigint(20) NOT NULL,
-            attachment_id bigint(20) NOT NULL,
-            created_at datetime DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY  (id),
-            KEY appliance_id (appliance_id),
-            KEY attachment_id (attachment_id)
-        ) $charset_collate;";
+        $debug->logError('Starting table creation', ['prefix' => $wpdb->prefix]);
 
         // Appliance Images table
         $sql_appliance_images = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}arm_appliance_images (
@@ -99,12 +91,19 @@ class Activator {
             KEY is_public (is_public)
         ) $charset_collate;";
 
+        $debug->logError('Creating tables', [
+            'sql_appliance_images' => $sql_appliance_images
+        ]);
+
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql_clients);
-        dbDelta($sql_appliances);
-        dbDelta($sql_repairs);
-        dbDelta($sql_repair_notes);
-        dbDelta($sql_appliance_images);
+        
+        $results = dbDelta($sql_appliance_images);
+        
+        $debug->logError('Table creation results', [
+            'results' => $results,
+            'last_error' => $wpdb->last_error,
+            'tables_after' => $wpdb->get_col('SHOW TABLES')
+        ]);
     }
 
     private static function setup_roles() {

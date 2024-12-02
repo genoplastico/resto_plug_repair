@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
     // Debug logging function
     function logDebug(message, data = {}) {
-        if (window.console && window.console.log) {
+        if (window.console && window.armDebug) {
             console.log('ARM Public Debug:', message, data);
         }
     }
@@ -19,9 +19,9 @@ jQuery(document).ready(function($) {
             repairId: repairId,
             hasToken: !!token
         });
-        
-        $content.html('<div class="arm-loading">' + armPublicL10n.loading + '</div>');
-        $modal.show();
+
+        window.armModalSystem.openModal('repair-details-modal');
+        window.armModalSystem.showLoading('repair-details-modal');
 
         $.ajax({
             url: armPublicL10n.ajaxurl,
@@ -37,14 +37,13 @@ jQuery(document).ready(function($) {
                 logDebug('Public repair details response', { response: response });
                 
                 if (response.success && response.data.html) {
-                    $content.html(response.data.html);
+                    window.armModalSystem.setContent('repair-details-modal', response.data.html);
                 } else {
                     var errorMessage = response.data && response.data.message 
                         ? response.data.message 
                         : armPublicL10n.errorLoadingRepairDetails;
                     
-                    $content.html('<div class="arm-error">' + errorMessage + '</div>');
-                    console.error('ARM Error:', response);
+                    window.armModalSystem.showError('repair-details-modal', errorMessage);
                 }
             },
             error: function(xhr, status, error) {
@@ -54,27 +53,11 @@ jQuery(document).ready(function($) {
                     response: xhr.responseText
                 });
                 
-                $content.html('<div class="arm-error">' + armPublicL10n.errorLoadingRepairDetails + '</div>');
+                window.armModalSystem.showError(
+                    'repair-details-modal', 
+                    armPublicL10n.errorLoadingRepairDetails
+                );
             }
         });
-    });
-
-    // Close modal handler
-    $(document).on('click', '.arm-modal-close', function() {
-        $(this).closest('.arm-modal').hide();
-    });
-
-    // Close modal when clicking outside
-    $(document).on('click', '.arm-modal', function(e) {
-        if ($(e.target).hasClass('arm-modal')) {
-            $(this).hide();
-        }
-    });
-
-    // Close modal with ESC key
-    $(document).keyup(function(e) {
-        if (e.key === 'Escape') {
-            $('.arm-modal').hide();
-        }
     });
 });

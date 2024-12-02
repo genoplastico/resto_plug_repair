@@ -78,13 +78,6 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                 </tr>
             </table>
             
-            <div class="arm-appliance-images-section">
-                <?php
-                $images = \ApplianceRepairManager\Core\ApplianceImages::getInstance()->getApplianceImages($appliance->id);
-                include ARM_PLUGIN_DIR . 'templates/admin/partials/appliance-images.php';
-                ?>
-            </div>
-            
             <?php submit_button(__('Add Appliance', 'appliance-repair-manager')); ?>
         </form>
     </div>
@@ -166,6 +159,10 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
                                         data-url="<?php echo esc_url($public_url); ?>">
                                     <?php _e('Copy Public URL', 'appliance-repair-manager'); ?>
                                 </button>
+                                <button type="button" class="button button-small manage-images"
+                                        data-appliance-id="<?php echo esc_attr($appliance->id); ?>">
+                                    <?php _e('Manage Photos', 'appliance-repair-manager'); ?>
+                                </button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -180,6 +177,19 @@ wp_nonce_field('arm_ajax_nonce', 'arm_ajax_nonce');
 <!-- Modal para historial de aparato -->
 <div id="appliance-history-modal" class="arm-modal">
     <div id="appliance-history-content" class="arm-modal-dialog"></div>
+</div>
+
+<!-- Modal para imágenes -->
+<div id="appliance-images-modal" class="arm-modal">
+    <div class="arm-modal-dialog">
+        <div class="arm-modal-header">
+            <h2 class="arm-modal-title"><?php _e('Appliance Photos', 'appliance-repair-manager'); ?></h2>
+            <button type="button" class="arm-modal-close" aria-label="<?php esc_attr_e('Close', 'appliance-repair-manager'); ?>">&times;</button>
+        </div>
+        <div class="arm-modal-body">
+            <div id="appliance-images-content"></div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -198,6 +208,43 @@ jQuery(document).ready(function($) {
             temp.remove();
             alert(armL10n.publicUrlCopied);
         });
+    });
+
+    // Manage images button handler
+    $('.manage-images').click(function() {
+        const applianceId = $(this).data('appliance-id');
+        const $modal = $('#appliance-images-modal');
+        const $content = $('#appliance-images-content');
+
+        $content.html('<div class="arm-loading">' + armL10n.loading + '</div>');
+        $modal.show();
+
+        // Load images section via AJAX
+        $.post(ajaxurl, {
+            action: 'arm_get_appliance_images',
+            nonce: $('#arm_ajax_nonce').val(),
+            appliance_id: applianceId
+        }, function(response) {
+            if (response.success) {
+                $content.html(response.data.html);
+            } else {
+                $content.html('<div class="arm-error">' + response.data.message + '</div>');
+            }
+        }).fail(function() {
+            $content.html('<div class="arm-error">' + armL10n.errorLoadingImages + '</div>');
+        });
+    });
+
+    // Close modal handler
+    $('.arm-modal-close').click(function() {
+        $(this).closest('.arm-modal').hide();
+    });
+
+    // Close modal on outside click
+    $('.arm-modal').click(function(e) {
+        if ($(e.target).hasClass('arm-modal')) {
+            $(this).hide();
+        }
     });
 });
 </script>

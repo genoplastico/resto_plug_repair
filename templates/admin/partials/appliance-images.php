@@ -27,7 +27,7 @@
 
 <script>
 jQuery(document).ready(function($) {
-    const applianceId = <?php echo esc_js($post->ID); ?>;
+    const applianceId = <?php echo esc_js(isset($_POST['appliance_id']) ? intval($_POST['appliance_id']) : 0); ?>;
     
     $('#arm-upload-trigger').click(function() {
         $('#arm-image-upload').click();

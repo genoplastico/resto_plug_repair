@@ -7,9 +7,30 @@ class ApplianceImages {
 
     private function __construct() {
         $this->debug = Debug::getInstance();
-        add_action('add_meta_boxes', [$this, 'addImageMetaBox']);
         add_action('wp_ajax_arm_upload_appliance_image', [$this, 'handleImageUpload']);
         add_action('wp_ajax_arm_delete_appliance_image', [$this, 'handleImageDelete']);
+        add_action('wp_ajax_arm_get_appliance_images', [$this, 'handleGetImages']);
+    }
+
+    public function handleGetImages() {
+        check_ajax_referer('arm_ajax_nonce', 'nonce');
+
+        if (!current_user_can('upload_files')) {
+            wp_send_json_error(['message' => __('Permission denied', 'appliance-repair-manager')]);
+        }
+
+        $appliance_id = isset($_POST['appliance_id']) ? intval($_POST['appliance_id']) : 0;
+        if (!$appliance_id) {
+            wp_send_json_error(['message' => __('Invalid appliance ID', 'appliance-repair-manager')]);
+        }
+
+        $images = $this->getApplianceImages($appliance_id);
+        
+        ob_start();
+        include ARM_PLUGIN_DIR . 'templates/admin/partials/appliance-images.php';
+        $html = ob_get_clean();
+
+        wp_send_json_success(['html' => $html]);
     }
 
     public static function getInstance() {

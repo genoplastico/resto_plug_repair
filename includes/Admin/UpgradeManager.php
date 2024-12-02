@@ -4,7 +4,7 @@ namespace ApplianceRepairManager\Admin;
 class UpgradeManager {
     private $logger;
     private $menu_slug = 'arm-upgrade';
-    private $capability = 'manage_options';  // Change to standard WordPress admin capability
+    private $capability = 'manage_arm_system';  // Use plugin-specific capability
     private $parent_slug = 'appliance-repair-manager';
 
     public function __construct() {
@@ -23,8 +23,8 @@ class UpgradeManager {
     public function addUpgradeMenu() {
         add_submenu_page(
             $this->parent_slug,
-            __('System Upgrade', 'appliance-repair-manager'),
-            __('System Upgrade', 'appliance-repair-manager'),
+            __('Modal System Upgrade', 'appliance-repair-manager'),
+            __('Modal System Upgrade', 'appliance-repair-manager'),
             $this->capability,
             $this->menu_slug,
             [$this, 'renderUpgradePage']

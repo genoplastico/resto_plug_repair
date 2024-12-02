@@ -5,6 +5,7 @@ class ErrorLogger {
     private static $instance = null;
     private $log_file;
     private $debug_mode;
+    private $logs = [];
 
     private function __construct() {
         $this->debug_mode = defined('WP_DEBUG') && WP_DEBUG;
@@ -81,6 +82,40 @@ class ErrorLogger {
         if (!@error_log($log_message, 3, $this->log_file)) {
             error_log('Failed to write to ARM error log: ' . $this->log_file);
         }
+    }
+
+    public function log($message, $context = [], $type = 'info') {
+        if (!$this->debug_mode) {
+            return;
+        }
+
+        $timestamp = current_time('mysql');
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+        
+        $log_entry = [
+            'timestamp' => $timestamp,
+            'type' => $type,
+            'message' => $message,
+            'context' => $context,
+            'file' => $backtrace[0]['file'] ?? 'unknown',
+            'line' => $backtrace[0]['line'] ?? 'unknown',
+            'function' => $backtrace[1]['function'] ?? 'unknown',
+            'class' => $backtrace[1]['class'] ?? 'unknown'
+        ];
+
+        $this->logs[] = $log_entry;
+
+        $log_message = sprintf(
+            "[%s] [%s] %s\nContext: %s\nLocation: %s:%s\n\n",
+            $log_entry['timestamp'],
+            strtoupper($type),
+            $message,
+            json_encode($context, JSON_PRETTY_PRINT),
+            $log_entry['file'],
+            $log_entry['line']
+        );
+
+        error_log($log_message, 3, $this->log_file);
     }
 
     public function logError($message, $context = [], $severity = 'ERROR') {

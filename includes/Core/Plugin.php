@@ -69,6 +69,14 @@ class Plugin {
     private function register_hooks() {
         try {
             $this->debug->log('Registering hooks');
+            
+            // Add capabilities to administrator
+            add_action('admin_init', function() {
+                $admin = get_role('administrator');
+                if ($admin) {
+                    $admin->add_cap('manage_arm_system');
+                }
+            });
 
             add_action('init', [$this, 'init']);
             add_action('admin_menu', [$this, 'add_admin_menu']);

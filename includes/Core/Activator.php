@@ -38,6 +38,8 @@ class Activator {
             serial_number varchar(50),
             image_url varchar(255),
             image_path varchar(255),
+            image_url varchar(255),
+            image_path varchar(255),
             status varchar(20) NOT NULL DEFAULT 'pending',
             created_at datetime DEFAULT CURRENT_TIMESTAMP,
             updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

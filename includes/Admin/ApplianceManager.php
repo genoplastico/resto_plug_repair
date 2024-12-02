@@ -32,14 +32,15 @@ class ApplianceManager {
 
         check_admin_referer('arm_add_appliance', '_wpnonce');
 
-        // Validate and sanitize basic input
         $appliance_data = [
             'client_id' => intval($_POST['client_id']),
             'type' => sanitize_text_field($_POST['appliance_type']),
             'brand' => sanitize_text_field($_POST['appliance_brand']),
             'model' => sanitize_text_field($_POST['appliance_model']),
             'serial_number' => sanitize_text_field($_POST['serial_number']),
-            'status' => 'pending'
+            'status' => 'pending',
+            'image_url' => null,
+            'image_path' => null
         ];
 
         // Handle image upload
@@ -65,8 +66,8 @@ class ApplianceManager {
         global $wpdb;
         $result = $wpdb->insert(
             $wpdb->prefix . 'arm_appliances',
-            $appliance_data,
-            array_fill(0, count($appliance_data), '%s')
+            $appliance_data, 
+            ['%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
         );
 
         if ($result === false) {

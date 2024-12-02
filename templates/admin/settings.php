@@ -43,6 +43,48 @@ if (!defined('ABSPATH')) {
     </form>
 
     <div class="arm-settings-section">
+        <h2><?php _e('Cloudinary Settings', 'appliance-repair-manager'); ?></h2>
+        <table class="form-table">
+            <tr>
+                <th scope="row">
+                    <?php _e('Cloud Name', 'appliance-repair-manager'); ?>
+                </th>
+                <td>
+                    <input type="text" 
+                           name="arm_cloudinary_cloud_name" 
+                           value="<?php echo esc_attr(get_option('arm_cloudinary_cloud_name')); ?>"
+                           class="regular-text"
+                           required>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <?php _e('API Key', 'appliance-repair-manager'); ?>
+                </th>
+                <td>
+                    <input type="text" 
+                           name="arm_cloudinary_api_key" 
+                           value="<?php echo esc_attr(get_option('arm_cloudinary_api_key')); ?>"
+                           class="regular-text"
+                           required>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <?php _e('API Secret', 'appliance-repair-manager'); ?>
+                </th>
+                <td>
+                    <input type="password" 
+                           name="arm_cloudinary_api_secret" 
+                           value="<?php echo esc_attr(get_option('arm_cloudinary_api_secret')); ?>"
+                           class="regular-text"
+                           required>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="arm-settings-section">
         <h2><?php _e('Email Configuration', 'appliance-repair-manager'); ?></h2>
         
         <?php if (!is_plugin_active('wp-mail-smtp/wp_mail_smtp.php')): ?>

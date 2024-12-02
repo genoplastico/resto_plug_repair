@@ -494,3 +494,30 @@ msgstr "Reparado"
 msgctxt "repair status"
 msgid "Delivered"
 msgstr "Entregado"
+
+msgid "Email Configuration"
+msgstr "Configuración de Correo"
+
+msgid "Cloudinary Settings"
+msgstr "Configuración de Cloudinary"
+
+msgid "Cloud Name"
+msgstr "Nombre de Cloud"
+
+msgid "API Key"
+msgstr "Clave API"
+
+msgid "API Secret"
+msgstr "Secreto API"
+
+msgid "Add Photos"
+msgstr "Agregar Fotos"
+
+msgid "Repair photo"
+msgstr "Foto de reparación"
+
+msgid "Error uploading image"
+msgstr "Error al subir la imagen"
+
+msgid "Settings saved successfully."
+msgstr "Configuración guardada exitosamente."

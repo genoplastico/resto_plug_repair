@@ -14,6 +14,7 @@ class Plugin {
     private $system_check;
     private $debug;
     private $hook_manager;
+    private $image_handler;
     private $notes_handler;
     private $ajax_handler;
     private $translation_debugger;
@@ -46,6 +47,7 @@ class Plugin {
         $this->system_check = new \ApplianceRepairManager\Admin\SystemCheck();
         $this->notes_handler = new Ajax\NotesHandler();
         $this->ajax_handler = new Ajax\ApplianceHandler();
+        $this->image_handler = new Ajax\ImageHandler();
     }
 
     private function register_hooks() {

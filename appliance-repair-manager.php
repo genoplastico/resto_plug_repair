@@ -13,6 +13,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Load Composer autoloader
+require_once __DIR__ . '/vendor/autoload.php';
+
 // Plugin constants
 define('ARM_VERSION', '1.0.0');
 define('ARM_PLUGIN_DIR', plugin_dir_path(__FILE__));

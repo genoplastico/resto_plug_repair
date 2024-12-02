@@ -7,12 +7,11 @@ if (!defined('ABSPATH')) {
     <h1><?php _e('Appliance Repair Manager Settings', 'appliance-repair-manager'); ?></h1>
 
     <?php settings_errors('arm_settings'); ?>
-
-    <form method="post" action="">
-        <?php wp_nonce_field('arm_settings_nonce'); ?>
         
         <div class="arm-settings-section">
             <h2><?php _e('Debug Settings', 'appliance-repair-manager'); ?></h2>
+            <form method="post" action="">
+                <?php wp_nonce_field('arm_settings_nonce'); ?>
             <table class="form-table">
                 <tr>
                     <th scope="row">
@@ -32,22 +31,14 @@ if (!defined('ABSPATH')) {
                     </td>
                 </tr>
             </table>
-            <p class="submit">
-                <input type="submit" 
-                       name="arm_save_cloudinary" 
-                       class="button button-primary" 
-                       value="<?php esc_attr_e('Save Cloudinary Settings', 'appliance-repair-manager'); ?>">
-            </p>
-        </form>
+                <p class="submit">
+                    <input type="submit" 
+                           name="arm_save_settings" 
+                           class="button button-primary" 
+                           value="<?php esc_attr_e('Save Settings', 'appliance-repair-manager'); ?>">
+                </p>
+            </form>
         </div>
-
-        <p class="submit">
-            <input type="submit" 
-                   name="arm_save_settings" 
-                   class="button button-primary" 
-                   value="<?php esc_attr_e('Save Settings', 'appliance-repair-manager'); ?>">
-        </p>
-    </form>
 
     <div class="arm-settings-section">
         <h2><?php _e('Cloudinary Settings', 'appliance-repair-manager'); ?></h2>
@@ -90,7 +81,14 @@ if (!defined('ABSPATH')) {
                            required>
                 </td>
             </tr>
-        </table>
+            </table>
+            <p class="submit">
+                <input type="submit" 
+                       name="arm_save_cloudinary" 
+                       class="button button-primary" 
+                       value="<?php esc_attr_e('Save Cloudinary Settings', 'appliance-repair-manager'); ?>">
+            </p>
+        </form>
     </div>
 
     <div class="arm-settings-section">

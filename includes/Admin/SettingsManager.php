@@ -22,7 +22,7 @@ class SettingsManager {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
         
-        // Handle form submission
+        // Handle debug settings submission
         if (isset($_POST['arm_save_settings'])) {
             check_admin_referer('arm_settings_nonce');
             
@@ -42,9 +42,9 @@ class SettingsManager {
         if (isset($_POST['arm_save_cloudinary'])) {
             check_admin_referer('arm_cloudinary_settings_nonce');
             
-            $cloudinary_cloud_name = sanitize_text_field($_POST['arm_cloudinary_cloud_name']);
-            $cloudinary_api_key = sanitize_text_field($_POST['arm_cloudinary_api_key']);
-            $cloudinary_api_secret = sanitize_text_field($_POST['arm_cloudinary_api_secret']);
+            $cloudinary_cloud_name = isset($_POST['arm_cloudinary_cloud_name']) ? sanitize_text_field($_POST['arm_cloudinary_cloud_name']) : '';
+            $cloudinary_api_key = isset($_POST['arm_cloudinary_api_key']) ? sanitize_text_field($_POST['arm_cloudinary_api_key']) : '';
+            $cloudinary_api_secret = isset($_POST['arm_cloudinary_api_secret']) ? sanitize_text_field($_POST['arm_cloudinary_api_secret']) : '';
             
             update_option('arm_cloudinary_cloud_name', $cloudinary_cloud_name);
             update_option('arm_cloudinary_api_key', $cloudinary_api_key);
